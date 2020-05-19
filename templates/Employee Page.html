@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Employee Details - {{ emp_name }}
+{% endblock %}
+
+{% block body %}
+<div>
+    <form action="{{url_for('employee')}}" method="post">
+        Select Employee <input type="text" list='employee_list' name="emp" placeholder="Select Employee">
+        <datalist id="employee_list">
+            {% for name in names %}
+                <option>{{name}}</option>
+            {% endfor %}
+        </datalist>
+
+    </div>
+    <div>
+        Job Title: <input type="text" name="job_title">
+        Shifts: <input list="shift" name="shift">
+        <datalist id="shift">
+            <option>AM</option>
+            <option>PM</option>
+            <option>AM/PM</option>
+        </datalist>
+        Days off: <input list="days" name="days_off">
+        <datalist id='days'>
+            <option>Sunday</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+        </datalist>
+    <button id="Submit">Submit</button>
+    </div>
+</form>
+{% endblock %}
