@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block heading %}
+Employee Details- {{ name }}
+{% endblock %}
+
+{% block body %}
+<div>
+    {{ name }} has been added to the system.
+    <a href="{{ url_for ('employee')}}">Click here</a> to add another employee.
+
+</div>
+{% endblock %}
