@@ -6,6 +6,11 @@ Add/Edit Employee Details
 
 {% block body %}
 <div>
+    <form action="{{url_for('employee')}}">
+        
+    </form>
+</div>
+<div>
     <form action="{{url_for('emp_submit')}}" method="post">
         Last Name: <input type="text" list='employee_list' name="last" placeholder="Select Employee">
         <datalist id="employee_list">
@@ -24,6 +29,7 @@ Add/Edit Employee Details
             <option>PM</option>
             <option>AM/PM</option>
         </datalist>
+        <br>
         Days off: <input list="days" name="days_off">
         <datalist id='days'>
             <option>Sunday</option>
@@ -34,6 +40,7 @@ Add/Edit Employee Details
             <option>Friday</option>
             <option>Saturday</option>
         </datalist>
+        <br>
     <button id="Submit">Submit</button>
     </div>
 </form>
