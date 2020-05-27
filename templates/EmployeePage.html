@@ -12,6 +12,7 @@ Add/Edit Employee Details
 </div>
 <div>
     <form action="{{url_for('emp_submit')}}" method="post">
+        <div>Employee Number: <input type="text" name="e_num" placeholder="E12345"></div>
         Last Name: <input type="text" list='employee_list' name="last" placeholder="Select Employee">
         <datalist id="employee_list">
             {% for name in names %}
@@ -40,6 +41,7 @@ Add/Edit Employee Details
             <option>Friday</option>
             <option>Saturday</option>
         </datalist>
+        FTE (hrs/week): <input type="number" name="fte">
         <br>
     <button id="Submit">Submit</button>
     </div>
