@@ -12,26 +12,33 @@ Add/Edit Employee Details
 </div>
 <div>
     <form action="{{url_for('emp_submit')}}" method="post">
-        <div>Employee Number: <input type="text" name="e_num" placeholder="E12345"></div>
-        Last Name: <input type="text" list='employee_list' name="last" placeholder="Select Employee">
+        <div>Employee Number: <input type="text" name="e_num" placeholder="E12345" required>
+            Department: <input type="text" list="dept" name="dept_id" value="Food and Nutrition">
+            <datalist id="dept">
+                {% for name in dept %}
+                <option data-value={{name[0]}}>{{name[1]}}</option>
+                {%endfor%}
+            </datalist>
+        </div>
+        Last Name: <input type="text" list='employee_list' name="last" placeholder="Select Employee"  required>
         <datalist id="employee_list">
             {% for name in names %}
                 <option>{{name}}</option>
             {% endfor %}
         </datalist>
-        Fist Name: <input type="text" name="first">
+        Fist Name: <input type="text" name="first" required>
 
     </div>
     <div>
-        Job Title: <input type="text" name="job_title">
-        Shifts: <input list="shift" name="shift">
+        Job Title: <input type="text" name="job_title" required>
+        Shifts: <input list="shift" name="shift" required>
         <datalist id="shift">
             <option>AM</option>
             <option>PM</option>
             <option>AM/PM</option>
         </datalist>
         <br>
-        Days off: <input list="days" name="days_off">
+        Days off: <input list="days" name="days_off" required>
         <datalist id='days'>
             <option>Sunday</option>
             <option>Monday</option>
@@ -41,7 +48,7 @@ Add/Edit Employee Details
             <option>Friday</option>
             <option>Saturday</option>
         </datalist>
-        FTE (hrs/week): <input type="number" name="fte">
+        FTE (hrs/week): <input type="number" name="fte" required>
         <br>
     <button id="Submit">Submit</button>
     </div>
