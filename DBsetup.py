@@ -21,12 +21,12 @@ c.execute("""create table employee (
     modify_time datetime,
     create_by text,
     modify_by text,
-    foreign key(dept_id) REFERENCES department(dept_id)
+    del_ind text
     )
     """)
 conn.commit()
 
-c.execute("insert into employee values ('10', 1, '0', 'Beeth', 'Bef', 'cook', 'AM', 'Sunday', 40.0, '5/23/20 11:14 PM', '5/23/20 11:14 PM', 'Admin', 'Admin');")
+c.execute("insert into employee values ('10', 1, '0', 'Beeth', 'Bef', 'cook', 'AM', 'Sunday', 40.0, '5/23/20 11:14 PM', '5/23/20 11:14 PM', 'Admin', 'Admin','n');")
 c.execute("insert into employee values ('11', 1, '1', 'Beeth', 'Acs', 'Ba', 'PM', 'Tuesday', 40.0, '5/23/20 11:14 PM', '5/23/20 11:14 PM', 'Admin', 'Admin');")
 c.execute("insert into employee values ('12', 1, '2', 'Zen', 'Ae4b', 'Cook', 'AM/PM', 'Monday', 32.0, '5/23/20 11:18 PM', '5/23/20 11:18 PM', 'Admin', 'Admin');")
 c.execute("insert into employee values ('13', 1, '3', 'Zen', 'Ben', 'cook', 'AM', 'Sunday', 24.0, '5/22/20 7:50 PM', '5/22/20 7:50 PM', 'Admin', 'Admin');")

@@ -13,10 +13,10 @@ Add/Edit Employee Details
 <div>
     <form action="{{url_for('emp_submit')}}" method="post">
         <div>Employee Number: <input type="text" name="e_num" placeholder="E12345" required>
-            Department: <input type="text" list="dept" name="dept_id" value="Food and Nutrition">
+            Department: <input type="text" list="dept" name="dept_id" >
             <datalist id="dept">
-                {% for name in dept %}
-                <option data-value={{name[0]}}>{{name[1]}}</option>
+                {% for dp in dept %}
+                <option data-value="{{dp[0]}}">{{dp[1]}}</option>
                 {%endfor%}
             </datalist>
         </div>
