@@ -13,19 +13,15 @@ Add/Edit Employee Details
 <div>
     <form action="{{url_for('emp_submit')}}" method="post">
         <div>Employee Number: <input type="text" name="e_num" placeholder="E12345" required>
-            Department: <input type="text" list="dept" name="dept_id" >
+            Department: <input type="text" list="dept" name="dept_id">
             <datalist id="dept">
                 {% for dp in dept %}
-                <option data-value="{{dp[0]}}">{{dp[1]}}</option>
+                <option selected="selected">{{ dp }}</option>
                 {%endfor%}
             </datalist>
         </div>
-        Last Name: <input type="text" list='employee_list' name="last" placeholder="Select Employee"  required>
-        <datalist id="employee_list">
-            {% for name in names %}
-                <option>{{name}}</option>
-            {% endfor %}
-        </datalist>
+        Last Name: <input type="text" name="last" placeholder="Select Employee"  required>
+        
         Fist Name: <input type="text" name="first" required>
 
     </div>
@@ -38,8 +34,8 @@ Add/Edit Employee Details
             <option>AM/PM</option>
         </datalist>
         <br>
-        Days off: <input list="days" name="days_off" required>
-        <datalist id='days'>
+        Days off: 
+        <select multiple name="days_off" required>
             <option>Sunday</option>
             <option>Monday</option>
             <option>Tuesday</option>
@@ -47,7 +43,7 @@ Add/Edit Employee Details
             <option>Thursday</option>
             <option>Friday</option>
             <option>Saturday</option>
-        </datalist>
+        </select>
         FTE (hrs/week): <input type="number" name="fte" required>
         <br>
     <button id="Submit">Submit</button>
