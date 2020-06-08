@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Employee Search
+{% endblock %}
+
+{% block body %}
+<div>
+    <form action="{{ url_for('EmpSearch') }}" method="post">
+        Search the employee list by name/employee id: <input type="text" name="emp_dtl" placeholder="Emp Details" required>
+        <button id="Submit">Submit</button>
+    </form>
+</div>
+<div>
+    <h2>Employee List:</h2>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Title</th>
+                <th>Shift</th>
+                <th>Days Off</th>
+                <th>FTE</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{item.first_name}}</td>
+                <td>{{item.last_name}}</td>
+                <td>{{item.title}}</td>
+                <td>{{item.shift}}</td>
+                <td>{{item.days_off}}</td>
+                <td>{{item.fte}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
