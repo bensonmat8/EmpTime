@@ -2,12 +2,16 @@
 <html>
 <head>
     <title>Employee Schedule App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-<body style="background-color:#82d5ff;">
+<body>
     <div><img src="https://www.rxrefill4u.com/uhs/images/uhslogo.jpg" height="40" width="70"></div>
-    <h1>{% block heading %}{% endblock %}</h1>
+    <div class="container">
+        
+        <h1>{% block heading %}{% endblock %}</h1>
 
-    {% block body %}
-    {% endblock %}
+        {% block body %}
+        {% endblock %}
+    </div>
 </body>
 </html>
