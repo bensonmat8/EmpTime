@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% block heading %}
+Error
+{% endblock %}
+
+{% block body %}
+<p>Submit failed due to {{ result }}</p>
+<br><a href="{{ url_for ('employee') }}">Click here </a> to go back..
+{% endblock %}
+

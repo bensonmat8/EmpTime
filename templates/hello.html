@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Employee Scheduling
+{% endblock %}
+
+{% block body %}
+<div>
+    Welcome to Employee scheduling app.
+</div>
+<ul>
+    <li><a href="{{ url_for('employee') }}">Click Here</a> to add a new employee</li>
+    <li><a href="{{ url_for('EmpSearch') }}">Click Here</a> to search for employees</li>
+</ul>
+
+
+{% endblock %}
