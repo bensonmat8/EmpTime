@@ -5,14 +5,10 @@ Add/Edit Employee Details
 {% endblock %}
 
 {% block body %}
-<div>
-    <form action="{{url_for('employee')}}">
-        
-    </form>
-</div>
+
 <div class="form-group">
     <form action="{{url_for('emp_submit')}}" method="post">
-        <div>Employee Number: <input type="text" name="e_num" placeholder="E12345" required>
+        <div>Employee Number: <input type="text" name="e_num" placeholder="E12345" value="{{dt.emp_id}}" required>
             Department: <select  name="dept_id">
                 {% for dp in dept %}
                 <option selected="selected">{{ dp }}</option>
@@ -20,13 +16,12 @@ Add/Edit Employee Details
             </select>
         </div>
         <br>
-        Last Name: <input type="text" name="last"  required>
-        
-        Fist Name: <input type="text" name="first" required>
+        Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
+        Fist Name: <input type="text" name="first" value="{{dt.first_name}}" required>
         <br>
         <div>
-            Job Title: <input type="text" name="job_title" required>
-            Shifts: <select list="shift" name="shift" required>
+            Job Title: <input type="text" name="job_title"  value="{{dt.title}}" required>
+            Shifts: <select list="shift" name="shift" value="{{dt.shift}}" required>
                 <option>AM</option>
                 <option>PM</option>
                 <option>AM/PM</option>
@@ -34,20 +29,22 @@ Add/Edit Employee Details
             <br>
             Days off (select 2 or more): 
             <select class="multiselect" multiple name="days_off" required>
-                <option>Sunday</option>
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-                <option>Saturday</option>
+                <option {{Sunday}}>Sunday</option>
+                <option {{Monday}}>Monday</option>
+                <option {{Tuesday}}>Tuesday</option>
+                <option {{Wednesday}}>Wednesday</option>
+                <option {{Thursday}}>Thursday</option>
+                <option {{Friday}}>Friday</option>
+                <option {{Saturday}}>Saturday</option>
             </select>
-            FTE (hrs/week): <input type="number" name="fte" required>
+            FTE (hrs/week): <input type="number" name="fte" value="{{dt.fte}}" required>
             <br>
-            Deactivate user: <input type="checkbox" name="del_ind" >
+            Deactivate user: <input type="checkbox" name="del_ind" value="{{dt.del_ind}}">
             <br>
-            <button id="Submit">Submit</button>
+            <input type="submit" id="Submit" name="submit" {{submit}}></input>
+            <input type="submit" id="submit" name="update" {{update}}></input>
         </div>
     </form>
+    
 </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block heading %}
-Employee Scheduling
+Employee Scheduling App
 {% endblock %}
 
 {% block body %}
@@ -11,6 +11,7 @@ Employee Scheduling
 <ul>
     <li><a href="{{ url_for('employee') }}">Click Here</a> to add a new employee</li>
     <li><a href="{{ url_for('EmpSearch') }}">Click Here</a> to search for employees</li>
+    <li><a href="{{url_for('schedule')}}">Click Here</a> for schedule</li>
 </ul>
 
 
