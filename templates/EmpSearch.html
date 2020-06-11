@@ -28,7 +28,7 @@ Employee Search
         <tbody>
             {% for item in items %}
             <tr>
-                <td>{{item.first_name}}</td>
+                <td><a href="{{url_for('employee_edit',uniq_id=item.uniq_id)}}">{{item.first_name}}</a></td>
                 <td>{{item.last_name}}</td>
                 <td>{{item.title}}</td>
                 <td>{{item.shift}}</td>
