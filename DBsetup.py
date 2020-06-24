@@ -1,33 +1,44 @@
 import sqlite3
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 
-conn = sqlite3.connect('employee.db')
-c = conn.cursor()
-try:
-    c.execute("""create table department(
-        dept_id integer primary key,
-        dept_name text)""")
-    c.execute("insert into department(dept_name) values ('Food and Nutrition')")
-except:
-    pass
-c.execute("""create table employee (
-    uniq_id text primary key,
-    dept_id integer,
-    emp_id text,
-    first_name text,
-    last_name text,
-    title text,
-    shift text,
-    days_off text,
-    fte real,
-    create_time datetime,
-    modify_time datetime,
-    create_by text,
-    modify_by text,
-    del_ind text,
-    foreign key(dept_id) REFERENCES department(dept_id)
-    )
-    """)
-conn.commit()
+
+chk = input('Create local database? (y/n)')
+if chk.lower=='y':
+    conn = sqlite3.connect('employee.db')
+    c = conn.cursor()
+    try:
+        c.execute("""create table department(
+            dept_id integer primary key,
+            dept_name text)""")
+        c.execute("insert into department(dept_name) values ('Food and Nutrition')")
+    except:
+        pass
+    c.execute("""create table employee (
+        uniq_id text primary key,
+        dept_id integer,
+        emp_id text,
+        first_name text,
+        last_name text,
+        title text,
+        shift text,
+        days_off text,
+        fte real,
+        create_time datetime,
+        modify_time datetime,
+        create_by text,
+        modify_by text,
+        del_ind text,
+        foreign key(dept_id) REFERENCES department(dept_id)
+        )
+        """)
+    conn.commit()
+    
+else:
+    import os
+    engine2 = create_engine('postgresql:///bensonshajimathew')
+    c  = scoped_session(sessionmaker(engine2))
+
 
 c.execute("""insert into employee values
     ('10', 1, '0', 'Beeth', 'Bef', 'cook', 'AM', 'First Weekend', 40.0, '5/23/20 11:14 PM', '5/23/20 11:14 PM', 'Admin', 'Admin', 'n'),
@@ -53,6 +64,10 @@ c.execute("""insert into employee values
  ('1E11526', 1, 'E11526', 'Chandi', 'Addu', 'Driver', 'AM', 'Second Weekend', 22.0, '6/8/20 11:15 PM', '6/8/20 11:15 PM', 'Admin', 'Admin', 'n'),
  ('1E1345', 1, 'E1345', 'Chenna', 'Ri', 'Cook', 'AM/PM', 'First Weekend', 60.0, '6/10/20 10:05 PM', '6/10/20 10:05 PM', 'Admin', 'Admin', 'n')"""
 )
-conn.commit()
+try:
+    conn.commit()
+    conn.close()
+except:
+    c.commit()
+    c.close()
 
-conn.close()
