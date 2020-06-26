@@ -53,7 +53,7 @@ Add/Edit Employee Details
                 FTE (hrs/week): <input type="number" name="fte" value="{{dt.fte}}" required>
             </div>
         </div>
-            Deactivate user: <input type="checkbox" name="del_ind" checked="{{del_ind}}">
+            Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
             <br>
             <input type="submit" id="Submit" name="submit" {{submit}}></input>
             <input type="submit" id="submit" name="update" {{update}}></input>

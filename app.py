@@ -29,12 +29,14 @@ def index():
 def EmpSearch():
     emp_dtl = request.form.get('emp_dtl')
     if emp_dtl != None:
+        #print('EmpSearch if stmt..')
         emp_list = Employee.query.filter(or_(Employee.first_name.like(f'%%'),
                                              Employee.last_name.like(f'%%'),
                                              Employee.emp_id.like(f'%%')
                                              )).all()
     else:
-        emp_list = Employee.query.all()
+        #print('EmpSearch else stmt..')
+        emp_list = Employee.query.order_by(Employee.first_name).all()
         
     return render_template('EmpSearch.html', items=emp_list)
 
@@ -42,7 +44,7 @@ def EmpSearch():
 def employee():
     global dept
     return render_template("EmployeePage.html", dept=dept, submit=None,
-                           update='hidden', dt=None, del_ind='unchecked')
+                           update='hidden', dt=None, del_ind=None)
 @app.route('/Schedule')
 def schedule():
     
@@ -54,7 +56,7 @@ def employee_edit(uniq_id):
     if dt.del_ind.lower()=='n':
         del_ind = None
     else:
-        del_ind = 'checked'
+        del_ind = 'checked=checked'
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
                            update=None, dt=dt, del_ind=del_ind)
     
@@ -71,6 +73,7 @@ def emp_submit():
     shift = request.form.get('shift')
     fte = request.form.get('fte')
     days_off = request.form.getlist('days_off')
+    print(days_off)
     if request.form.get('del_ind'): 
          del_ind = 'Y'
     else:
@@ -93,7 +96,7 @@ def emp_submit():
         emp_update.last_name = last
         emp_update.title = title
         emp_update.shift = shift
-        emp_update.days_off = days_off
+        emp_update.days_off = days_off[0]
         emp_update.fte = fte
         emp_update.modify_time = datetime.now()
         emp_update.modify_by = 'Admin'
