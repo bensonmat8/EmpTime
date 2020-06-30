@@ -112,12 +112,22 @@ def emp_submit():
 
 
 
-@app.route('/employee/vacation/<uniq_id>', methods=['GET', 'PUSH'])
+@app.route('/employee/vacation/<uniq_id>', methods=['GET', 'POST'])
 def vacation(uniq_id):
-    pass
+    
+    emp = Employee.query.get(uniq_id)
+    date=datetime.now()
+    return render_template('Vacation.html', employee=emp, date=date.strftime('%m/%d/%Y'))
 
-
-
+@app.route('/employee/vacationsubmit')
+def vac_submit():
+    uniq_id = request.form.get('uniq_id')
+    start_date = request.form.get('start_date')
+    end_date = request.form.get('end_date')
+    vac = Vacation(uniq_id=uniq_id, start_date=start_date, end_date=end_date,
+                   create_time=datetime.now())
+    db.session.add(vac)
+    return render_template('VacationSubmit.html')
 
 
 
