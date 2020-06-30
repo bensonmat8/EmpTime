@@ -59,6 +59,14 @@ Add/Edit Employee Details
             <input type="submit" id="submit" name="update" {{update}}></input>
     
     </form>
-    
+    <br>
+    {% if submit%}
+        <form action="{{url_for('vacation', uniq_id=dt.uniq_id)}}">
+            
+            To update vacation detail 
+            <button id="Submit">Click Here</button>
+            
+        </form>
+    {%endif%}
 </div>
 {% endblock %}
