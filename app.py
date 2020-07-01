@@ -10,6 +10,7 @@ from models import *
 from datetime import datetime
 import os
 import pandas
+from sqlalchemy import or_, and_, func
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -30,10 +31,13 @@ def EmpSearch():
     emp_dtl = request.form.get('emp_dtl')
     if emp_dtl != None:
         #print('EmpSearch if stmt..')
-        emp_list = Employee.query.filter(or_(Employee.first_name.like(f'%%'),
-                                             Employee.last_name.like(f'%%'),
-                                             Employee.emp_id.like(f'%%')
-                                             )).all()
+        emp_dtl_f = func.lower(f'%{emp_dtl}%')
+        emp_list = Employee.query.filter(or_(
+            func.lower(Employee.first_name).like(emp_dtl_f),
+            func.lower(Employee.last_name).like(emp_dtl_f),
+            func.lower(Employee.emp_id).like(emp_dtl_f))
+            ).order_by(Employee.first_name)
+        
     else:
         #print('EmpSearch else stmt..')
         emp_list = Employee.query.order_by(Employee.first_name).all()
@@ -53,12 +57,13 @@ def schedule():
 @app.route('/EmployeeEdit/<uniq_id>', methods=['GET', 'POST'])
 def employee_edit(uniq_id):
     dt = Employee.query.get(uniq_id)
+    vac = dt.vacation
     if dt.del_ind.lower()=='n':
         del_ind = None
     else:
         del_ind = 'checked=checked'
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
-                           update=None, dt=dt, del_ind=del_ind)
+                           update=None, dt=dt, del_ind=del_ind, vac=vac)
     
 @app.route('/employeesubmit', methods=['GET','POST'])
 def emp_submit():
@@ -119,17 +124,33 @@ def vacation(uniq_id):
     date=datetime.now()
     return render_template('Vacation.html', employee=emp, date=date.strftime('%m/%d/%Y'))
 
-@app.route('/employee/vacationsubmit')
+@app.route('/employee/vacationsubmit', methods=['GET','POST'])
 def vac_submit():
+    # print('Vacation update start')
     uniq_id = request.form.get('uniq_id')
     start_date = request.form.get('start_date')
     end_date = request.form.get('end_date')
+    # print(f'Unq id: {uniq_id}')
     vac = Vacation(uniq_id=uniq_id, start_date=start_date, end_date=end_date,
                    create_time=datetime.now())
     db.session.add(vac)
+    db.session.commit()
+    # print('Vacation update stop')
     return render_template('VacationSubmit.html')
 
-
+@app.route('/employee/VacDel/<vac_id>')
+def vac_del(vac_id):
+    vac = Vacation.query.get(vac_id)
+    dt = vac.employee
+    db.session.delete(vac)
+    db.session.commit()
+    vac = dt.vacation
+    if dt.del_ind.lower()=='n':
+        del_ind = None
+    else:
+        del_ind = 'checked=checked'
+    return render_template("EmployeePage.html", dept=dept, submit='hidden',
+                           update=None, dt=dt, del_ind=del_ind, vac=vac)
 
 
 

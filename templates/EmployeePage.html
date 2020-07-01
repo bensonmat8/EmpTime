@@ -55,18 +55,40 @@ Add/Edit Employee Details
         </div>
             Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
             <br>
-            <input type="submit" id="Submit" name="submit" {{submit}}></input>
-            <input type="submit" id="submit" name="update" {{update}}></input>
+            <input  class="btn btn-primary" type="submit" id="Submit" name="submit" {{submit}}></input>
+            <input  class="btn btn-primary" type="submit" id="submit" name="update" {{update}}></input>
     
     </form>
     <br>
     {% if submit%}
         <form action="{{url_for('vacation', uniq_id=dt.uniq_id)}}">
             
-            To update vacation detail 
-            <button id="Submit">Click Here</button>
+            <h5>To update vacation detail <button id="Submit" class="btn btn-secondary btn-sm">Click Here</button></h5>
+            
             
         </form>
+        <br>
+        <h3>{{dt.first_name}}'s vacation details:</h3>
+        <br>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for item in vac %}
+                <tr>
+                    <td><a href="{{url_for('vac_del',vac_id=item.vac_id)}}">Delete</a></td>
+                    <td>{{item.start_date}}</td>
+                    <td>{{item.end_date}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
     {%endif%}
+
 </div>
 {% endblock %}
