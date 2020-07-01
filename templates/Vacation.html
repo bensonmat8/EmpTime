@@ -6,16 +6,17 @@ Vacation Add
 
 {%block body%}
 <h2>Enter {{employee.first_name}}'s vacation details</h2>
-<form action="{{url_for('vac_submit')}}">
+<form action="{{url_for('vac_submit')}}" method="post">
     <div class="row">
         <div class="col">
             From Date:<input type="date" name="start_date" placeholder={{date}} min={{date}}>
         </div>
         <div class="col">
-            From Date:<input type="date" name="start_date" placeholder={{date}}  min={{date}}>
+            To Date:<input type="date" name="end_date" placeholder={{date}}  min={{date}}>
         </div>
         <input type="hidden" name="uniq_id" value={{employee.uniq_id}}>
     </div>
-    <input type="submit" id="Submit" name="submit"></input>
+    <br>
+    <input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
 </form>
 {%endblock%}
