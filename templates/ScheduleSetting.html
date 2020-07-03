@@ -1,0 +1,26 @@
+{% extends "layout.html"%}
+
+{%block heading%}
+Schedule Setting
+{%endblock%}
+
+{%block body%}
+<h3>Add Job</h3>
+<form>
+    <div class="grid">
+        <div class="grid-item">
+            Job Name:<input type="text" name="job">
+        </div>
+        <div class="grid-item">
+            Shift Start Time:<input type="time" name="shift_start" value="06:30 am">
+        </div>
+        <div class="grid-item">
+            Number of persons:<input type="Number" name="shift_start" value=1>
+        </div>
+    </div>
+    <br>
+    <div>
+        <input  class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+    </div>
+</form>
+{%endblock%}
