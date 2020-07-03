@@ -5,55 +5,67 @@ Add/Edit Employee Details
 {% endblock %}
 
 {% block body %}
-
+<style type="text/css">
+    .grid {
+            background-color: grey;
+            display: grid;
+            padding: 1px;
+            grid-column-gap: 1px;
+            grid-row-gap: 1px;
+            grid-template-columns: auto auto;
+        }
+        .grid-item {
+            background-color: white;
+            padding: 7px;
+            text-align: left;
+        }
+</style>
 <div class="form-group">
     <form action="{{url_for('emp_submit')}}" method="post">
-        <div class="row">
-            <div class="col">
+        <div class="grid">
+            <div class="grid-item">
                 Employee Number: <input type="text" name="e_num" placeholder="E12345" value="{{dt.emp_id}}" required>
             </div>
-            <div class="col">
+            <div class="grid-item">
                 Department: <select  name="dept_id">
-                    {% for dp in dept %}
-                    <option selected="selected">{{ dp }}</option>
-                    {%endfor%}
-                    </select>
+                        {% for dp in dept %}
+                        <option selected="selected">{{ dp }}</option>
+                        {%endfor%}
+                        </select>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            <div class="grid-item">
                 Fist Name: <input type="text" name="first" value="{{dt.first_name}}" required>
             </div>
-            <div class="col">
-                Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
+            <div class="grid-item">
+                Fist Name: <input type="text" name="first" value="{{dt.first_name}}" required>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            <div class="grid-item">
+               Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
+            </div>
+            <div class="grid-item">
                 Job Title: <input type="text" name="job_title"  value="{{dt.title}}" required>
             </div>
-
-            <div class="col">
+            <div class="grid-item">
                 Shifts: <select list="shift" name="shift" value="{{dt.shift}}" required>
-                    <option>AM</option>
-                    <option>PM</option>
-                    <option>AM/PM</option>
-                </select>
+                        <option>AM</option>
+                        <option>PM</option>
+                        <option>AM/PM</option>
+                    </select>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            <div class="grid-item">
                 Days off: 
-                <select name="days_off" value="{{dt.days_off}}" required>
-                    <option>First Weekend</option>
-                    <option>Second Weekend</option>
-                </select>
+                    <select name="days_off" value="{{dt.days_off}}" required>
+                        <option>First Weekend</option>
+                        <option>Second Weekend</option>
+                    </select>
             </div>
-            <div class="col">
+            <div class="grid-item">
                 FTE (hrs/week): <input type="number" name="fte" value="{{dt.fte}}" required>
             </div>
+            <div class="grid-item">
+                Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
+            </div>
         </div>
-            Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
             <br>
             <input  class="btn btn-primary" type="submit" id="Submit" name="submit" {{submit}}></input>
             <input  class="btn btn-primary" type="submit" id="submit" name="update" {{update}}></input>
