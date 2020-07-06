@@ -159,6 +159,6 @@ def schedule_setting():
 
 @app.route('/ScheduleSetting/Submit', methods=['GET','POST'])
 def schedule_setting_submit():
-    
+    job = request.form.get('job')
     return render_template('')
 
