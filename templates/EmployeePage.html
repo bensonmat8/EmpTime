@@ -5,24 +5,10 @@ Add/Edit Employee Details
 {% endblock %}
 
 {% block body %}
-<style type="text/css">
-    .grid {
-            background-color: grey;
-            display: grid;
-            padding: 1px;
-            grid-column-gap: 1px;
-            grid-row-gap: 1px;
-            grid-template-columns: auto auto;
-        }
-        .grid-item {
-            background-color: white;
-            padding: 7px;
-            text-align: left;
-        }
-</style>
+
 <div class="form-group">
     <form action="{{url_for('emp_submit')}}" method="post">
-        <div class="grid">
+        <div class="form-grid">
             <div class="grid-item">
                 Employee Number: <input type="text" name="e_num" placeholder="E12345" value="{{dt.emp_id}}" required>
             </div>
@@ -34,10 +20,7 @@ Add/Edit Employee Details
                         </select>
             </div>
             <div class="grid-item">
-                Fist Name: <input type="text" name="first" value="{{dt.first_name}}" required>
-            </div>
-            <div class="grid-item">
-                Fist Name: <input type="text" name="first" value="{{dt.first_name}}" required>
+                First Name: <input type="text" name="first" value="{{dt.first_name}}" required>
             </div>
             <div class="grid-item">
                Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
@@ -61,6 +44,9 @@ Add/Edit Employee Details
             </div>
             <div class="grid-item">
                 FTE (hrs/week): <input type="number" name="fte" value="{{dt.fte}}" required>
+            </div>
+            <div class="grid-item">
+                
             </div>
             <div class="grid-item">
                 Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
