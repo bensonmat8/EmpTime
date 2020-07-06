@@ -152,6 +152,9 @@ def vac_del(vac_id):
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
                            update=None, dt=dt, del_ind=del_ind, vac=vac)
 
-
+@app.route('/ScheduleSetting')
+def schedule_setting():
+    
+    return render_template('ScheduleSetting.html')
 
 
