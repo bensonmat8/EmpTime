@@ -157,4 +157,8 @@ def schedule_setting():
     
     return render_template('ScheduleSetting.html')
 
+@app.route('/ScheduleSetting/Submit', methods=['GET','POST'])
+def schedule_setting_submit():
+    
+    return render_template('')
 
