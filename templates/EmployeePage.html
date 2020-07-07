@@ -8,57 +8,85 @@ Add/Edit Employee Details
 
 <div class="form-group">
     <form action="{{url_for('emp_submit')}}" method="post">
-        <div class="row">
-            <div class="col">
+        <div class="form-grid">
+            <div class="grid-item">
                 Employee Number: <input type="text" name="e_num" placeholder="E12345" value="{{dt.emp_id}}" required>
             </div>
-            <div class="col">
+            <div class="grid-item">
                 Department: <select  name="dept_id">
-                    {% for dp in dept %}
-                    <option selected="selected">{{ dp }}</option>
-                    {%endfor%}
-                    </select>
+                        {% for dp in dept %}
+                        <option selected="selected">{{ dp }}</option>
+                        {%endfor%}
+                        </select>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                Fist Name: <input type="text" name="first" value="{{dt.first_name}}" required>
+            <div class="grid-item">
+                First Name: <input type="text" name="first" value="{{dt.first_name}}" required>
             </div>
-            <div class="col">
-                Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
+            <div class="grid-item">
+               Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            <div class="grid-item">
                 Job Title: <input type="text" name="job_title"  value="{{dt.title}}" required>
             </div>
-
-            <div class="col">
+            <div class="grid-item">
                 Shifts: <select list="shift" name="shift" value="{{dt.shift}}" required>
-                    <option>AM</option>
-                    <option>PM</option>
-                    <option>AM/PM</option>
-                </select>
+                        <option>AM</option>
+                        <option>PM</option>
+                        <option>AM/PM</option>
+                    </select>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            <div class="grid-item">
                 Days off: 
-                <select name="days_off" value="{{dt.days_off}}" required>
-                    <option>First Weekend</option>
-                    <option>Second Weekend</option>
-                </select>
+                    <select name="days_off" value="{{dt.days_off}}" required>
+                        <option>First Weekend</option>
+                        <option>Second Weekend</option>
+                    </select>
             </div>
-            <div class="col">
+            <div class="grid-item">
                 FTE (hrs/week): <input type="number" name="fte" value="{{dt.fte}}" required>
             </div>
+            <div class="grid-item">
+                
+            </div>
+            <div class="grid-item">
+                Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
+            </div>
         </div>
-            Deactivate user: <input type="checkbox" name="del_ind" checked="{{del_ind}}">
             <br>
-            <input type="submit" id="Submit" name="submit" {{submit}}></input>
-            <input type="submit" id="submit" name="update" {{update}}></input>
+            <input  class="btn btn-primary" type="submit" id="Submit" name="submit" {{submit}}></input>
+            <input  class="btn btn-primary" type="submit" id="submit" name="update" {{update}}></input>
     
     </form>
-    
+    <br>
+    {% if submit%}
+        <form action="{{url_for('vacation', uniq_id=dt.uniq_id)}}">
+            
+            <h5>To update vacation detail <button id="Submit" class="btn btn-secondary btn-sm">Click Here</button></h5>
+            
+            
+        </form>
+        <br>
+        <h3>{{dt.first_name}}'s vacation details:</h3>
+        <br>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for item in vac %}
+                <tr>
+                    <td><a href="{{url_for('vac_del',vac_id=item.vac_id)}}">Delete</a></td>
+                    <td>{{item.start_date}}</td>
+                    <td>{{item.end_date}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    {%endif%}
+
 </div>
 {% endblock %}

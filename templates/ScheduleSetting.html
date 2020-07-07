@@ -1,0 +1,31 @@
+{% extends "layout.html"%}
+
+{%block heading%}
+Schedule Settings
+{%endblock%}
+
+{%block body%}
+<br>
+<h3>Add Job</h3>
+<br>
+<form action="{{url_for('schedule_setting_submit')}}">
+    <div class="form-grid">
+        <div class="grid-item">
+            Job Name: <input type="text" name="job">
+        </div>
+        <div class="grid-item">
+            Shift Start Time: <input type="time" name="shift_start" value="06:30 am">
+        </div>
+        <div class="grid-item">
+            Number of persons :<input type="Number" name="shift_start" value=1>
+        </div>
+        <div class="grid-item">
+            Hours/Shift: <input type="Number" name="shift_start" value=8>
+        </div>
+    </div>
+    <br>
+    <div>
+        <input  class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+    </div>
+</form>
+{%endblock%}
