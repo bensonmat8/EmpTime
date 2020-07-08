@@ -8,19 +8,24 @@ Schedule Settings
 <br>
 <h3>Add Job</h3>
 <br>
-<form action="{{url_for('schedule_setting_submit')}}">
+<form action="{{url_for('schedule_setting_submit')}}" method="post">
     <div class="form-grid">
         <div class="grid-item">
-            Job Name: <input type="text" name="job">
+            Job Name: 
+            <select name="job">
+                {% for j in job %}
+                <option value={{ j.job_id }}>{{ j.job_name }}</option>
+                {%endfor%}
+            </select>
         </div>
         <div class="grid-item">
             Shift Start Time: <input type="time" name="shift_start" value="06:30 am">
         </div>
         <div class="grid-item">
-            Number of persons :<input type="Number" name="shift_start" value=1>
+            Number of persons :<input type="Number" name="no_of_emp" value=1>
         </div>
         <div class="grid-item">
-            Hours/Shift: <input type="Number" name="shift_start" value=8>
+            Hours/Shift: <input type="Number" name="hr_per_shift" value=8>
         </div>
     </div>
     <br>

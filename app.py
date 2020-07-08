@@ -24,6 +24,10 @@ def index():
     
     return render_template('hello.html')
 
+@app.route('/GeneralSettings')
+def general_settings():
+    return render_template('GeneralSettings.html')
+
 @app.route('/EmpSearch', methods=['GET','POST'])
 def EmpSearch():
     emp_dtl = request.form.get('emp_dtl')
@@ -45,8 +49,9 @@ def EmpSearch():
 @app.route('/employee')
 def employee():
     global dept
+    job = Job.query.order_by(Job.job_name).all()
     return render_template("EmployeePage.html", dept=dept, submit=None,
-                           update='hidden', dt=None, del_ind=None)
+                           update='hidden', dt=None, del_ind=None, job=job)
 @app.route('/Schedule')
 def schedule():
     
@@ -60,8 +65,9 @@ def employee_edit(uniq_id):
         del_ind = None
     else:
         del_ind = 'checked=checked'
+    job = Job.query.order_by(Job.job_name).all()
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
-                           update=None, dt=dt, del_ind=del_ind, vac=vac)
+                           update=None, dt=dt, del_ind=del_ind, vac=vac, job=job)
     
 @app.route('/employeesubmit', methods=['GET','POST'])
 def emp_submit():
@@ -134,7 +140,8 @@ def vac_submit():
     db.session.add(vac)
     db.session.commit()
     # print('Vacation update stop')
-    return render_template('VacationSubmit.html')
+    result = 'vacation'
+    return render_template('Submit.html', result=result)
 
 @app.route('/employee/VacDel/<vac_id>')
 def vac_del(vac_id):
@@ -152,13 +159,21 @@ def vac_del(vac_id):
 
 @app.route('/ScheduleSetting')
 def schedule_setting():
-    
-    return render_template('ScheduleSetting.html')
+    job = Job.query.order_by(Job.job_name).all()
+    return render_template('ScheduleSetting.html', job=job)
 
 @app.route('/ScheduleSetting/Submit', methods=['GET','POST'])
 def schedule_setting_submit():
     job = request.form.get('job')
     shift_start = request.form.get('shift_start')
-    return render_template('')
+    no_of_emp = request.form.get('no_of_emp')
+    hr_per_shift = request.form.get('hr_per_shift')
+    
+    
+    sch = ScheduleSetting(job_id=job, shift_start=shift_start,
+                          no_of_emp=no_of_emp, hr_per_shift=hr_per_shift)
+    db.session.add(sch)
+    job_opt = Job.query.order_by(Job.job_name).all()
+    return render_template('ScheduleSetting.html', job=job_opt)
 
 

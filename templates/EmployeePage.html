@@ -26,7 +26,12 @@ Add/Edit Employee Details
                Last Name: <input type="text" name="last" value="{{dt.last_name}}" required>
             </div>
             <div class="grid-item">
-                Job Title: <input type="text" name="job_title"  value="{{dt.title}}" required>
+                Job Title: 
+                <select name="job">
+                    {% for j in job %}
+                    <option value={{ j.job_id }}>{{ j.job_name }}</option>
+                    {%endfor%}
+                </select>
             </div>
             <div class="grid-item">
                 Shifts: <select list="shift" name="shift" value="{{dt.shift}}" required>
