@@ -159,8 +159,9 @@ def vac_del(vac_id):
 
 @app.route('/ScheduleSetting')
 def schedule_setting():
-    job = Job.query.order_by(Job.job_name).all()
-    return render_template('ScheduleSetting.html', job=job)
+    sch_all = ScheduleSetting.query.order_by(ScheduleSetting.job_name).all()
+    job_opt = Job.query.order_by(Job.job_name).all()
+    return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
 @app.route('/ScheduleSetting/Submit', methods=['GET','POST'])
 def schedule_setting_submit():
@@ -169,11 +170,23 @@ def schedule_setting_submit():
     no_of_emp = request.form.get('no_of_emp')
     hr_per_shift = request.form.get('hr_per_shift')
     
-    
-    sch = ScheduleSetting(job_id=job, shift_start=shift_start,
+    ct = ScheduleSetting.query.filter_by(job_id=job).count()+1
+    job_name = f'{Job.query.get(job).job_name} {ct}'
+    print(f'Job name: {job_name} added')
+    sch = ScheduleSetting(job_id=job, job_name=job_name, shift_start=shift_start,
                           no_of_emp=no_of_emp, hr_per_shift=hr_per_shift)
     db.session.add(sch)
+    db.session.commit()
+    sch_all = ScheduleSetting.query.order_by(ScheduleSetting.job_name).all()
     job_opt = Job.query.order_by(Job.job_name).all()
-    return render_template('ScheduleSetting.html', job=job_opt)
+    return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
-
+@app.route('/ScheduleSetting/Del/<sch_id>')
+def schedule_setting_del(sch_id):
+    sch = ScheduleSetting.query.get(sch_id)
+    db.session.delete(sch)
+    db.session.commit()
+    
+    sch_all = ScheduleSetting.query.order_by(ScheduleSetting.job_name).all()
+    job_opt = Job.query.order_by(Job.job_name).all()
+    return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)

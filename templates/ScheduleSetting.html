@@ -33,4 +33,29 @@ Schedule Settings
         <input  class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
     </div>
 </form>
+<br>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th></th>
+            <th>Job</th>
+            <th>Shift Start Time</th>
+            <th>No. of Employees</th>
+            <th>Hours/Shift</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for item in sch_all %}
+        <tr>
+            <td><a href="{{url_for('schedule_setting_del',sch_id=item.sch_id)}}">Delete</a></td>
+            <td>{{item.job_name}}</td>
+            <td>{{item.shift_start}}</td>
+            <td>{{item.no_of_emp}}</td>
+            <td>{{item.hr_per_shift}}</td>
+            <td>{{item.comment}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
 {%endblock%}
