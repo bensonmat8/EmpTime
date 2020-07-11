@@ -41,8 +41,8 @@ Add/Edit Employee Details
                     </select>
             </div>
             <div class="grid-item">
-                Days off: 
-                    <select name="days_off" value="{{dt.days_off}}" required>
+                Weekend off: 
+                    <select name="weekend_off" value="{{dt.weekend_off}}" required>
                         <option>First Weekend</option>
                         <option>Second Weekend</option>
                     </select>
@@ -51,7 +51,29 @@ Add/Edit Employee Details
                 FTE (hrs/week): <input type="number" name="fte" value="{{dt.fte}}" required>
             </div>
             <div class="grid-item">
-                
+                Week 1 Day off: 
+                    <select name="week_1_days_off" value="{{dt.week_1_day_off}}" required>
+                        <option>Random</option>
+                        <option>Monday</option>
+                        <option>Monday</option>
+                        <option>Tuesday</option>
+                        <option>Wednesday</option>
+                        <option>Thursday</option>
+                        <option>Friday</option>
+                        <option>Saturday</option>
+                        <option>Sunday</option>
+                    </select>
+                | Week 2 Day off: 
+                    <select name="week_2_days_off" value="{{dt.week_2_day_off}}" required>
+                        <option>Random</option>
+                        <option>Monday</option>
+                        <option>Tuesday</option>
+                        <option>Wednesday</option>
+                        <option>Thursday</option>
+                        <option>Friday</option>
+                        <option>Saturday</option>
+                        <option>Sunday</option>
+                    </select>
             </div>
             <div class="grid-item">
                 Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>

@@ -66,6 +66,7 @@ def employee_edit(uniq_id):
     else:
         del_ind = 'checked=checked'
     job = Job.query.order_by(Job.job_name).all()
+    print(f'week_1_day_off for emp: {dt.week_1_day_off}')
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
                            update=None, dt=dt, del_ind=del_ind, vac=vac, job=job)
     
@@ -78,22 +79,25 @@ def emp_submit():
     dept_id = dept[dept_id]
     last = request.form.get('last')
     first = request.form.get('first')
-    title = request.form.get('job_title')
+    job_id = request.form.get('job')
     shift = request.form.get('shift')
     fte = request.form.get('fte')
-    days_off = request.form.getlist('days_off')
-    print(days_off)
+    weekend_off = request.form.get('weekend_off')
+    week_1_day_off = request.form.get('week_1_days_off')
+    week_2_day_off = request.form.get('week_2_days_off')
+    print(f"Job_id: {job_id}\nweek_1_day_off: {week_1_day_off}\nweek_2_day_off: {week_2_day_off}")
     if request.form.get('del_ind'): 
          del_ind = 'Y'
     else:
         del_ind = 'n'
     if request.form.get('update')==None:
         emp_add = Employee(uniq_id=str(dept_id)+e_num, dept_id=dept_id,
-                           emp_id=e_num, first_name=first, last_name=last,
-                           title=title, shift=shift, days_off=days_off,
-                           fte=fte, create_time=datetime.now(),
-                           modify_time=datetime.now(), create_by='Admin',
-                           modify_by='Admin', del_ind=del_ind)
+                            emp_id=e_num, first_name=first, last_name=last,
+                            job_id=job_id, shift=shift, weekend_off=weekend_off,
+                            week_1_day_off=week_1_day_off, week_2_day_off=week_2_day_off,
+                            fte=fte, create_time=datetime.now(),
+                            modify_time=datetime.now(), create_by='Admin',
+                            modify_by='Admin', del_ind=del_ind)
         db.session.add(emp_add)
         result = 'success'
     else:
@@ -103,9 +107,11 @@ def emp_submit():
         emp_update.emp_id = e_num
         emp_update.first_name = first
         emp_update.last_name = last
-        emp_update.title = title
+        emp_update.job_id = job_id
+        emp_update.week_1_day_off = week_1_day_off
+        emp_update.week_2_day_off = week_2_day_off
         emp_update.shift = shift
-        emp_update.days_off = days_off[0]
+        emp_update.weekend_off = weekend_off
         emp_update.fte = fte
         emp_update.modify_time = datetime.now()
         emp_update.modify_by = 'Admin'
