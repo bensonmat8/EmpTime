@@ -38,5 +38,10 @@ if __name__=='__main__':
             df.to_sql('employee',  db.engine, index=False, if_exists='append')
         except:
             print('Employee table failed')
+        try:
+            df = pd.read_csv('./Dummy Data/formated_scheduel.csv')
+            df.to_sql('Kitchen_schedule',  db.engine, index=False, if_exists='append')
+        except:
+            print('Employee table failed')
         
         print('Tables created and dummy data added..')
