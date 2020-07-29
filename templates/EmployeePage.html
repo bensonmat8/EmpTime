@@ -5,7 +5,9 @@ Add/Edit Employee Details
 {% endblock %}
 
 {% block body %}
-
+<script>
+    document.querySelector('#weekend_off').selectedIndex={{dt.weekend_off}}
+</script>
 <div class="form-group">
     <form action="{{url_for('emp_submit')}}" method="post">
         <div class="form-grid">
@@ -27,7 +29,7 @@ Add/Edit Employee Details
             </div>
             <div class="grid-item">
                 Job Title: 
-                <select name="job">
+                <select name="job" id="job">
                     {% for j in job %}
                     <option value={{ j.job_id }}>{{ j.job_name }}</option>
                     {%endfor%}
@@ -42,9 +44,9 @@ Add/Edit Employee Details
             </div>
             <div class="grid-item">
                 Weekend off: 
-                    <select name="weekend_off" value="{{dt.weekend_off}}" required>
-                        <option>First Weekend</option>
-                        <option>Second Weekend</option>
+                    <select id="weekend_off" name="weekend_off" value="{{dt.weekend_off}}" required>
+                        <option value=0>First Weekend</option>
+                        <option value=1>Second Weekend</option>
                     </select>
             </div>
             <div class="grid-item">
@@ -52,27 +54,25 @@ Add/Edit Employee Details
             </div>
             <div class="grid-item">
                 Week 1 Day off: 
-                    <select name="week_1_days_off" value="{{dt.week_1_day_off}}" required>
-                        <option>Random</option>
-                        <option>Monday</option>
-                        <option>Monday</option>
-                        <option>Tuesday</option>
-                        <option>Wednesday</option>
-                        <option>Thursday</option>
-                        <option>Friday</option>
-                        <option>Saturday</option>
-                        <option>Sunday</option>
+                    <select name="week_1_days_off" value="{{dt.week_1_day_off}}" >
+                        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']%}
+                            {% if day==dt.week_1_day_off%}
+                            <option selected="selected">{{day}}</option>
+                            {%else%}
+                            <option>{{day}}</option>
+                            {%endif%}
+                        {%endfor%}
+                        
                     </select>
                 | Week 2 Day off: 
                     <select name="week_2_days_off" value="{{dt.week_2_day_off}}" required>
-                        <option>Random</option>
-                        <option>Monday</option>
-                        <option>Tuesday</option>
-                        <option>Wednesday</option>
-                        <option>Thursday</option>
-                        <option>Friday</option>
-                        <option>Saturday</option>
-                        <option>Sunday</option>
+                        {% for day in ['Random', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']%}
+                            {% if day==dt.week_2_day_off%}
+                            <option selected="selected">{{day}}</option>
+                            {%else%}
+                            <option>{{day}}</option>
+                            {%endif%}
+                        {%endfor%}
                     </select>
             </div>
             <div class="grid-item">
