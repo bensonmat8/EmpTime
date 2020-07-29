@@ -1,52 +1,62 @@
 {% extends "layout.html" %}
 
-{%block heading%}
-Schedule (Site under construction....)
-{%endblock%}
+{% block heading %}
+Employee Search
+{% endblock %}
 
-{%block body %}
-<h2>Cook Schedule</h2>
-<table class="table table-sm">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">   Name</th>
-            <th scope="col"> Sunday 1</th>
-            <th scope="col"> Monday 1</th>
-            <th scope="col"> Tueday 1</th>
-            <th scope="col"> Wedday 1</th>
-            <th scope="col"> Thurday 1</th>
-            <th scope="col"> Friday 1</th>
-            <th scope="col"> Satday 1</th>
-            <th scope="col"> Sunday 2</th>
-            <th scope="col"> Monday 2</th>
-            <th scope="col"> Tueday 2</th>
-            <th scope="col"> Wedday 2</th>
-            <th scope="col"> Thurday 2</th>
-            <th scope="col"> Friday 2</th>
-            <th scope="col"> Satday 2</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in cook_sch %}
-        <tr>
-            <td scope="row">{{ row.fullname }}</td>
-            <td>{{ row.Sun1 }}</td>
-            <td>{{ row.Mon1 }}</td>
-            <td>{{ row.Tue1 }}</td>
-            <td>{{ row.Wed1 }}</td>
-            <td>{{ row.Thur1 }}</td>
-            <td>{{ row.Fri1 }}</td>
-            <td>{{ row.Sat1 }}</td>
-            <td>{{ row.Sun2 }}</td>
-            <td>{{ row.Mon2 }}</td>
-            <td>{{ row.Tue2 }}</td>
-            <td>{{ row.Wed2 }}</td>
-            <td>{{ row.Thur2 }}</td>
-            <td>{{ row.Fri2 }}</td>
-            <td>{{ row.Sat2 }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<img src="https://images.pexels.com/photos/2138126/pexels-photo-2138126.jpeg?cs=srgb&dl=building-canes-2138126.jpg&fm=jpg" height="420">
-{%endblock%}
+{% block body %}
+<div>
+    <form action="{{ url_for('EmpSearch') }}" method="post">
+        Search the employee list by name/employee id: <input type="text" name="emp_dtl" placeholder="Emp Details">
+        <button id="Submit">Submit</button>
+    </form>
+</div>
+<div>
+    <h2>Employee List:</h2>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Job</th>
+                <th>Time</th>
+                <th>Sun1</th>
+                <th>Mon1</th>
+                <th>Tue1</th>
+                <th>Wed1</th>
+                <th>Thur1</th>
+                <th>Fri1</th>
+                <th>Sat1</th>
+                <th>Sun2</th>
+                <th>Mon2</th>
+                <th>Tue2</th>
+                <th>Wed2</th>
+                <th>Thur2</th>
+                <th>Fri2</th>
+                <th>Sat2</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{item.Job}}</td>
+                <td>{{item.Time}}</td>
+                <td>{{item.sun1}}</td>
+                <td>{{item.mon1}}</td>
+                <td>{{item.tue1}}</td>
+                <td>{{item.wed1}}</td>
+                <td>{{item.thur1}}</td>
+                <td>{{item.fri1}}</td>
+                <td>{{item.sat1}}</td>
+                <td>{{item.sun2}}</td>
+                <td>{{item.mon2}}</td>
+                <td>{{item.tue1}}</td>
+                <td>{{item.wed2}}</td>
+                <td>{{item.thur2}}</td>
+                <td>{{item.fri2}}</td>
+                <td>{{item.sat2}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
