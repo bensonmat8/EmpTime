@@ -5,6 +5,31 @@ Schedule Settings
 {%endblock%}
 
 {%block body%}
+<script>
+
+    document.addEventListener('DOMContentLoaded', ()=> {
+        //Changing # of persons would change values for Sun-Sat
+        document.querySelector('#persons').onkeyup = function() {
+            var val = document.querySelector("#persons").value
+            //alert(`Value is ${val}`)
+            document.querySelector('#sun').value = val
+            document.querySelectorAll('.sub_item').forEach(function(value){
+                value.value = val
+            })
+        }
+        
+        //Customize Days button to display Sun-Sat
+        document.querySelector('#customize').onclick= function() {
+            document.querySelectorAll('.addnew').forEach(function(elm){
+                if (elm.style.display === 'none'){
+                    elm.style.display = ""
+                } else{
+                    elm.style.display = 'none';
+                }
+            })
+        }
+    })
+</script>
 <br>
 <h3>Add Job</h3>
 <br>
@@ -22,15 +47,38 @@ Schedule Settings
             Shift Start Time: <input type="time" name="shift_start" value="06:30 am">
         </div>
         <div class="grid-item">
-            Number of persons :<input type="Number" name="no_of_emp" value=1>
+            Number of persons: <input id="persons" type="Number" name="no_of_emp" value=1>
         </div>
         <div class="grid-item">
             Hours/Shift: <input type="Number" name="hr_per_shift" value=8>
         </div>
+        <div class="grid-item addnew" style="display:none">
+            Sun:  <input id="sun" class="sub_item" type="Number" name="sun" value=1>
+        </div>
+        <div class="grid-item addnew" style="display:none">
+            Mon:  <input type="Number" name="mon" class="sub_item" value=1>
+        </div>
+        <div class="grid-item addnew" style="display:none">
+            Tue:  <input type="Number" name="tue" class="sub_item" value=1>
+        </div>
+        <div class="grid-item addnew" style="display:none">
+            Wed:  <input type="Number" name="wed" class="sub_item" value=1>
+        </div>
+        <div class="grid-item addnew" style="display:none">
+            Thur: <input type="Number" name="thur" class="sub_item" value=1>
+        </div>
+        <div class="grid-item addnew" style="display:none">
+            Fri: <input type="Number" name="fri" class="sub_item" value=1>
+        </div>
+        <div class="grid-item addnew" style="display:none">
+            Sat: <input type="Number" name="sat" class="sub_item" value=1>
+        </div>
     </div>
+        
     <br>
     <div>
         <input  class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+        <button id="customize" type="button" class="btn btn-outline-secondary">Customize Days</button>
     </div>
 </form>
 <br>
