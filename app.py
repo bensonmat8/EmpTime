@@ -175,12 +175,22 @@ def schedule_setting_submit():
     shift_start = request.form.get('shift_start')
     no_of_emp = request.form.get('no_of_emp')
     hr_per_shift = request.form.get('hr_per_shift')
-    
+    sun = request.form.get('sun')
+    mon = request.form.get('mon')
+    tue = request.form.get('tue')
+    wed = request.form.get('wed')
+    thur = request.form.get('thur')
+    fri = request.form.get('fri')
+    sat = request.form.get('sat')
+
     ct = ScheduleSetting.query.filter_by(job_id=job).count()+1
     job_name = f'{Job.query.get(job).job_name} {ct}'
     print(f'Job name: {job_name} added')
     sch = ScheduleSetting(job_id=job, job_name=job_name, shift_start=shift_start,
-                          no_of_emp=no_of_emp, hr_per_shift=hr_per_shift)
+                          no_of_emp=no_of_emp, hr_per_shift=hr_per_shift,
+                          sun1=sun, mon1=mon, tue1=tue, wed1=wed, thur1=thur,
+                          fri1=fri, sat1=sat, sun2=sun, mon2=mon, tue2=tue, wed2=wed,
+                           thur2=thur, fri2=fri, sat2=sat)
     db.session.add(sch)
     db.session.commit()
     sch_all = ScheduleSetting.query.order_by(ScheduleSetting.job_name).all()
