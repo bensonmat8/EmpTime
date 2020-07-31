@@ -85,6 +85,10 @@ def emp_submit():
     weekend_off = request.form.get('weekend_off')
     week_1_day_off = request.form.get('week_1_days_off')
     week_2_day_off = request.form.get('week_2_days_off')
+    if float(fte)<40.0:
+        emp_type = 'Part'
+    else:
+        emp_type = 'Full'
     print(f"Job_id: {job_id}\nweek_1_day_off: {week_1_day_off}\nweek_2_day_off: {week_2_day_off}")
     if request.form.get('del_ind'): 
          del_ind = 'Y'
@@ -93,7 +97,7 @@ def emp_submit():
     if request.form.get('update')==None:
         emp_add = Employee(uniq_id=str(dept_id)+e_num, dept_id=dept_id,
                             emp_id=e_num, first_name=first, last_name=last,
-                            job_id=job_id, shift=shift, weekend_off=weekend_off,
+                            job_id=job_id, emp_type=emp_type, shift=shift, weekend_off=weekend_off,
                             week_1_day_off=week_1_day_off, week_2_day_off=week_2_day_off,
                             fte=fte, create_time=datetime.now(),
                             modify_time=datetime.now(), create_by='Admin',
@@ -110,6 +114,7 @@ def emp_submit():
         emp_update.job_id = job_id
         emp_update.week_1_day_off = week_1_day_off
         emp_update.week_2_day_off = week_2_day_off
+        emp_update.emp_type = emp_type
         emp_update.shift = shift
         emp_update.weekend_off = weekend_off
         emp_update.fte = fte

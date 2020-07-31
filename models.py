@@ -18,6 +18,7 @@ class Employee(db.Model):
     job_id = db.Column(db.Integer,
                        db.ForeignKey('job.job_id'),
                        nullable=False)
+    emp_type=db.Column(db.String, nullable=False)
     shift = db.Column(db.String, nullable=False)
     weekend_off = db.Column(db.Integer, nullable=False)
     week_1_day_off = db.Column(db.String)
