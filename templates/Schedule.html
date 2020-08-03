@@ -1,18 +1,17 @@
 {% extends "layout.html" %}
 
 {% block heading %}
-Employee Search
+Employee Schedule
 {% endblock %}
 
 {% block body %}
 <div>
-    <form action="{{ url_for('EmpSearch') }}" method="post">
-        Search the employee list by name/employee id: <input type="text" name="emp_dtl" placeholder="Emp Details">
-        <button id="Submit">Submit</button>
+    <form action="{{ url_for('schedule') }}" method="post">
+        <button id="Submit">Generate Schedule</button>
     </form>
 </div>
 <div>
-    <h2>Employee List:</h2>
+    <h2>Schedule:</h2>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -38,8 +37,8 @@ Employee Search
         <tbody>
             {% for item in items %}
             <tr>
-                <td>{{item.Job}}</td>
-                <td>{{item.Time}}</td>
+                <td>{{item.job}}</td>
+                <td>{{item.time}}</td>
                 <td>{{item.sun1}}</td>
                 <td>{{item.mon1}}</td>
                 <td>{{item.tue1}}</td>

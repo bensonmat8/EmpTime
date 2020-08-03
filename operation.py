@@ -34,7 +34,7 @@ def main():
                                       job_input[i].mon2,job_input[i].tue2,job_input[i].wed2, job_input[i].thur2,
                                       job_input[i].fri2,job_input[i].sat2)
                     for x in range(max_input_emp):
-                        k_add=Kitchen_schedule(job=job_input[i].job_name,job_sub_id=job_input[i].sub_job_id,Time=job_input[i].shift_start,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
+                        k_add=Kitchen_schedule(job=job_input[i].job_name,job_sub_id=job_input[i].sub_job_id,time=job_input[i].shift_start,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
                                          sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-')
                         db.session.add(k_add)
                         # db.session.commit()

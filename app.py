@@ -52,10 +52,26 @@ def employee():
     job = Job.query.order_by(Job.job_name).all()
     return render_template("EmployeePage.html", dept=dept, submit=None,
                            update='hidden', dt=None, del_ind=None, job=job)
-@app.route('/Schedule')
+@app.route('/Schedule', methods=['GET','POST'])
 def schedule():
-    
-    return render_template('Schedule.html')
+    if request.method == 'POST':
+        import operation
+        operation.main()
+    emp_dtl = request.form.get('emp_dtl')
+    if emp_dtl != None:
+        #print('EmpSearch if stmt..')
+        emp_dtl_f = func.lower(f'%{emp_dtl}%')
+        emp_list = Kitchen_schedule.query.filter(or_(
+            func.lower(Kitchen_schedule.Job).like(emp_dtl_f),
+            func.lower(Kitchen_schedule.Sun1).like(emp_dtl_f),
+            func.lower(Kitchen_schedule.Mon1).like(emp_dtl_f))
+            ).order_by(Kitchen_schedule.kitchen_id)
+        
+    else:
+        #print('EmpSearch else stmt..')
+        emp_list = Kitchen_schedule.query.order_by(Kitchen_schedule.kitchen_id).all()
+        
+    return render_template('Schedule.html', items=emp_list)
 
 @app.route('/EmployeeEdit/<uniq_id>', methods=['GET', 'POST'])
 def employee_edit(uniq_id):
