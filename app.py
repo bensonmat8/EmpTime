@@ -73,6 +73,30 @@ def schedule():
         
     return render_template('Schedule.html', items=emp_list)
 
+#test
+@app.route('/EmpSchedule', methods=['GET','POST'])
+def emp_table():
+    import operation
+    operation.Emp()
+
+    # emp_dtl = request.form.get('emp_dtl')
+    # if emp_dtl != None:
+    #     #print('EmpSearch if stmt..')
+    #     emp_dtl_f = func.lower(f'%{emp_dtl}%')
+    #     emp_list = Emp_schedule.query.filter(or_(
+    #         func.lower(Emp_schedule.emp_name).like(emp_dtl_f),
+    #         func.lower(Emp_schedule.sun1).like(emp_dtl_f),
+    #         func.lower(Emp_schedule.mon1).like(emp_dtl_f))
+    #         ).order_by(Emp_schedule.people_id)
+        
+    # else:
+        #print('EmpSearch else stmt..')
+    emp_list = Emp_schedule.query.order_by(Emp_schedule.emp_name).all()    
+    return render_template('EmpSchedule.html', items=emp_list)
+
+
+
+
 @app.route('/EmployeeEdit/<uniq_id>', methods=['GET', 'POST'])
 def employee_edit(uniq_id):
     dt = Employee.query.get(uniq_id)
