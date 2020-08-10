@@ -959,31 +959,31 @@ def Emp():
             if s1!=None:
                 emp_info2[i].sun1=str(s1.job)+' '+str(s1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), s1.shift_start)+timedelta(hours=s1.hr_per_shift)).time())
             if m1!=None:
-                emp_info2[i].mon1=str(m1.job)+' '+str(m1.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), m1.shift_start)+timedelta(hours=m1.hr_per_shift)).time())
+                emp_info2[i].mon1=str(m1.job)+' '+str(m1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), m1.shift_start)+timedelta(hours=m1.hr_per_shift)).time())
             if t1!=None:
-                emp_info2[i].tue1=str(t1.job)+' '+str(t1.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), t1.shift_start)+timedelta(hours=t1.hr_per_shift)).time())
+                emp_info2[i].tue1=str(t1.job)+' '+str(t1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), t1.shift_start)+timedelta(hours=t1.hr_per_shift)).time())
             if w1!=None:
-                emp_info2[i].wed1=str(w1.job)+' '+str(w1.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), w1.shift_start)+timedelta(hours=w1.hr_per_shift)).time())
+                emp_info2[i].wed1=str(w1.job)+' '+str(w1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), w1.shift_start)+timedelta(hours=w1.hr_per_shift)).time())
             if th1!=None:
-                emp_info2[i].thur1=str(th1.job)+' '+str(th1.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), th1.shift_start)+timedelta(hours=th1.hr_per_shift)).time())
+                emp_info2[i].thur1=str(th1.job)+' '+str(th1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), th1.shift_start)+timedelta(hours=th1.hr_per_shift)).time())
             if f1!=None:
-                emp_info2[i].fri1=str(f1.job)+' '+str(f1.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), f1.shift_start)+timedelta(hours=f1.hr_per_shift)).time())
+                emp_info2[i].fri1=str(f1.job)+' '+str(f1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), f1.shift_start)+timedelta(hours=f1.hr_per_shift)).time())
             if sa1!=None:
-                emp_info2[i].sat1=str(sa1.job)+' '+str(sa1.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), sa1.shift_start)+timedelta(hours=sa1.hr_per_shift)).time())
+                emp_info2[i].sat1=str(sa1.job)+' '+str(sa1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), sa1.shift_start)+timedelta(hours=sa1.hr_per_shift)).time())
             if s2!=None:
-                emp_info2[i].sun2=str(s2.job)+' '+str(s2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), s2.shift_start)+timedelta(hours=s2.hr_per_shift)).time())
+                emp_info2[i].sun2=str(s2.job)+' '+str(s2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), s2.shift_start)+timedelta(hours=s2.hr_per_shift)).time())
             if m2!=None:
-                emp_info2[i].mon2=str(m2.job)+' '+str(m2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), m2.shift_start)+timedelta(hours=m2.hr_per_shift)).time())
+                emp_info2[i].mon2=str(m2.job)+' '+str(m2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), m2.shift_start)+timedelta(hours=m2.hr_per_shift)).time())
             if t2!=None:
-                emp_info2[i].tue2=str(t2.job)+' '+str(t2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), t2.shift_start)+timedelta(hours=t2.hr_per_shift)).time())
+                emp_info2[i].tue2=str(t2.job)+' '+str(t2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), t2.shift_start)+timedelta(hours=t2.hr_per_shift)).time())
             if w2!=None:
-                emp_info2[i].wed2=str(w2.job)+' '+str(w2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), w2.shift_start)+timedelta(hours=w2.hr_per_shift)).time())
+                emp_info2[i].wed2=str(w2.job)+' '+str(w2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), w2.shift_start)+timedelta(hours=w2.hr_per_shift)).time())
             if th2!=None:
-                emp_info2[i].thur2=str(th2.job)+' '+str(th2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), th2.shift_start)+timedelta(hours=th2.hr_per_shift)).time())
+                emp_info2[i].thur2=str(th2.job)+' '+str(th2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), th2.shift_start)+timedelta(hours=th2.hr_per_shift)).time())
             if f2!=None:
-                emp_info2[i].fri2=str(f2.job)+' '+str(f2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), f2.shift_start)+timedelta(hours=f2.hr_per_shift)).time())
+                emp_info2[i].fri2=str(f2.job)+' '+str(f2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), f2.shift_start)+timedelta(hours=f2.hr_per_shift)).time())
             if sa2!=None:
-                emp_info2[i].sat2=str(sa2.job)+' '+str(sa2.hr_per_shift)+'-'+str((datetime.combine(date(1, 1, 1), sa2.shift_start)+timedelta(hours=sa2.hr_per_shift)).time())
+                emp_info2[i].sat2=str(sa2.job)+' '+str(sa2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), sa2.shift_start)+timedelta(hours=sa2.hr_per_shift)).time())
             db.session.commit()   
 
 if __name__=='__main__':
