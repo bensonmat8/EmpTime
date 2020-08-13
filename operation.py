@@ -145,10 +145,10 @@ def main():
 
 
         empid=[]
-        for value in db.session.query(Employee.emp_id).distinct():
+        for value in db.session.query(Employee.uniq_id).distinct():
             empid.append(value)
         for i in range(len(empid)):
-            emp_add=Day_check(emp_id=str(empid[i].emp_id),sun1=0,mon1=0,tue1=0,wed1=0,thur1=0,fri1=0,sat1=0,
+            emp_add=Day_check(uniq_id=str(empid[i].uniq_id),sun1=0,mon1=0,tue1=0,wed1=0,thur1=0,fri1=0,sat1=0,
                               sun2=0,mon2=0,tue2=0,wed2=0,thur2=0,fri2=0,sat2=0)    
             db.session.add(emp_add)
             db.session.commit()
@@ -190,18 +190,18 @@ def main():
                         hr_per_shift=ScheduleSetting.query.filter_by(job_id=j, sub_job_id=job_input[i].sub_job_id).all()
                     if hr_per_shift[0].hr_per_shift==8:
                         if job_input[i].sun1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].mon1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].mon1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sun1=1
                                     db.session.commit()        
                             if len(pick_up)!=job_input[i].sun1:
                                 left=job_input[i].sun1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.sun1=1
                                         db.session.commit()        
                                 pick_up.extend(pick_up2)
@@ -210,7 +210,7 @@ def main():
                                 for n in range(len(pick_up)):
                                     sel_schedule[n].sun1=pick_up[n].first_name+" "+pick_up[n].last_name
                                     pick_up[n].used_fte=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sun1=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].sun1:
@@ -221,18 +221,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].mon1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.mon1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon1))).order_by(func.random()).limit(job_input[i].mon1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.mon1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon1))).order_by(func.random()).limit(job_input[i].mon1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.mon1=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].mon1:
                                 left=job_input[i].mon1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.mon1=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -251,18 +251,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].tue1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.tue1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue1))).order_by(func.random()).limit(job_input[i].tue1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.tue1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue1))).order_by(func.random()).limit(job_input[i].tue1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.tue1=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].tue1:
                                 left=job_input[i].tue1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.tue1=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -281,18 +281,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].wed1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.wed1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed1))).order_by(func.random()).limit(job_input[i].wed1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.wed1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed1))).order_by(func.random()).limit(job_input[i].wed1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.wed1=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].wed1:
                                 left=job_input[i].wed1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.wed1=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -312,18 +312,18 @@ def main():
     
                                     
                         if job_input[i].thur1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.thur1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur1))).order_by(func.random()).limit(job_input[i].thur1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.thur1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur1))).order_by(func.random()).limit(job_input[i].thur1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.thur1=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].thur1:
                                 left=job_input[i].thur1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.thur1=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -342,18 +342,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].fri1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.fri1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri1))).order_by(func.random()).limit(job_input[i].fri1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.fri1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri1))).order_by(func.random()).limit(job_input[i].fri1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.fri1=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].fri1:
                                 left=job_input[i].fri1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.fri1=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -372,18 +372,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].sat1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Saturday',Day_check.sat1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Day_check.sun1==0,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sat1))).order_by(func.random()).limit(job_input[i].sat1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Saturday',Day_check.sat1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Day_check.sun1==0,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sat1))).order_by(func.random()).limit(job_input[i].sat1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
-                                    check.sat=1
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
+                                    check.sat1=1
                                     db.session.commit()                                             
                             if len(pick_up)!=job_input[i].sat1:
                                 left=job_input[i].sat1-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sat1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sat1))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sat1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sat1))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.sat1=1
                                         db.session.commit()        
                                 pick_up.extend(pick_up2)
@@ -402,10 +402,10 @@ def main():
                                         db.session.commit()
                     if hr_per_shift[0].hr_per_shift!=8:
                         if job_input[i].sun1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].sun1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].sun1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sun1=1
                                     db.session.commit()        
                             if len(pick_up)!=0:
@@ -422,10 +422,10 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].mon1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon1))).order_by(func.random()).limit(job_input[i].mon1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon1))).order_by(func.random()).limit(job_input[i].mon1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.mon1=1
                                     db.session.commit()         
                             if len(pick_up)!=0:
@@ -443,10 +443,10 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].tue1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue1))).order_by(func.random()).limit(job_input[i].tue1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue1))).order_by(func.random()).limit(job_input[i].tue1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.tue1=1
                                     db.session.commit()         
                             if len(pick_up)!=0:
@@ -464,10 +464,10 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].wed1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed1))).order_by(func.random()).limit(job_input[i].wed1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed1))).order_by(func.random()).limit(job_input[i].wed1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.wed1=1
                                     db.session.commit()         
                             if len(pick_up)!=0:
@@ -484,10 +484,10 @@ def main():
                                         sel_schedule[l].wed1="Add_employee"
                                         db.session.commit()
                         if job_input[i].thur1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur1))).order_by(func.random()).limit(job_input[i].thur1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur1))).order_by(func.random()).limit(job_input[i].thur1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.thur1=1
                                     db.session.commit()         
                             if len(pick_up)!=0:
@@ -504,10 +504,10 @@ def main():
                                         sel_schedule[l].thur1="Add_employee"
                                         db.session.commit()
                         if job_input[i].fri1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri1))).order_by(func.random()).limit(job_input[i].fri1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri1))).order_by(func.random()).limit(job_input[i].fri1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.fri1=1
                                     db.session.commit()         
                             if len(pick_up)!=0:
@@ -524,10 +524,10 @@ def main():
                                         sel_schedule[l].fri1="Add_employee"
                                         db.session.commit()
                         if job_input[i].sat1!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.sat1==0,Day_check.sun1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_sat1))).order_by(func.random()).limit(job_input[i].sat1).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.sat1==0,Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_sat1))).order_by(func.random()).limit(job_input[i].sat1).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sat1=1
                                     db.session.commit()         
                             if len(pick_up)!=0:
@@ -559,19 +559,19 @@ def main():
                     hr_per_shift=ScheduleSetting.query.filter_by(job_id=j, sub_job_id=job_input[i].sub_job_id).all()
                     if hr_per_shift[0].hr_per_shift==8:
                         if job_input[i].sun2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sun2=1
                                     db.session.commit()  
                             if len(pick_up)!=job_input[i].sun2:
                                 left=job_input[i].sun2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(left).all()
                                 pick_up.extend(pick_up2)
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.sun2=1
                                         db.session.commit()  
                             if len(pick_up)!=0:
@@ -589,18 +589,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].mon2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.mon2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon2))).order_by(func.random()).limit(job_input[i].mon2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.mon2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon2))).order_by(func.random()).limit(job_input[i].mon2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.mon2=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].mon2:
                                 left=job_input[i].mon2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon2))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.mon2=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -619,18 +619,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].tue2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.tue2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue2))).order_by(func.random()).limit(job_input[i].tue2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.tue2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue2))).order_by(func.random()).limit(job_input[i].tue2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.tue2=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].tue2:
                                 left=job_input[i].tue2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue2))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.tue2=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -649,18 +649,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].wed2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.wed2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed2))).order_by(func.random()).limit(job_input[i].wed2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.wed2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed2))).order_by(func.random()).limit(job_input[i].wed2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.wed2=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].wed2:
                                 left=job_input[i].wed2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed2))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.wed2=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -679,18 +679,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].thur2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.thur2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur2))).order_by(func.random()).limit(job_input[i].thur2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.thur2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur2))).order_by(func.random()).limit(job_input[i].thur2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.thur2=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].thur2:
                                 left=job_input[i].thur2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur2))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.thur2=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -709,18 +709,18 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].fri2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.fri2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri2))).order_by(func.random()).limit(job_input[i].fri2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Full',Day_check.fri2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri2))).order_by(func.random()).limit(job_input[i].fri2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.fri2=1
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].fri2:
                                 left=job_input[i].fri2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri2))).order_by(func.random()).limit(left).all()
                                 if len(pick_up2)!=0:
                                     for n in range(len(pick_up2)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.fri2=1
                                         db.session.commit()
                                 pick_up.extend(pick_up2)
@@ -739,19 +739,19 @@ def main():
                                         db.session.commit()
     
                         if job_input[i].sat2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Full',Day_check.sat2==0,Day_check.sun2==0,Day_check.sat1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(job_input[i].sat2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Full',Day_check.sat2==0,Day_check.sun2==0,Day_check.sat1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(job_input[i].sat2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sat2=1
                                     db.session.commit()  
                             if len(pick_up)!=job_input[i].sat2:
                                 left=job_input[i].sat2-len(pick_up)
-                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sat2==0,Day_check.sun2==0,Day_check.sat1==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(left).all()
+                                pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sat2==0,Day_check.sun2==0,Day_check.sat1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(left).all()
                                 pick_up.extend(pick_up2)
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up2[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.sat2=1
                                         db.session.commit()  
                             if len(pick_up)!=0:
@@ -769,10 +769,10 @@ def main():
                                         db.session.commit()
                     if hr_per_shift[0].hr_per_shift!=8:
                         if job_input[i].sun2!=0:
-                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
+                            pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
                             if len(pick_up)!=0:
                                 for n in range(len(pick_up)):
-                                    check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                    check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sun2=1
                                     db.session.commit()  
                             if len(pick_up)!=0:
@@ -790,10 +790,10 @@ def main():
                                         db.session.commit()
     
                             if job_input[i].mon2!=0:
-                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon2))).order_by(func.random()).limit(job_input[i].mon2).all()
+                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.mon2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_mon2))).order_by(func.random()).limit(job_input[i].mon2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                         check.mon2=1
                                         db.session.commit()         
                                 if len(pick_up)!=0:
@@ -811,10 +811,10 @@ def main():
                                             db.session.commit()
     
                             if job_input[i].tue2!=0:
-                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue2))).order_by(func.random()).limit(job_input[i].tue2).all()
+                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.tue2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_tue2))).order_by(func.random()).limit(job_input[i].tue2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                         check.tue2=1
                                         db.session.commit()         
                                 if len(pick_up)!=0:
@@ -832,10 +832,10 @@ def main():
                                             db.session.commit()
                                                                         
                             if job_input[i].wed2!=0:
-                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed2))).order_by(func.random()).limit(job_input[i].wed2).all()
+                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.wed2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_wed2))).order_by(func.random()).limit(job_input[i].wed2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                         check.wed2=1
                                         db.session.commit()         
                                 if len(pick_up)!=0:
@@ -853,10 +853,10 @@ def main():
                                             db.session.commit()
                                    
                             if job_input[i].thur2!=0:
-                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur2))).order_by(func.random()).limit(job_input[i].thur2).all()
+                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.thur2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_thur2))).order_by(func.random()).limit(job_input[i].thur2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                         check.thur2=1
                                         db.session.commit()         
                                 if len(pick_up)!=0:
@@ -873,10 +873,10 @@ def main():
                                             sel_schedule[l].thur2="Add_employee"
                                             db.session.commit()
                             if job_input[i].fri2!=0:
-                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri2==0,Day_check.emp_id==Employee.emp_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri2))).order_by(func.random()).limit(job_input[i].fri2).all()
+                                pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_1_day_off!='Monday',Employee.emp_type=='Part',Day_check.fri2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_fri2))).order_by(func.random()).limit(job_input[i].fri2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                         check.fri2=1
                                         db.session.commit()         
                                 if len(pick_up)!=0:
@@ -896,7 +896,7 @@ def main():
                                 pick_up=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sat1==0,Day_check.sat2==0,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.sat1==0,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(job_input[i].sat2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
-                                        check=Day_check.query.filter(Day_check.emp_id==pick_up[n].emp_id).first()
+                                        check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                         check.sat2=1
                                         db.session.commit()   
                                 if len(pick_up)!=0:

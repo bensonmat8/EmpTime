@@ -77,26 +77,24 @@ class Kitchen_schedule(db.Model):
     job_group=db.Column(db.String,nullable=True)
     week1date=db.Column(db.Date,nullable=True)
 
-class Day_check(db.Model):
-    __tablename__ = 'day_check'
-    matrix_id = db.Column(db.Integer, primary_key=True)
-    emp_id = db.Column(db.String,
-                        db.ForeignKey('employee.emp_id'),
-                        nullable=False)
-    sun1 = db.Column(db.Integer,nullable=True)
-    mon1 = db.Column(db.Integer,nullable=True)
-    tue1 = db.Column(db.Integer, nullable=True)
-    wed1 = db.Column(db.Integer, nullable=True)    
-    thur1 = db.Column(db.Integer,nullable=True)    
-    fri1 = db.Column(db.Integer,nullable=True)
-    sat1 = db.Column(db.Integer,nullable=True)
-    sun2 = db.Column(db.Integer,nullable=True)
-    mon2 = db.Column(db.Integer,nullable=True)
-    tue2 = db.Column(db.Integer,nullable=True)
-    wed2 = db.Column(db.Integer,nullable=True)   
-    thur2 = db.Column(db.Integer,nullable=True)
-    fri2 = db.Column(db.Integer,nullable=True)
-    sat2 = db.Column(db.Integer,nullable=True)    
+# class Day_check(db.Model):
+#     __tablename__ = 'day_check'
+#     matrix_id = db.Column(db.Integer, primary_key=True)
+#     emp_id = db.Column(db.String,nullable=False)
+#     sun1 = db.Column(db.Integer,nullable=True)
+#     mon1 = db.Column(db.Integer,nullable=True)
+#     tue1 = db.Column(db.Integer, nullable=True)
+#     wed1 = db.Column(db.Integer, nullable=True)    
+#     thur1 = db.Column(db.Integer,nullable=True)    
+#     fri1 = db.Column(db.Integer,nullable=True)
+#     sat1 = db.Column(db.Integer,nullable=True)
+#     sun2 = db.Column(db.Integer,nullable=True)
+#     mon2 = db.Column(db.Integer,nullable=True)
+#     tue2 = db.Column(db.Integer,nullable=True)
+#     wed2 = db.Column(db.Integer,nullable=True)   
+#     thur2 = db.Column(db.Integer,nullable=True)
+#     fri2 = db.Column(db.Integer,nullable=True)
+#     sat2 = db.Column(db.Integer,nullable=True)    
     
 class Employee(db.Model):
     __tablename__ = 'employee'
@@ -156,3 +154,25 @@ class Emp_schedule(db.Model):
     total_fte=db.Column(db.Float, default=0.0)
     job_group=db.Column(db.String,nullable=True)
     week1date=db.Column(db.Date,nullable=True)
+
+class Day_check(db.Model):
+    __tablename__ = 'day_check'
+    matrix_id = db.Column(db.Integer, primary_key=True)
+    uniq_id = db.Column(db.String,
+                        db.ForeignKey('employee.uniq_id'),
+                        nullable=False)
+    sun1 = db.Column(db.Integer, nullable=True)
+    mon1 = db.Column(db.Integer, nullable=True)
+    tue1 = db.Column(db.Integer, nullable=True)
+    wed1 = db.Column(db.Integer, nullable=True)
+    thur1 = db.Column(db.Integer, nullable=True)
+    fri1 = db.Column(db.Integer, nullable=True)
+    sat1 = db.Column(db.Integer, nullable=True)
+    sun2 = db.Column(db.Integer, nullable=True)
+    mon2 = db.Column(db.Integer, nullable=True)
+    tue2 = db.Column(db.Integer, nullable=True)
+    wed2 = db.Column(db.Integer, nullable=True)
+    thur2 = db.Column(db.Integer, nullable=True)
+    fri2 = db.Column(db.Integer, nullable=True)
+    sat2 = db.Column(db.Integer, nullable=True)
+    # employee = db.relationship('Employee', backref='day_check')
