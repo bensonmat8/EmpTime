@@ -568,12 +568,12 @@ def main():
                             if len(pick_up)!=job_input[i].sun2:
                                 left=job_input[i].sun2-len(pick_up)
                                 pick_up2=Employee.query.filter(and_(Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(left).all()
-                                pick_up.extend(pick_up2)
-                                if len(pick_up)!=0:
-                                    for n in range(len(pick_up)):
+                                if len(pick_up2)!=0:
+                                    for n in range(len(pick_up2)):
                                         check=Day_check.query.filter(Day_check.uniq_id==pick_up2[n].uniq_id).first()
                                         check.sun2=1
                                         db.session.commit()  
+                                pick_up.extend(pick_up2)
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
