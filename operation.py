@@ -50,7 +50,7 @@ def main():
                                         sun2='-', mon2='-', tue2='-', wed2='-', thur2='-', fri2='-', sat2='-', job_group='kitchen')
                 db.session.add(emp_info)
                 db.session.commit()
-            if empid[i].job_id == 9:
+            if empid[i].job_id == 8:
                 emp_info = Emp_schedule(emp_id=str(empid[i].emp_id), emp_name=str(empid[i].first_name)+" "+str(empid[i].last_name), sun1='-', mon1='-', tue1='-', wed1='-', thur1='-', fri1='-', sat1='-',
                                         sun2='-', mon2='-', tue2='-', wed2='-', thur2='-', fri2='-', sat2='-', job_group='Cook')
                 db.session.add(emp_info)
@@ -907,13 +907,13 @@ def main():
                                 left = job_input[i].sat2-len(pick_up)
                                 pick_up2 = Employee.query.filter(and_(Employee.job_id == j, Employee.week_2_day_off != 'Saturday', Employee.emp_type == 'Part', Day_check.sat2 == 0, Day_check.sun2 == 0, Day_check.sat1 == 0, Day_check.uniq_id ==
                                                                       Employee.uniq_id, Employee.fte-Employee.used_fte >= hr_per_shift[0].hr_per_shift, Employee.weekend_off != 1, ~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(left).all()
-                                pick_up.extend(pick_up2)
-                                if len(pick_up) != 0:
-                                    for n in range(len(pick_up)):
+                                if len(pick_up2) != 0:
+                                    for n in range(len(pick_up2)):
                                         check = Day_check.query.filter(
                                             Day_check.uniq_id == pick_up2[n].uniq_id).first()
                                         check.sat2 = 1
                                         db.session.commit()
+                                pick_up.extend(pick_up2)
                             if len(pick_up) != 0:
                                 sel_schedule = Kitchen_schedule.query.filter_by(
                                     job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
