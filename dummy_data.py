@@ -66,6 +66,8 @@ if __name__ == '__main__':
             df = pd.read_csv('./Dummy Data/schedule_setting.csv')
             df.to_sql('schedule_setting',  conn,
                       index=False, if_exists='append')
+            conn.execute(
+                "SELECT pg_catalog.setval(pg_get_serial_sequence('schedule_setting', 'sch_id'), (SELECT MAX(sch_id) FROM schedule_setting)+1);")
             conn.close()
             print('Schedule_setting Table Added')
         except:
@@ -78,6 +80,8 @@ if __name__ == '__main__':
                 pass
             df = pd.read_csv('./Dummy Data/vacation.csv')
             df.to_sql('vacation',  conn, index=False, if_exists='append')
+            conn.execute(
+                "SELECT pg_catalog.setval(pg_get_serial_sequence('vacation', 'vac_id'), (SELECT MAX(vac_id) FROM vacation)+1);")
             conn.close()
             print('Vacation Table Added')
         except:

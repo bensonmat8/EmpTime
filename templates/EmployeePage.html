@@ -55,7 +55,7 @@ Add/Edit Employee Details
             <div class="grid-item">
                 Week 1 Day off: 
                     <select name="week_1_days_off" value="{{dt.week_1_day_off}}" >
-                        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']%}
+                        {% for day in ['Random', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']%}
                             {% if day==dt.week_1_day_off%}
                             <option selected="selected">{{day}}</option>
                             {%else%}

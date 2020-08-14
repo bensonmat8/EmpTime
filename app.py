@@ -17,18 +17,26 @@ app.config.from_pyfile('config.py')
 db.init_app(app)
 
 with app.app_context():
-    dept = {i.dept_name:i.dept_id for i in Department.query.all()}
+    dept = {i.dept_name: i.dept_id for i in Department.query.all()}
+
+
+# @app.route("/")
+# def hello():
+#     return "Testing ..."
+
 
 @app.route('/Home')
 def index():
-    
+
     return render_template('hello.html')
+
 
 @app.route('/GeneralSettings')
 def general_settings():
     return render_template('GeneralSettings.html')
 
-@app.route('/EmpSearch', methods=['GET','POST'])
+
+@app.route('/EmpSearch', methods=['GET', 'POST'])
 def EmpSearch():
     emp_dtl = request.form.get('emp_dtl')
     if emp_dtl != None:
@@ -38,13 +46,14 @@ def EmpSearch():
             func.lower(Employee.first_name).like(emp_dtl_f),
             func.lower(Employee.last_name).like(emp_dtl_f),
             func.lower(Employee.emp_id).like(emp_dtl_f))
-            ).order_by(Employee.first_name)
-        
+        ).order_by(Employee.first_name)
+
     else:
         #print('EmpSearch else stmt..')
         emp_list = Employee.query.order_by(Employee.first_name).all()
-        
+
     return render_template('EmpSearch.html', items=emp_list)
+
 
 @app.route('/employee')
 def employee():
@@ -52,7 +61,9 @@ def employee():
     job = Job.query.order_by(Job.job_name).all()
     return render_template("EmployeePage.html", dept=dept, submit=None,
                            update='hidden', dt=None, del_ind=None, job=job)
-@app.route('/Schedule', methods=['GET','POST'])
+
+
+@app.route('/Schedule', methods=['GET', 'POST'])
 def schedule():
     if request.method == 'POST':
         import operation
@@ -65,16 +76,19 @@ def schedule():
             func.lower(Kitchen_schedule.Job).like(emp_dtl_f),
             func.lower(Kitchen_schedule.Sun1).like(emp_dtl_f),
             func.lower(Kitchen_schedule.Mon1).like(emp_dtl_f))
-            ).order_by(Kitchen_schedule.kitchen_id)
-        
+        ).order_by(Kitchen_schedule.kitchen_id)
+
     else:
         #print('EmpSearch else stmt..')
-        emp_list = Kitchen_schedule.query.order_by(Kitchen_schedule.kitchen_id).all()
-        
+        emp_list = Kitchen_schedule.query.order_by(
+            Kitchen_schedule.kitchen_id).all()
+
     return render_template('Schedule.html', items=emp_list)
 
-#test
-@app.route('/EmpSchedule', methods=['GET','POST'])
+# test
+
+
+@app.route('/EmpSchedule', methods=['GET', 'POST'])
 def emp_table():
     import operation
     operation.Emp()
@@ -88,20 +102,18 @@ def emp_table():
     #         func.lower(Emp_schedule.sun1).like(emp_dtl_f),
     #         func.lower(Emp_schedule.mon1).like(emp_dtl_f))
     #         ).order_by(Emp_schedule.people_id)
-        
+
     # else:
-        #print('EmpSearch else stmt..')
-    emp_list = Emp_schedule.query.order_by(Emp_schedule.emp_name).all()    
+    #print('EmpSearch else stmt..')
+    emp_list = Emp_schedule.query.order_by(Emp_schedule.emp_name).all()
     return render_template('EmpSchedule.html', items=emp_list)
-
-
 
 
 @app.route('/EmployeeEdit/<uniq_id>', methods=['GET', 'POST'])
 def employee_edit(uniq_id):
     dt = Employee.query.get(uniq_id)
     vac = dt.vacation
-    if dt.del_ind.lower()=='n':
+    if dt.del_ind.lower() == 'n':
         del_ind = None
     else:
         del_ind = 'checked=checked'
@@ -109,8 +121,9 @@ def employee_edit(uniq_id):
     print(f'week_1_day_off for emp: {dt.week_1_day_off}')
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
                            update=None, dt=dt, del_ind=del_ind, vac=vac, job=job)
-    
-@app.route('/employeesubmit', methods=['GET','POST'])
+
+
+@app.route('/employeesubmit', methods=['GET', 'POST'])
 def emp_submit():
     if request.method == 'GET':
         return 'Please submit the form.'
@@ -125,27 +138,28 @@ def emp_submit():
     weekend_off = request.form.get('weekend_off')
     week_1_day_off = request.form.get('week_1_days_off')
     week_2_day_off = request.form.get('week_2_days_off')
-    if float(fte)<40.0:
+    if float(fte) < 40.0:
         emp_type = 'Part'
     else:
         emp_type = 'Full'
-    print(f"Job_id: {job_id}\nweek_1_day_off: {week_1_day_off}\nweek_2_day_off: {week_2_day_off}")
-    if request.form.get('del_ind'): 
-         del_ind = 'Y'
+    print(
+        f"Job_id: {job_id}\nweek_1_day_off: {week_1_day_off}\nweek_2_day_off: {week_2_day_off}")
+    if request.form.get('del_ind'):
+        del_ind = 'Y'
     else:
         del_ind = 'n'
-    if request.form.get('update')==None:
+    if request.form.get('update') == None:
         emp_add = Employee(uniq_id=str(dept_id)+e_num, dept_id=dept_id,
-                            emp_id=e_num, first_name=first, last_name=last,
-                            job_id=job_id, emp_type=emp_type, shift=shift, weekend_off=weekend_off,
-                            week_1_day_off=week_1_day_off, week_2_day_off=week_2_day_off,
-                            fte=fte, create_time=datetime.now(),
-                            modify_time=datetime.now(), create_by='Admin',
-                            modify_by='Admin', del_ind=del_ind)
+                           emp_id=e_num, first_name=first, last_name=last,
+                           job_id=job_id, emp_type=emp_type, shift=shift, weekend_off=weekend_off,
+                           week_1_day_off=week_1_day_off, week_2_day_off=week_2_day_off,
+                           fte=fte, create_time=datetime.now(),
+                           modify_time=datetime.now(), create_by='Admin',
+                           modify_by='Admin', del_ind=del_ind)
         db.session.add(emp_add)
         result = 'success'
     else:
-        
+
         emp_update = Employee.query.get(str(dept_id)+e_num)
         emp_update.dept_id = dept_id
         emp_update.emp_id = e_num
@@ -162,7 +176,7 @@ def emp_submit():
         emp_update.modify_by = 'Admin'
         emp_update.del_ind = del_ind
         result = 'success'
-        
+
     db.session.commit()
     if result == 'success':
         return render_template('EmployFormSubmit.html', name=last+', '+first)
@@ -171,15 +185,15 @@ def emp_submit():
                                result=result)
 
 
-
 @app.route('/employee/vacation/<uniq_id>', methods=['GET', 'POST'])
 def vacation(uniq_id):
-    
+
     emp = Employee.query.get(uniq_id)
-    date=datetime.now()
+    date = datetime.now()
     return render_template('Vacation.html', employee=emp, date=date.strftime('%m/%d/%Y'))
 
-@app.route('/employee/vacationsubmit', methods=['GET','POST'])
+
+@app.route('/employee/vacationsubmit', methods=['GET', 'POST'])
 def vac_submit():
     # print('Vacation update start')
     uniq_id = request.form.get('uniq_id')
@@ -194,6 +208,7 @@ def vac_submit():
     result = 'vacation'
     return render_template('Submit.html', result=result)
 
+
 @app.route('/employee/VacDel/<vac_id>')
 def vac_del(vac_id):
     vac = Vacation.query.get(vac_id)
@@ -201,12 +216,13 @@ def vac_del(vac_id):
     db.session.delete(vac)
     db.session.commit()
     vac = dt.vacation
-    if dt.del_ind.lower()=='n':
+    if dt.del_ind.lower() == 'n':
         del_ind = None
     else:
         del_ind = 'checked=checked'
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
                            update=None, dt=dt, del_ind=del_ind, vac=vac)
+
 
 @app.route('/ScheduleSetting')
 def schedule_setting():
@@ -214,7 +230,8 @@ def schedule_setting():
     job_opt = Job.query.order_by(Job.job_name).all()
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
-@app.route('/ScheduleSetting/Submit', methods=['GET','POST'])
+
+@app.route('/ScheduleSetting/Submit', methods=['GET', 'POST'])
 def schedule_setting_submit():
     job = request.form.get('job')
     shift_start = request.form.get('shift_start')
@@ -235,19 +252,24 @@ def schedule_setting_submit():
                           no_of_emp=no_of_emp, hr_per_shift=hr_per_shift,
                           sun1=sun, mon1=mon, tue1=tue, wed1=wed, thur1=thur,
                           fri1=fri, sat1=sat, sun2=sun, mon2=mon, tue2=tue, wed2=wed,
-                           thur2=thur, fri2=fri, sat2=sat)
+                          thur2=thur, fri2=fri, sat2=sat)
     db.session.add(sch)
     db.session.commit()
     sch_all = ScheduleSetting.query.order_by(ScheduleSetting.job_name).all()
     job_opt = Job.query.order_by(Job.job_name).all()
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
+
 @app.route('/ScheduleSetting/Del/<sch_id>')
 def schedule_setting_del(sch_id):
     sch = ScheduleSetting.query.get(sch_id)
     db.session.delete(sch)
     db.session.commit()
-    
+
     sch_all = ScheduleSetting.query.order_by(ScheduleSetting.job_name).all()
     job_opt = Job.query.order_by(Job.job_name).all()
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
+
+
+if __name__ == "__main__":
+    app.run()
