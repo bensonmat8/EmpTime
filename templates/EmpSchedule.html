@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Employee Schedule
+{% endblock %}
+
+{% block body %}
+
+<div>
+    <h2>Emp_table:</h2>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Sun1</th>
+                <th>Mon1</th>
+                <th>Tue1</th>
+                <th>Wed1</th>
+                <th>Thur1</th>
+                <th>Fri1</th>
+                <th>Sat1</th>
+                <th>Sched Hrs_w1</th>
+                <th>Sun2</th>
+                <th>Mon2</th>
+                <th>Tue2</th>
+                <th>Wed2</th>
+                <th>Thur2</th>
+                <th>Fri2</th>
+                <th>Sat2</th>
+                <th>Sched Hrs_w2</th>
+                <th>Total_Work Hrs</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{item.emp_name}}</td>
+                <td>{{item.sun1}}</td>
+                <td>{{item.mon1}}</td>
+                <td>{{item.tue1}}</td>
+                <td>{{item.wed1}}</td>
+                <td>{{item.thur1}}</td>
+                <td>{{item.fri1}}</td>
+                <td>{{item.sat1}}</td>
+                <td>{{item.used_fte}}</td>
+                <td>{{item.sun2}}</td>
+                <td>{{item.mon2}}</td>
+                <td>{{item.tue1}}</td>
+                <td>{{item.wed2}}</td>
+                <td>{{item.thur2}}</td>
+                <td>{{item.fri2}}</td>
+                <td>{{item.sat2}}</td>
+                <td>{{item.used_fte2}}</td>
+                <td>{{item.total_fte}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
