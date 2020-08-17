@@ -16,8 +16,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.from_pyfile('config.py')
 db.init_app(app)
 
-with app.app_context():
-    dept = {i.dept_name: i.dept_id for i in Department.query.all()}
+# with app.app_context():
+#     dept = {i.dept_name: i.dept_id for i in Department.query.all()}
 
 
 # @app.route("/")
@@ -215,6 +215,8 @@ def vac_submit():
 
 @app.route('/employee/VacDel/<vac_id>')
 def vac_del(vac_id):
+    dept = Department.query.all()
+    job = Job.query.order_by(Job.job_name).all()
     vac = Vacation.query.get(vac_id)
     dt = vac.employee
     db.session.delete(vac)
@@ -225,7 +227,7 @@ def vac_del(vac_id):
     else:
         del_ind = 'checked=checked'
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
-                           update=None, dt=dt, del_ind=del_ind, vac=vac)
+                           update=None, dt=dt, del_ind=del_ind, vac=vac, job=job)
 
 
 @app.route('/ScheduleSetting')
