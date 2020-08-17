@@ -119,7 +119,7 @@ def employee_edit(uniq_id):
     else:
         del_ind = 'checked=checked'
     job = Job.query.order_by(Job.job_name).all()
-    print(f'week_1_day_off for emp: {dt.week_1_day_off}')
+    #print(f'week_1_day_off for emp: {dt.week_1_day_off}')
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
                            update=None, dt=dt, del_ind=del_ind, vac=vac, job=job)
 
@@ -129,13 +129,13 @@ def emp_submit():
     if request.method == 'GET':
         return 'Please submit the form.'
     e_num = request.form.get('e_num')
-    print(f'Enum: {e_num}')
+    #print(f'Enum: {e_num}')
     dept_id = request.form.get('dept_id')
     dept_id = dept_id
-    print(f'Department Id: {dept_id}')
+    #print(f'Department Id: {dept_id}')
     last = request.form.get('last')
     first = request.form.get('first')
-    print(f'First Name : {first}')
+    #print(f'First Name : {first}')
     job_id = request.form.get('job')
     shift = request.form.get('shift')
     fte = request.form.get('fte')
@@ -146,8 +146,8 @@ def emp_submit():
         emp_type = 'Part'
     else:
         emp_type = 'Full'
-    print(
-        f"Job_id: {job_id}\nweek_1_day_off: {week_1_day_off}\nweek_2_day_off: {week_2_day_off}")
+    # print(
+    #     f"Job_id: {job_id}\nweek_1_day_off: {week_1_day_off}\nweek_2_day_off: {week_2_day_off}")
     if request.form.get('del_ind'):
         del_ind = 'Y'
     else:
@@ -253,7 +253,7 @@ def schedule_setting_submit():
 
     ct = ScheduleSetting.query.filter_by(job_id=job).count()+1
     job_name = f'{Job.query.get(job).job_name} {ct}'
-    print(f'Job name: {job_name} added')
+    #print(f'Job name: {job_name} added')
     sch = ScheduleSetting(job_id=job, job_name=job_name, shift_start=shift_start,
                           no_of_emp=no_of_emp, hr_per_shift=hr_per_shift,
                           sun1=sun, mon1=mon, tue1=tue, wed1=wed, thur1=thur,
