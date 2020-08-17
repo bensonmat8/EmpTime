@@ -57,7 +57,7 @@ def EmpSearch():
 
 @app.route('/employee')
 def employee():
-    global dept
+    dept = Department.query.all()
     job = Job.query.order_by(Job.job_name).all()
     return render_template("EmployeePage.html", dept=dept, submit=None,
                            update='hidden', dt=None, del_ind=None, job=job)
@@ -111,6 +111,7 @@ def emp_table():
 
 @app.route('/EmployeeEdit/<uniq_id>', methods=['GET', 'POST'])
 def employee_edit(uniq_id):
+    dept = Department.query.all()
     dt = Employee.query.get(uniq_id)
     vac = dt.vacation
     if dt.del_ind.lower() == 'n':
@@ -128,10 +129,13 @@ def emp_submit():
     if request.method == 'GET':
         return 'Please submit the form.'
     e_num = request.form.get('e_num')
+    print(f'Enum: {e_num}')
     dept_id = request.form.get('dept_id')
-    dept_id = dept[dept_id]
+    dept_id = dept_id
+    print(f'Department Id: {dept_id}')
     last = request.form.get('last')
     first = request.form.get('first')
+    print(f'First Name : {first}')
     job_id = request.form.get('job')
     shift = request.form.get('shift')
     fte = request.form.get('fte')
@@ -159,8 +163,8 @@ def emp_submit():
         db.session.add(emp_add)
         result = 'success'
     else:
-
-        emp_update = Employee.query.get(str(dept_id)+e_num)
+        uniq_id = request.form.get('uniq_id')
+        emp_update = Employee.query.get(uniq_id)
         emp_update.dept_id = dept_id
         emp_update.emp_id = e_num
         emp_update.first_name = first
