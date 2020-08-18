@@ -52,6 +52,7 @@ class Job(db.Model):
     __tablename__ = 'job'
     job_id = db.Column(db.Integer, primary_key=True)
     job_name = db.Column(db.String, nullable=False)
+    job_group = db.Column(db.String, nullable=True)
 
 
 class Kitchen_schedule(db.Model):

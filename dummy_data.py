@@ -40,6 +40,11 @@ if __name__ == '__main__':
             df.to_sql('job',  conn, index=False, if_exists='append')
             conn.execute(
                 "SELECT pg_catalog.setval(pg_get_serial_sequence('job', 'job_id'), (SELECT MAX(job_id) FROM job)+1);")
+            conn.execute("""UPDATE job SET job_group = 'Cook' WHERE job_name in ('Cook');
+UPDATE job SET job_group = 'Retail' WHERE job_name in ('Retail');
+UPDATE job SET job_group = 'Diet' WHERE job_name in ('Diet');
+UPDATE job SET job_group = 'Kitchen' WHERE job_name in ('Builder', 'Cold Prep', 'Disher/Pots', 'Dishroom', 'Floor Stock', 'RSA', 'Training');
+""")
             conn.close()
             print('Job Table Added')
         except:
