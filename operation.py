@@ -71,7 +71,7 @@ def main():
                         (now+timedelta(days=8)).date(),(now+timedelta(days=9)).date(),
                         (now+timedelta(days=10)).date(),(now+timedelta(days=11)).date(),
                         (now+timedelta(days=12)).date(),(now+timedelta(days=13)).date()]
-            k_add=Kitchen_schedule(job='Date',job_id=0,job_sub_id=0,time=now.time(),sun1=str(now.date()),mon1=str((now+timedelta(days=1)).date()),tue1=str((now+timedelta(days=2)).date()),wed1=str((now+timedelta(days=3)).date()),
+            k_add=Kitchen_schedule(kitchen_id=0,job='Date',job_id=0,job_sub_id=0,time=None,sun1=str(now.date()),mon1=str((now+timedelta(days=1)).date()),tue1=str((now+timedelta(days=2)).date()),wed1=str((now+timedelta(days=3)).date()),
                                     thur1=str((now+timedelta(days=4)).date()),fri1=str((now+timedelta(days=5)).date()),
                                     sat1=str((now+timedelta(days=6)).date()),sun2=str((now+timedelta(days=7)).date()),
                                     mon2=str((now+timedelta(days=8)).date()),tue2=str((now+timedelta(days=9)).date()),
