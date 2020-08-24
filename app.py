@@ -276,6 +276,11 @@ def schedule_setting_del(sch_id):
     job_opt = Job.query.order_by(Job.job_name).all()
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
+@app.route('/test')
+def test():
+
+    emp = Employee.query.all()
+    return render_template('Test.html', emp = emp)
 
 if __name__ == "__main__":
     app.run()
