@@ -276,10 +276,14 @@ def schedule_setting_del(sch_id):
     job_opt = Job.query.order_by(Job.job_name).all()
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
-@app.route('/test')
+@app.route('/test', methods=['GET', 'POST'])
 def test():
 
     emp = Employee.query.all()
+    emp_id = request.form.get('emp_id')
+    kitchen_id = request.form.get('hidden-kitchen-id')
+    kitchen_col = request.form.get("hidden-kitchen-col")
+    print(f"Emp ID: {emp_id}\nKitchen ID: {kitchen_id}\nKitchen col: {kitchen_col}")
     return render_template('Test.html', emp = emp)
 
 if __name__ == "__main__":
