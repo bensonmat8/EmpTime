@@ -43,11 +43,11 @@ def main():
         empid=[]
         job_number=Job.query.all()
         jobid=len(job_number)+1
-        for value in db.session.query(Employee.first_name,Employee.last_name, Employee.emp_id,Employee.job_id).distinct(Employee.emp_id):
+        for value in db.session.query(Employee.first_name,Employee.last_name, Employee.emp_id,Employee.job_id,Employee.uniq_id).distinct(Employee.emp_id):
             empid.append(value)
         for i in range(len(empid)):
             job_group=Job.query.get(empid[i].job_id).job_group
-            emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= str(empid[i].first_name)+" "+str(empid[i].last_name),sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
+            emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= empid[i].uniq_id,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
                               sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-',job_group=job_group)    
             db.session.add(emp_info)
             db.session.commit()
@@ -71,14 +71,14 @@ def main():
                         (now+timedelta(days=8)).date(),(now+timedelta(days=9)).date(),
                         (now+timedelta(days=10)).date(),(now+timedelta(days=11)).date(),
                         (now+timedelta(days=12)).date(),(now+timedelta(days=13)).date()]
-            k_add=Kitchen_schedule(kitchen_id=0,job='Date',job_id=0,job_sub_id=0,time=None,sun1=str(now.date()),mon1=str((now+timedelta(days=1)).date()),tue1=str((now+timedelta(days=2)).date()),wed1=str((now+timedelta(days=3)).date()),
-                                    thur1=str((now+timedelta(days=4)).date()),fri1=str((now+timedelta(days=5)).date()),
-                                    sat1=str((now+timedelta(days=6)).date()),sun2=str((now+timedelta(days=7)).date()),
-                                    mon2=str((now+timedelta(days=8)).date()),tue2=str((now+timedelta(days=9)).date()),
-                                    wed2=str((now+timedelta(days=10)).date()),thur2=str((now+timedelta(days=11)).date()),
-                                    fri2=str((now+timedelta(days=12)).date()),sat2=str((now+timedelta(days=13)).date()),hr_per_shift=0,shift_start=now.time(),job_group='-',week1date=now.date())
-            db.session.add(k_add)
-            db.session.commit()  
+            # k_add=Kitchen_schedule(kitchen_id=0,job='Date',job_id=0,job_sub_id=0,time=None,sun1=str(now.date()),mon1=str((now+timedelta(days=1)).date()),tue1=str((now+timedelta(days=2)).date()),wed1=str((now+timedelta(days=3)).date()),
+            #                         thur1=str((now+timedelta(days=4)).date()),fri1=str((now+timedelta(days=5)).date()),
+            #                         sat1=str((now+timedelta(days=6)).date()),sun2=str((now+timedelta(days=7)).date()),
+            #                         mon2=str((now+timedelta(days=8)).date()),tue2=str((now+timedelta(days=9)).date()),
+            #                         wed2=str((now+timedelta(days=10)).date()),thur2=str((now+timedelta(days=11)).date()),
+            #                         fri2=str((now+timedelta(days=12)).date()),sat2=str((now+timedelta(days=13)).date()),hr_per_shift=0,shift_start=now.time(),job_group='-',week1date=now.date())
+            # db.session.add(k_add)
+            # db.session.commit()  
         if week%2!=0: 
             while now.weekday()!=6:
                 now += timedelta(1)            
@@ -88,14 +88,14 @@ def main():
                         (now+timedelta(days=15)).date(),(now+timedelta(days=16)).date(),
                         (now+timedelta(days=17)).date(),(now+timedelta(days=18)).date(),
                         (now+timedelta(days=19)).date(),(now+timedelta(days=20)).date()]
-            k_add=Kitchen_schedule(kitchen_id=0,job='Date',job_id=0,job_sub_id=0,time=None,sun1=str((now+timedelta(days=7)).date()),mon1=str((now+timedelta(days=8)).date()),tue1=str((now+timedelta(days=9)).date()),wed1=str((now+timedelta(days=10)).date()),
-                                    thur1=str((now+timedelta(days=11)).date()),fri1=str((now+timedelta(days=12)).date()),
-                                    sat1=str((now+timedelta(days=13)).date()),sun2=str((now+timedelta(days=14)).date()),
-                                    mon2=str((now+timedelta(days=15)).date()),tue2=str((now+timedelta(days=16)).date()),
-                                    wed2=str((now+timedelta(days=17)).date()),thur2=str((now+timedelta(days=18)).date()),
-                                    fri2=str((now+timedelta(days=19)).date()),sat2=str((now+timedelta(days=20)).date()),hr_per_shift=0,shift_start=now.time(),job_group='-',week1date=(now+timedelta(days=7)).date())
-            db.session.add(k_add)
-            db.session.commit()  
+            # k_add=Kitchen_schedule(kitchen_id=0,job='Date',job_id=0,job_sub_id=0,time=None,sun1=str((now+timedelta(days=7)).date()),mon1=str((now+timedelta(days=8)).date()),tue1=str((now+timedelta(days=9)).date()),wed1=str((now+timedelta(days=10)).date()),
+            #                         thur1=str((now+timedelta(days=11)).date()),fri1=str((now+timedelta(days=12)).date()),
+            #                         sat1=str((now+timedelta(days=13)).date()),sun2=str((now+timedelta(days=14)).date()),
+            #                         mon2=str((now+timedelta(days=15)).date()),tue2=str((now+timedelta(days=16)).date()),
+            #                         wed2=str((now+timedelta(days=17)).date()),thur2=str((now+timedelta(days=18)).date()),
+            #                         fri2=str((now+timedelta(days=19)).date()),sat2=str((now+timedelta(days=20)).date()),hr_per_shift=0,shift_start=now.time(),job_group='-',week1date=(now+timedelta(days=7)).date())
+            # db.session.add(k_add)
+            # db.session.commit()  
         for i in range(len(vacation_day)):
             for j in range(len(all_week)):
                 for x in range(length_v[i]+1):
@@ -180,7 +180,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sun1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sun1=pick_up[n].uniq_id
                                     pick_up[n].used_fte=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
                                     check.sun1=1
@@ -211,7 +211,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].mon1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].mon1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -241,7 +241,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].tue1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].tue1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -271,7 +271,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].wed1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].wed1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -302,7 +302,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].thur1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].thur1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -332,7 +332,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].fri1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].fri1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -362,7 +362,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sat1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sat1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -383,7 +383,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sun1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sun1=pick_up[n].uniq_id
                                     pick_up[n].used_fte=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     db.session.commit()
                             if len(pick_up)!=job_input[i].sun1:
@@ -403,7 +403,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].mon1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].mon1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -424,7 +424,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].tue1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].tue1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -445,7 +445,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].wed1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].wed1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -465,7 +465,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].thur1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].thur1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -485,7 +485,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].fri1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].fri1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -505,7 +505,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sat1=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sat1=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -549,7 +549,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sun2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sun2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -579,7 +579,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].mon2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].mon2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -609,7 +609,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].tue2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].tue2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -639,7 +639,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].wed2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].wed2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -669,7 +669,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].thur2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].thur2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -699,7 +699,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].fri2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].fri2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -729,7 +729,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sat2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sat2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -750,7 +750,7 @@ def main():
                             if len(pick_up)!=0:
                                 sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                 for n in range(len(pick_up)):
-                                    sel_schedule[n].sun2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                    sel_schedule[n].sun2=pick_up[n].uniq_id
                                     new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                     pick_up[n].used_fte=new_hour
                                     db.session.commit()
@@ -771,7 +771,7 @@ def main():
                                 if len(pick_up)!=0:
                                     sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                     for n in range(len(pick_up)):
-                                        sel_schedule[n].mon2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                        sel_schedule[n].mon2=pick_up[n].uniq_id
                                         new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                         pick_up[n].used_fte=new_hour
                                         db.session.commit()
@@ -792,7 +792,7 @@ def main():
                                 if len(pick_up)!=0:
                                     sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                     for n in range(len(pick_up)):
-                                        sel_schedule[n].tue2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                        sel_schedule[n].tue2=pick_up[n].uniq_id
                                         new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                         pick_up[n].used_fte=new_hour
                                         db.session.commit()
@@ -813,7 +813,7 @@ def main():
                                 if len(pick_up)!=0:
                                     sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                     for n in range(len(pick_up)):
-                                        sel_schedule[n].wed2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                        sel_schedule[n].wed2=pick_up[n].uniq_id
                                         new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                         pick_up[n].used_fte=new_hour
                                         db.session.commit()
@@ -834,7 +834,7 @@ def main():
                                 if len(pick_up)!=0:
                                     sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                     for n in range(len(pick_up)):
-                                        sel_schedule[n].thur2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                        sel_schedule[n].thur2=pick_up[n].uniq_id
                                         new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                         pick_up[n].used_fte=new_hour
                                         db.session.commit()
@@ -854,7 +854,7 @@ def main():
                                 if len(pick_up)!=0:
                                     sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                     for n in range(len(pick_up)):
-                                        sel_schedule[n].fri2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                        sel_schedule[n].fri2=pick_up[n].uniq_id
                                         new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                         pick_up[n].used_fte=new_hour
                                         db.session.commit()
@@ -874,7 +874,7 @@ def main():
                                 if len(pick_up)!=0:
                                     sel_schedule=Kitchen_schedule.query.filter_by(job=job_input[i].job_name, job_sub_id=job_input[i].sub_job_id).all()
                                     for n in range(len(pick_up)):
-                                        sel_schedule[n].sat2=pick_up[n].first_name+" "+pick_up[n].last_name
+                                        sel_schedule[n].sat2=pick_up[n].uniq_id
                                         new_hour=pick_up[n].used_fte+hr_per_shift[0].hr_per_shift
                                         pick_up[n].used_fte=new_hour
                                         db.session.commit()
@@ -908,7 +908,7 @@ def Emp():
         # for value in db.session.query(Employee.first_name,Employee.last_name, Employee.emp_id).distinct(Employee.emp_id):
         #     empid.append(value)
         # for i in range(len(empid)):
-        #     emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= str(empid[i].first_name)+" "+str(empid[i].last_name),sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
+        #     emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= empid[i].uniq_id,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
         #                       sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-')    
         #     db.session.add(emp_info)
         #     db.session.commit()   
@@ -929,33 +929,33 @@ def Emp():
             f2=Kitchen_schedule.query.filter(emp_info2[i].emp_name==Kitchen_schedule.fri2).first()
             sa2=Kitchen_schedule.query.filter(emp_info2[i].emp_name==Kitchen_schedule.sat2).first()
             if s1!=None:
-                emp_info2[i].sun1=str(s1.job)+' '+str(s1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), s1.shift_start)+timedelta(hours=s1.hr_per_shift)).time())
+                emp_info2[i].sun1=str(s1.job)+' \n'+str(s1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), s1.shift_start)+timedelta(hours=s1.hr_per_shift)).time())
             if m1!=None:
-                emp_info2[i].mon1=str(m1.job)+' '+str(m1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), m1.shift_start)+timedelta(hours=m1.hr_per_shift)).time())
+                emp_info2[i].mon1=str(m1.job)+' \n'+str(m1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), m1.shift_start)+timedelta(hours=m1.hr_per_shift)).time())
             if t1!=None:
-                emp_info2[i].tue1=str(t1.job)+' '+str(t1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), t1.shift_start)+timedelta(hours=t1.hr_per_shift)).time())
+                emp_info2[i].tue1=str(t1.job)+' \n'+str(t1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), t1.shift_start)+timedelta(hours=t1.hr_per_shift)).time())
             if w1!=None:
-                emp_info2[i].wed1=str(w1.job)+' '+str(w1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), w1.shift_start)+timedelta(hours=w1.hr_per_shift)).time())
+                emp_info2[i].wed1=str(w1.job)+' \n'+str(w1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), w1.shift_start)+timedelta(hours=w1.hr_per_shift)).time())
             if th1!=None:
-                emp_info2[i].thur1=str(th1.job)+' '+str(th1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), th1.shift_start)+timedelta(hours=th1.hr_per_shift)).time())
+                emp_info2[i].thur1=str(th1.job)+' \n'+str(th1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), th1.shift_start)+timedelta(hours=th1.hr_per_shift)).time())
             if f1!=None:
-                emp_info2[i].fri1=str(f1.job)+' '+str(f1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), f1.shift_start)+timedelta(hours=f1.hr_per_shift)).time())
+                emp_info2[i].fri1=str(f1.job)+' \n'+str(f1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), f1.shift_start)+timedelta(hours=f1.hr_per_shift)).time())
             if sa1!=None:
-                emp_info2[i].sat1=str(sa1.job)+' '+str(sa1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), sa1.shift_start)+timedelta(hours=sa1.hr_per_shift)).time())
+                emp_info2[i].sat1=str(sa1.job)+' \n'+str(sa1.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), sa1.shift_start)+timedelta(hours=sa1.hr_per_shift)).time())
             if s2!=None:
-                emp_info2[i].sun2=str(s2.job)+' '+str(s2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), s2.shift_start)+timedelta(hours=s2.hr_per_shift)).time())
+                emp_info2[i].sun2=str(s2.job)+' \n'+str(s2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), s2.shift_start)+timedelta(hours=s2.hr_per_shift)).time())
             if m2!=None:
-                emp_info2[i].mon2=str(m2.job)+' '+str(m2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), m2.shift_start)+timedelta(hours=m2.hr_per_shift)).time())
+                emp_info2[i].mon2=str(m2.job)+' \n'+str(m2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), m2.shift_start)+timedelta(hours=m2.hr_per_shift)).time())
             if t2!=None:
-                emp_info2[i].tue2=str(t2.job)+' '+str(t2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), t2.shift_start)+timedelta(hours=t2.hr_per_shift)).time())
+                emp_info2[i].tue2=str(t2.job)+' \n'+str(t2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), t2.shift_start)+timedelta(hours=t2.hr_per_shift)).time())
             if w2!=None:
-                emp_info2[i].wed2=str(w2.job)+' '+str(w2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), w2.shift_start)+timedelta(hours=w2.hr_per_shift)).time())
+                emp_info2[i].wed2=str(w2.job)+' \n'+str(w2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), w2.shift_start)+timedelta(hours=w2.hr_per_shift)).time())
             if th2!=None:
-                emp_info2[i].thur2=str(th2.job)+' '+str(th2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), th2.shift_start)+timedelta(hours=th2.hr_per_shift)).time())
+                emp_info2[i].thur2=str(th2.job)+' \n'+str(th2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), th2.shift_start)+timedelta(hours=th2.hr_per_shift)).time())
             if f2!=None:
-                emp_info2[i].fri2=str(f2.job)+' '+str(f2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), f2.shift_start)+timedelta(hours=f2.hr_per_shift)).time())
+                emp_info2[i].fri2=str(f2.job)+' \n'+str(f2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), f2.shift_start)+timedelta(hours=f2.hr_per_shift)).time())
             if sa2!=None:
-                emp_info2[i].sat2=str(sa2.job)+' '+str(sa2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), sa2.shift_start)+timedelta(hours=sa2.hr_per_shift)).time())
+                emp_info2[i].sat2=str(sa2.job)+' \n'+str(sa2.shift_start)+'-'+str((datetime.combine(date(1, 1, 1), sa2.shift_start)+timedelta(hours=sa2.hr_per_shift)).time())
             db.session.commit()   
 
 if __name__=='__main__':
