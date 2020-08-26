@@ -114,10 +114,10 @@ def employee_edit(uniq_id):
     dept = Department.query.all()
     dt = Employee.query.get(uniq_id)
     vac = dt.vacation
-    if dt.del_ind.lower() == 'n':
-        del_ind = None
-    else:
+    if dt.del_ind == 'Y':
         del_ind = 'checked=checked'
+    else:
+        del_ind = None
     job = Job.query.order_by(Job.job_name).all()
     #print(f'week_1_day_off for emp: {dt.week_1_day_off}')
     return render_template("EmployeePage.html", dept=dept, submit='hidden',
@@ -156,7 +156,7 @@ def emp_submit():
     if request.form.get('del_ind'):
         del_ind = 'Y'
     else:
-        del_ind = 'n'
+        del_ind = 'N'
     if request.form.get('update') == None:
         emp_add = Employee(uniq_id=uniq_id, dept_id=dept_id,
                            emp_id=e_num, first_name=first, last_name=last,
