@@ -142,6 +142,11 @@ def emp_submit():
     weekend_off = request.form.get('weekend_off')
     week_1_day_off = request.form.get('week_1_days_off')
     week_2_day_off = request.form.get('week_2_days_off')
+    uniq_id = first+' '+last
+    t_count = Employee.query.filter(
+        Employee.uniq_id.like(f'{uniq_id}%')).count()
+    if t_count > 0:
+        uniq_id = uniq_id+f' {t_count+1}'
     if float(fte) < 40.0:
         emp_type = 'Part'
     else:
@@ -153,7 +158,7 @@ def emp_submit():
     else:
         del_ind = 'n'
     if request.form.get('update') == None:
-        emp_add = Employee(uniq_id=str(dept_id)+e_num, dept_id=dept_id,
+        emp_add = Employee(uniq_id=uniq_id, dept_id=dept_id,
                            emp_id=e_num, first_name=first, last_name=last,
                            job_id=job_id, emp_type=emp_type, shift=shift, weekend_off=weekend_off,
                            week_1_day_off=week_1_day_off, week_2_day_off=week_2_day_off,
@@ -276,11 +281,13 @@ def schedule_setting_del(sch_id):
     job_opt = Job.query.order_by(Job.job_name).all()
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
+
 @app.route('/test')
 def test():
 
     emp = Employee.query.all()
-    return render_template('Test.html', emp = emp)
+    return render_template('Test.html', emp=emp)
+
 
 if __name__ == "__main__":
     app.run()
