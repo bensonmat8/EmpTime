@@ -82,8 +82,8 @@ def schedule():
         #print('EmpSearch else stmt..')
         emp_list = Kitchen_schedule.query.order_by(
             Kitchen_schedule.kitchen_id).all()
-
-    return render_template('Schedule.html', items=emp_list)
+    emp = Employee.query.all()
+    return render_template('Schedule.html', items=emp_list, emp=emp)
 
 # test
 

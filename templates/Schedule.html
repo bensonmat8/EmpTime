@@ -24,7 +24,7 @@ Employee Schedule
         Employee: 
         <select  name="emp_id">
             {% for e in emp %}
-                <option value={{ e.emp_id }}  {% if e.emp_id==emp_id%} selected="selected"{%endif%}>{{ e.first_name+' '+e.last_name }}</option>
+                <option value={{ e.uniq_id }}  {% if e.uniq_id==uniq_id%} selected="selected"{%endif%}>{{ e.uniq_id }}</option>
             {%endfor%}
         </select>
         <br>
