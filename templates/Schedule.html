@@ -6,41 +6,58 @@ Employee Schedule
 
 {% block body %}
 <script>
-    function togglePopup(kitchen_id, kitchen_col){
+    function togglePopup(kitchen_id, kitchen_col) {
         document.getElementById("popup-1").classList.toggle("active");
         var form = document.forms[0]
         form.querySelector('input[name="hidden-kitchen-id"]').value = kitchen_id
         form.querySelector('input[name="hidden-kitchen-col"]').value = kitchen_col
     }
 </script>
+
+<style>
+    .tableFixHead {
+        overflow-y: auto;
+        height: 800px;
+    }
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+</style>
 <link rel="stylesheet" href={{ url_for('static', filename='popup.css') }}>
-    
+
 <div class="popup" id="popup-1">
     <div class="overlay"></div>
     <div class="content">
-      <div class="close-btn" onclick="togglePopup()">&times;</div>
-      <br>
-      <form action="{{url_for('test')}}" method="POST" id="">
-        Employee: 
-        <select  name="emp_id">
-            {% for e in emp %}
-                <option value={{ e.uniq_id }}  {% if e.uniq_id==uniq_id%} selected="selected"{%endif%}>{{ e.uniq_id }}</option>
-            {%endfor%}
-        </select>
+        <div class="close-btn" onclick="togglePopup()">&times;</div>
         <br>
-        <input type="text" value=118 name="hidden-kitchen-id" hidden>
-        <br>
-        <input type="text" value="mon1" name="hidden-kitchen-col" hidden>
-        <input type="submit" name="" id="" class="btn btn-primary btn-sm">
+        <form action="{{url_for('test')}}" method="POST" id="">
+            Employee:
+            <select name="emp_id">
+                {% for e in emp %}
+                <option value={{ e.uniq_id }} {% if e.uniq_id==uniq_id %} selected="selected" {%endif%}>{{ e.uniq_id }}
+                </option>
+                {%endfor%}
+            </select>
+            <br>
+            <input type="text" value=118 name="hidden-kitchen-id">
+            <br>
+            <input type="text" value="mon1" name="hidden-kitchen-col">
+            <br>
+            <input type="text" name="hidden-old-emp-id">
+            <input type="submit" name="" id="" class="btn btn-primary btn-sm">
         </form>
-        
+
     </div>
-  </div>
+</div>
 
-  <button onclick="togglePopup('105', 'fri1')"  class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id="105" data-kitchen_col="fri1">Show This</button>
+<button onclick="togglePopup('105', 'fri1')" class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id="105"
+    data-kitchen_col="fri1">Show This</button>
 
-  
-  <div>
+
+<div>
     <form action="{{ url_for('schedule') }}" method="post">
         <button id="Submit" class="btn btn-primary">Generate Schedule</button>
     </form>
@@ -49,10 +66,10 @@ Employee Schedule
     <ul>
         <li><a href="{{ url_for('emp_table') }}">Click Here</a> to see employee level schedule</li>
     </ul>
-    
+
 </div>
 <h2>Schedule:</h2>
-<div style="overflow-x: auto;">
+<div class="tableFixHead">
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -80,20 +97,48 @@ Employee Schedule
             <tr>
                 <td>{{item.job}}</td>
                 <td>{{item.time}}</td>
-                <td>{{item.sun1}}</td>
-                <td>{{item.mon1}}</td>
-                <td>{{item.tue1}}</td>
-                <td>{{item.wed1}}</td>
-                <td>{{item.thur1}}</td>
-                <td>{{item.fri1}}</td>
-                <td>{{item.sat1}}</td>
-                <td>{{item.sun2}}</td>
-                <td>{{item.mon2}}</td>
-                <td>{{item.tue1}}</td>
-                <td>{{item.wed2}}</td>
-                <td>{{item.thur2}}</td>
-                <td>{{item.fri2}}</td>
-                <td>{{item.sat2}}</td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="sun1">{{item.sun1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="mon1">{{item.mon1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="tue1">{{item.tue1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="wed1">{{item.wed1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="thur1">{{item.thur1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="fri1">{{item.fri1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat1')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="sat1">{{item.sat1}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="sun2">{{item.sun2}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="mon2">{{item.mon2}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="tue2">{{item.tue2}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="wed2">{{item.wed2}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="thur2">{{item.thur2}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="fri2">{{item.fri2}}</button></td>
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat2')"
+                        class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
+                        data-kitchen_col="sat2">{{item.sat2}}</button></td>
             </tr>
             {% endfor %}
         </tbody>

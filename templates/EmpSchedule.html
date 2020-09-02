@@ -5,13 +5,26 @@ Employee Schedule
 {% endblock %}
 <link rel="stylesheet" type="text/css" href="styles.css">
 {% block body %}
+
+<style>
+    .tableFixHead {
+        overflow-y: auto;
+        height: 800px;
+    }
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+    }
+</style>
+
 <div>
     <ul>
         <li><a href="{{ url_for('schedule') }}">Click Here</a> for schedule settings</li>
     </ul>
 </div>
 <br>
-<div class="table-long" style="overflow-x: auto;">
+<div class="tableFixHead">
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
