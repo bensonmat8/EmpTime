@@ -13,6 +13,19 @@ Employee Schedule
         form.querySelector('input[name="hidden-kitchen-col"]').value = kitchen_col
     }
 </script>
+
+<style>
+    .tableFixHead {
+        overflow-y: auto;
+        height: 800px;
+    }
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+</style>
 <link rel="stylesheet" href={{ url_for('static', filename='popup.css') }}>
 
 <div class="popup" id="popup-1">
@@ -32,6 +45,8 @@ Employee Schedule
             <input type="text" value=118 name="hidden-kitchen-id">
             <br>
             <input type="text" value="mon1" name="hidden-kitchen-col">
+            <br>
+            <input type="text" name="hidden-old-emp-id">
             <input type="submit" name="" id="" class="btn btn-primary btn-sm">
         </form>
 
@@ -54,7 +69,7 @@ Employee Schedule
 
 </div>
 <h2>Schedule:</h2>
-<div style="overflow-x: auto; overflow-y: auto; max-height: 800px;">
+<div class="tableFixHead">
     <table class="table">
         <thead class="thead-dark">
             <tr>
