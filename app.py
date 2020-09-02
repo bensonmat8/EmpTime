@@ -82,7 +82,7 @@ def schedule():
         #print('EmpSearch else stmt..')
         emp_list = Kitchen_schedule.query.order_by(
             Kitchen_schedule.kitchen_id).all()
-    emp = Employee.query.all()
+    emp = Employee.query.order_by(Employee.uniq_id).all()
     return render_template('Schedule.html', items=emp_list, emp=emp)
 
 # test
@@ -282,10 +282,10 @@ def schedule_setting_del(sch_id):
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
 
-@app.route('/_schedule_gen', method=['GET', 'POST'])
+@app.route('/_schedule_gen')
 def _schedule_gen():
     schedule = Kitchen_schedule.query.all()
-    return jsonify()
+    return jsonify(result='This is test')
 
 
 @app.route('/test', methods=['GET', 'POST'])
