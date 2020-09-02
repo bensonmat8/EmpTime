@@ -3,7 +3,7 @@ Created on Sun Jun 21 20:22:05 2020
 
 @author: bensonshajimathew
 """
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from models import *
 from datetime import datetime
 import os
@@ -282,6 +282,12 @@ def schedule_setting_del(sch_id):
     return render_template('ScheduleSetting.html', job=job_opt, sch_all=sch_all)
 
 
+@app.route('/_schedule_gen', method=['GET', 'POST'])
+def _schedule_gen():
+    schedule = Kitchen_schedule.query.all()
+    return jsonify()
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 
@@ -289,8 +295,10 @@ def test():
     emp_id = request.form.get('emp_id')
     kitchen_id = request.form.get('hidden-kitchen-id')
     kitchen_col = request.form.get("hidden-kitchen-col")
-    print(f"Emp ID: {emp_id}\nKitchen ID: {kitchen_id}\nKitchen col: {kitchen_col}")
-    return render_template('Test.html', emp = emp)
+    print(
+        f"Emp ID: {emp_id}\nKitchen ID: {kitchen_id}\nKitchen col: {kitchen_col}")
+    return render_template('Test.html', emp=emp)
+
 
 if __name__ == "__main__":
     app.run()
