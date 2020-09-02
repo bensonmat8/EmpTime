@@ -865,7 +865,7 @@ def main():
                                             sel_schedule[l].fri2="Add_employee"
                                             db.session.commit()
                             if job_input[i].sat2!=0:
-                                pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sat1==0,Day_check.sat2==0,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.sat1==0,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(job_input[i].sat2).all()
+                                pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_2_day_off!='Saturday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sat1==0,Day_check.sat2==0,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sat2))).order_by(func.random()).limit(job_input[i].sat2).all()
                                 if len(pick_up)!=0:
                                     for n in range(len(pick_up)):
                                         check=Day_check.query.filter(Day_check.uniq_id==pick_up[n].uniq_id).first()
