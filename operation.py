@@ -43,12 +43,13 @@ def main():
         empid=[]
         job_number=Job.query.all()
         jobid=len(job_number)+1
-        for value in db.session.query(Employee.first_name,Employee.last_name, Employee.emp_id,Employee.job_id,Employee.uniq_id).distinct(Employee.emp_id):
+        for value in db.session.query(Employee.first_name,Employee.last_name, Employee.emp_id,Employee.job_id,Employee.uniq_id,Employee.del_ind).distinct(Employee.emp_id):
             empid.append(value)
         for i in range(len(empid)):
             job_group=Job.query.get(empid[i].job_id).job_group
-            emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= empid[i].uniq_id,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
-                              sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-',job_group=job_group)    
+            if empid[i].emp_id!='Y':
+                emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= empid[i].uniq_id,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
+                                  sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-',job_group=job_group)    
             db.session.add(emp_info)
             db.session.commit()
 
