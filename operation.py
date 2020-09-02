@@ -520,7 +520,8 @@ def main():
         emp=Employee.query.all()
         for xx in range(len(emp)):
             emp_fte=Emp_schedule.query.filter(Emp_schedule.emp_id==emp[xx].emp_id).first()
-            emp_fte.used_fte=emp[xx].used_fte
+            if emp_fte!=None:
+                emp_fte.used_fte=emp[xx].used_fte
             db.session.commit()
         for xx in range(len(emp)):
             emp[xx].used_fte=0
@@ -893,7 +894,8 @@ def main():
         emp=Employee.query.all()
         for xx in range(len(emp)):
             emp_fte=Emp_schedule.query.filter(Emp_schedule.emp_id==emp[xx].emp_id).first()
-            emp_fte.used_fte2=emp[xx].used_fte
+            if emp_fte!=None:
+                emp_fte.used_fte2=emp[xx].used_fte
             db.session.commit() 
         emp_all=Emp_schedule.query.all()
         for x in range(len(emp_all)):
