@@ -31,6 +31,7 @@
                 old_emp_id: $('input[name="hidden-old-emp-id"]').val(),
             }, function (data) {
                 $("#result").text(data.result);
+                //alert($('select[name="emp_id"]').val());
                 //location.reload();
             });
             return false;
@@ -49,8 +50,8 @@
             Employee:
             <select name="emp_id">
                 {% for e in emp %}
-                <option value={{ e.uniq_id }} {% if e.emp_id==emp_id%} selected="selected" {%endif%}>
-                    {{ e.first_name+' '+e.last_name }}</option>
+                <option value={{ e.uniq_id|replace(' ','-') }} {% if e.emp_id==emp_id%} selected="selected" {%endif%}>
+                    {{e.uniq_id }}</option>
                 {%endfor%}
             </select>
             <br>

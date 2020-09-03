@@ -6,12 +6,32 @@ Employee Schedule
 
 {% block body %}
 <script>
-    function togglePopup(kitchen_id, kitchen_col) {
+    function togglePopup(kitchen_id, kitchen_col, old_emp) {
         document.getElementById("popup-1").classList.toggle("active");
         var form = document.forms[0]
         form.querySelector('input[name="hidden-kitchen-id"]').value = kitchen_id
         form.querySelector('input[name="hidden-kitchen-col"]').value = kitchen_col
+        form.querySelector('input[name="hidden-old-emp-id"]').value = old_emp
+        $('#result').text('Current Employee: ' + old_emp.replace(/-/g, ' '));
     }
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+    $(function () {
+        $('a#process_input').bind('click', function () {
+            $.getJSON('/_schedule_gen', {
+                emp_id: $('select[name="emp_id"]').val(),
+                kitchen_id: $('input[name="hidden-kitchen-id"]').val(),
+                col: $('input[name="hidden-kitchen-col"]').val(),
+                old_emp_id: $('input[name="hidden-old-emp-id"]').val(),
+            }, function (data) {
+                $("#result").text(data.result);
+                //alert($('select[name="emp_id"]').val());
+                location.reload();
+            });
+            return false;
+        });
+    });
 </script>
 
 <style>
@@ -37,24 +57,26 @@ Employee Schedule
             Employee:
             <select name="emp_id">
                 {% for e in emp %}
-                <option value={{ e.uniq_id }} {% if e.uniq_id==uniq_id %} selected="selected" {%endif%}>{{ e.uniq_id }}
-                </option>
+                <option value={{ e.uniq_id|replace(' ','-') }} {% if e.emp_id==emp_id%} selected="selected" {%endif%}>
+                    {{e.uniq_id }}</option>
                 {%endfor%}
             </select>
             <br>
-            <input type="text" value=118 name="hidden-kitchen-id">
+            <input type="text" value=118 name="hidden-kitchen-id" hidden>
             <br>
-            <input type="text" value="mon1" name="hidden-kitchen-col">
+            <input type="text" value="mon1" name="hidden-kitchen-col" hidden>
             <br>
-            <input type="text" name="hidden-old-emp-id">
-            <input type="submit" name="" id="" class="btn btn-primary btn-sm">
+            <input type="text" value="Test Test3" name="hidden-old-emp-id" hidden>
+            <br>
+            <div id="result"></div><br>
+            <a href="#" id="process_input"><input type="submit" name="" id="" class="btn btn-primary btn-sm"></a>
         </form>
 
     </div>
 </div>
 
-<button onclick="togglePopup('105', 'fri1')" class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id="105"
-    data-kitchen_col="fri1">Show This</button>
+<!-- <button onclick="togglePopup('105', 'fri1')" class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id="105"
+    data-kitchen_col="fri1">Show This</button> -->
 
 
 <div>
@@ -97,46 +119,46 @@ Employee Schedule
             <tr>
                 <td>{{item.job}}</td>
                 <td>{{item.time}}</td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun1', '{{ item.sun1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="sun1">{{item.sun1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon1', '{{ item.mon1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="mon1">{{item.mon1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue1', '{{ item.tue1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="tue1">{{item.tue1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed1', '{{ item.wed1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="wed1">{{item.wed1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur1', '{{ item.thur1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="thur1">{{item.thur1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri1', '{{ item.fri1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="fri1">{{item.fri1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat1')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat1', '{{ item.sat1|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="sat1">{{item.sat1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun2', '{{ item.sun2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="sun2">{{item.sun2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon2', '{{ item.mon2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="mon2">{{item.mon2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue2', '{{ item.tue2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="tue2">{{item.tue2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed2', '{{ item.wed2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="wed2">{{item.wed2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur2', '{{ item.thur2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="thur2">{{item.thur2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri2', '{{ item.fri2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="fri2">{{item.fri2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat2')"
+                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat2', '{{ item.sat2|replace(' ','-') }}')"
                         class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id={{item.kitchen_id}}
                         data-kitchen_col="sat2">{{item.sat2}}</button></td>
             </tr>

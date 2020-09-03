@@ -290,6 +290,7 @@ def _schedule_gen() -> str:
     """
     global SQL_OPERATORS
     emp_id = request.args.get('emp_id', 0, type=str)
+    emp_id = emp_id.replace('-', ' ')
     kitchen_id = request.args.get('kitchen_id', 0, type=str)
     col = request.args.get('col', 0, type=str)
     old_emp_id = request.args.get('old_emp_id', 0, type=str)
