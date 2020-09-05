@@ -9,6 +9,8 @@ from datetime import datetime
 import os
 import pandas
 from sqlalchemy import or_, and_, func
+import re
+SQL_OPERATORS = re.compile('SELECT|UPDATE|INSERT|DELETE', re.IGNORECASE)
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -283,9 +285,32 @@ def schedule_setting_del(sch_id):
 
 
 @app.route('/_schedule_gen')
-def _schedule_gen():
-    schedule = Kitchen_schedule.query.all()
-    return jsonify(result='This is test')
+def _schedule_gen() -> str:
+    """To change the employee  who has been scheduled in the Kitchen_schedule table.
+    """
+    global SQL_OPERATORS
+    emp_id = request.args.get('emp_id', 0, type=str)
+    emp_id = emp_id.replace('-', ' ')
+    kitchen_id = request.args.get('kitchen_id', 0, type=str)
+    col = request.args.get('col', 0, type=str)
+    old_emp_id = request.args.get('old_emp_id', 0, type=str)
+    chk1 = len(SQL_OPERATORS.findall(emp_id)) > 0 or len(
+        SQL_OPERATORS.findall(kitchen_id)) > 0
+    chk2 = len(SQL_OPERATORS.findall(col)) > 0 or len(
+        SQL_OPERATORS.findall(old_emp_id)) > 0
+    if chk1 or chk2:
+        print('SQL Injection')
+        return jsonify(result='SQL Injection')
+    print(f"""----------------------------
+    emp_id: {emp_id}
+    kitchen_id: {kitchen_id}
+    col: {col}
+    old_emp_id: {old_emp_id}
+----------------------""")
+    kit_emp = Kitchen_schedule.query.get(kitchen_id)
+    setattr(kit_emp, col, emp_id)
+    db.session.commit()
+    return jsonify(result='Sucess')
 
 
 @app.route('/test', methods=['GET', 'POST'])
