@@ -904,6 +904,7 @@ def main():
             db.session.commit()
 
 def Emp():
+    with app.app_context():
         db.create_all()
         # Emp_schedule.query.delete()
         # db.session.commit()
@@ -916,6 +917,22 @@ def Emp():
         #     db.session.add(emp_info)
         #     db.session.commit()   
         emp_info2=Emp_schedule.query.all()
+        for row in Emp_schedule.query:  # all() is extra
+            row.sun1 = '-'
+            row.mon1 = '-'
+            row.tue1 = '-'
+            row.wed1 = '-'
+            row.thur1 = '-'
+            row.fri1 = '-'
+            row.sat1 = '-'
+            row.sun2 = '-'
+            row.mon2 = '-'
+            row.tue2 = '-'
+            row.wed2 = '-'
+            row.thur2 = '-'
+            row.fri2 = '-'
+            row.sat2 = '-'
+            db.session.commit()
         for i in range(len(emp_info2)):
             s1=Kitchen_schedule.query.filter(emp_info2[i].emp_name==Kitchen_schedule.sun1).first()
             m1=Kitchen_schedule.query.filter(emp_info2[i].emp_name==Kitchen_schedule.mon1).first()
