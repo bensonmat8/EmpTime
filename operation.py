@@ -42,11 +42,11 @@ def main():
         length_v=[] 
         empid=[]
         job_number=Job.query.all()
-        jobid=len(job_number)+1
+        # jobid=len(job_number)+1
         for value in db.session.query(Employee.first_name,Employee.last_name, Employee.emp_id,Employee.job_id,Employee.uniq_id,Employee.del_ind).distinct(Employee.emp_id):
             empid.append(value)
         for i in range(len(empid)):
-            job_group=Job.query.get(empid[i].job_id).job_group
+            job_group=Job.query.filter(Job.job_id==empid[i].job_id).first().job_group
             if empid[i].del_ind!='Y':
                 emp_info=Emp_schedule(emp_id=str(empid[i].emp_id),emp_name= empid[i].uniq_id,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
                                   sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-',job_group=job_group)    
@@ -141,14 +141,15 @@ def main():
             db.session.add(emp_add)
             db.session.commit()
         job_number=Job.query.all()
-        jobid=len(job_number)+1
+        # jobid=len(job_number)+1
         emp=Employee.query.all()
         for xx in range(len(emp)):
             emp[xx].used_fte=0
             db.session.commit()
-        for j in range(1,jobid):
-            job_input=ScheduleSetting.query.filter(ScheduleSetting.job_id==j).all()
-            job_group=Job.query.get(j).job_group
+        for j in range(len(job_number)):
+            job_input=ScheduleSetting.query.filter(ScheduleSetting.job_id==job_number[j].job_id).all()
+            job_group=Job.query.filter(Job.job_id==job_number[j].job_id).first().job_group
+            # job_group=Job.query.get(j).job_group
             if len(job_input)!=0:
                 for i in range(len(job_input)):
                     max_input_emp=max(job_input[i].sun1,job_input[i].mon1,job_input[i].tue1,job_input[i].wed1,
@@ -156,11 +157,11 @@ def main():
                                       job_input[i].mon2,job_input[i].tue2,job_input[i].wed2, job_input[i].thur2,
                                       job_input[i].fri2,job_input[i].sat2)
                     for x in range(max_input_emp):
-                        k_add=Kitchen_schedule(job=job_input[i].job_name,job_id=j,job_sub_id=job_input[i].sub_job_id,time=job_input[i].shift_start,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
+                        k_add=Kitchen_schedule(job=job_input[i].job_name,job_id=job_number[j].job_id,job_sub_id=job_input[i].sub_job_id,time=job_input[i].shift_start,sun1='-',mon1='-',tue1='-',wed1='-',thur1='-',fri1='-',sat1='-',
                                           sun2='-',mon2='-',tue2='-',wed2='-',thur2='-',fri2='-',sat2='-',hr_per_shift=job_input[i].hr_per_shift,shift_start=job_input[i].shift_start,job_group=job_group)
                         db.session.add(k_add)
                         db.session.commit()
-                    hr_per_shift=ScheduleSetting.query.filter_by(job_id=j, sub_job_id=job_input[i].sub_job_id).all()
+                    hr_per_shift=ScheduleSetting.query.filter_by(job_id=job_number[j].job_id, sub_job_id=job_input[i].sub_job_id).all()
                     if hr_per_shift[0].hr_per_shift>=7.5:
                         if job_input[i].sun1!=0:
                             pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].mon1).all()
@@ -517,6 +518,7 @@ def main():
                                         sel_schedule[l].sat1="Add_employee"
                                         db.session.commit()
     
+        job_number=Job.query.all()
         emp=Employee.query.all()
         for xx in range(len(emp)):
             emp_fte=Emp_schedule.query.filter(Emp_schedule.emp_id==emp[xx].emp_id).first()
@@ -526,11 +528,11 @@ def main():
         for xx in range(len(emp)):
             emp[xx].used_fte=0
             db.session.commit()
-        for j in range(1,jobid):
-            job_input=ScheduleSetting.query.filter(ScheduleSetting.job_id==j).all()
+        for j in range(len(job_number)):
+            job_input=ScheduleSetting.query.filter(ScheduleSetting.job_id==job_number[j].job_id).all()
             if len(job_input)!=0:
                 for i in range(len(job_input)):
-                    hr_per_shift=ScheduleSetting.query.filter_by(job_id=j, sub_job_id=job_input[i].sub_job_id).all()
+                    hr_per_shift=ScheduleSetting.query.filter_by(job_id=job_number[j].job_id, sub_job_id=job_input[i].sub_job_id).all()
                     if hr_per_shift[0].hr_per_shift>=7.5:
                         if job_input[i].sun2!=0:
                             pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
