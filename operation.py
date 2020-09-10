@@ -161,7 +161,7 @@ def main():
                         db.session.add(k_add)
                         db.session.commit()
                     hr_per_shift=ScheduleSetting.query.filter_by(job_id=j, sub_job_id=job_input[i].sub_job_id).all()
-                    if hr_per_shift[0].hr_per_shift==8:
+                    if hr_per_shift[0].hr_per_shift>=7.5:
                         if job_input[i].sun1!=0:
                             pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].mon1).all()
                             if len(pick_up)!=0:
@@ -373,7 +373,7 @@ def main():
                                     if sel_schedule[l].sat1 =='-':
                                         sel_schedule[l].sat1="Add_employee"
                                         db.session.commit()
-                    if hr_per_shift[0].hr_per_shift!=8:
+                    if hr_per_shift[0].hr_per_shift<7.5:
                         if job_input[i].sun1!=0:
                             pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_1_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun1==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=1,~Employee.uniq_id.in_(block_sun1))).order_by(func.random()).limit(job_input[i].sun1).all()
                             if len(pick_up)!=0:
@@ -531,7 +531,7 @@ def main():
             if len(job_input)!=0:
                 for i in range(len(job_input)):
                     hr_per_shift=ScheduleSetting.query.filter_by(job_id=j, sub_job_id=job_input[i].sub_job_id).all()
-                    if hr_per_shift[0].hr_per_shift==8:
+                    if hr_per_shift[0].hr_per_shift>=7.5:
                         if job_input[i].sun2!=0:
                             pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Full',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
                             if len(pick_up)!=0:
@@ -741,7 +741,7 @@ def main():
                                     if sel_schedule[l].sat2 =='-':
                                         sel_schedule[l].sat2="Add_employee"
                                         db.session.commit()
-                    if hr_per_shift[0].hr_per_shift!=8:
+                    if hr_per_shift[0].hr_per_shift<7.5:
                         if job_input[i].sun2!=0:
                             pick_up=Employee.query.filter(and_(Employee.del_ind!='Y',Employee.job_id==j,Employee.week_2_day_off!='Sunday',Employee.emp_type=='Part',Day_check.sun2==0,Day_check.sun1==0,Day_check.sat2==0,Day_check.uniq_id==Employee.uniq_id,Employee.fte-Employee.used_fte>=hr_per_shift[0].hr_per_shift,Employee.weekend_off!=0,~Employee.uniq_id.in_(block_sun2))).order_by(func.random()).limit(job_input[i].sun2).all()
                             if len(pick_up)!=0:
