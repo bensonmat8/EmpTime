@@ -7,23 +7,23 @@ Schedule Settings
 {%block body%}
 <script>
 
-    document.addEventListener('DOMContentLoaded', ()=> {
+    document.addEventListener('DOMContentLoaded', () => {
         //Changing # of persons would change values for Sun-Sat
-        document.querySelector('#persons').onkeyup = function() {
+        document.querySelector('#persons').onkeyup = function () {
             var val = document.querySelector("#persons").value
             //alert(`Value is ${val}`)
             document.querySelector('#sun').value = val
-            document.querySelectorAll('.sub_item').forEach(function(value){
+            document.querySelectorAll('.sub_item').forEach(function (value) {
                 value.value = val
             })
         }
-        
+
         //Customize Days button to display Sun-Sat
-        document.querySelector('#customize').onclick= function() {
-            document.querySelectorAll('.addnew').forEach(function(elm){
-                if (elm.style.display === 'none'){
+        document.querySelector('#customize').onclick = function () {
+            document.querySelectorAll('.addnew').forEach(function (elm) {
+                if (elm.style.display === 'none') {
                     elm.style.display = ""
-                } else{
+                } else {
                     elm.style.display = 'none';
                 }
             })
@@ -36,7 +36,7 @@ Schedule Settings
 <form action="{{url_for('schedule_setting_submit')}}" method="post">
     <div class="form-grid">
         <div class="grid-item">
-            Job Name: 
+            Job Name:
             <select name="job">
                 {% for j in job %}
                 <option value={{ j.job_id }}>{{ j.job_name }}</option>
@@ -44,25 +44,25 @@ Schedule Settings
             </select>
         </div>
         <div class="grid-item">
-            Shift Start Time: <input type="time" name="shift_start" value="06:30 am">
+            Shift Start Time: <input type="time" name="shift_start" value="06:30">
         </div>
         <div class="grid-item">
             Number of persons: <input id="persons" type="Number" name="no_of_emp" value=1>
         </div>
         <div class="grid-item">
-            Hours/Shift: <input type="Number" name="hr_per_shift" value=8>
+            Hours/Shift: <input type="Number" name="hr_per_shift" value=8 step="0.5">
         </div>
         <div class="grid-item addnew" style="display:none">
-            Sun:  <input id="sun" class="sub_item" type="Number" name="sun" value=1>
+            Sun: <input id="sun" class="sub_item" type="Number" name="sun" value=1>
         </div>
         <div class="grid-item addnew" style="display:none">
-            Mon:  <input type="Number" name="mon" class="sub_item" value=1>
+            Mon: <input type="Number" name="mon" class="sub_item" value=1>
         </div>
         <div class="grid-item addnew" style="display:none">
-            Tue:  <input type="Number" name="tue" class="sub_item" value=1>
+            Tue: <input type="Number" name="tue" class="sub_item" value=1>
         </div>
         <div class="grid-item addnew" style="display:none">
-            Wed:  <input type="Number" name="wed" class="sub_item" value=1>
+            Wed: <input type="Number" name="wed" class="sub_item" value=1>
         </div>
         <div class="grid-item addnew" style="display:none">
             Thur: <input type="Number" name="thur" class="sub_item" value=1>
@@ -74,10 +74,10 @@ Schedule Settings
             Sat: <input type="Number" name="sat" class="sub_item" value=1>
         </div>
     </div>
-        
+
     <br>
     <div>
-        <input  class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+        <input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
         <button id="customize" type="button" class="btn btn-outline-secondary">Customize Days</button>
     </div>
 </form>
@@ -98,7 +98,7 @@ Schedule Settings
         <tr>
             <td><a href="{{url_for('schedule_setting_del',sch_id=item.sch_id)}}">Delete</a></td>
             <td>{{item.job_name}}</td>
-            <td>{{item.shift_start}}</td>
+            <td>{{item.shift_start.strftime('%H:%M')}}</td>
             <td>{{item.no_of_emp}}</td>
             <td>{{item.hr_per_shift}}</td>
             <td>{{item.comment}}</td>
