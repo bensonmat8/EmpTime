@@ -149,6 +149,7 @@ def main():
         for j in range(len(job_number)):
             job_input=ScheduleSetting.query.filter(ScheduleSetting.job_id==job_number[j].job_id).all()
             job_group=Job.query.filter(Job.job_id==job_number[j].job_id).first().job_group
+            #update job id error
             # job_group=Job.query.get(j).job_group
             if len(job_input)!=0:
                 for i in range(len(job_input)):
