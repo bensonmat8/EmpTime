@@ -5,6 +5,8 @@ import os
 import pandas
 from sqlalchemy import or_, and_, func
 from sqlalchemy import distinct
+from string import digits
+
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -952,72 +954,72 @@ def Emp():
             f2=Kitchen_schedule.query.filter(emp_info2[i].emp_name==Kitchen_schedule.fri2).first()
             sa2=Kitchen_schedule.query.filter(emp_info2[i].emp_name==Kitchen_schedule.sat2).first()
             if s1!=None:
-                emp_info2[i].sun1=str(s1.job)+' \n'+str(s1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), s1.shift_start)+timedelta(hours=s1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].sun1=str(s1.job).translate({ord(k): None for k in digits})+' \n'+str(s1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), s1.shift_start)+timedelta(hours=s1.hr_per_shift)).strftime("%H:%M"))
                 sun1_t=s1.hr_per_shift
             if s1==None:
                 sun1_t=0
             if m1!=None:
-                emp_info2[i].mon1=str(m1.job)+' \n'+str(m1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), m1.shift_start)+timedelta(hours=m1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].mon1=str(m1.job).translate({ord(k): None for k in digits})+' \n'+str(m1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), m1.shift_start)+timedelta(hours=m1.hr_per_shift)).strftime("%H:%M"))
                 mon1_t=m1.hr_per_shift
             if m1==None:
                 mon1_t=0
             if t1!=None:
-                emp_info2[i].tue1=str(t1.job)+' \n'+str(t1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), t1.shift_start)+timedelta(hours=t1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].tue1=str(t1.job).translate({ord(k): None for k in digits})+' \n'+str(t1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), t1.shift_start)+timedelta(hours=t1.hr_per_shift)).strftime("%H:%M"))
                 tue1_t=t1.hr_per_shift
             if t1==None:
                 tue1_t=0
             if w1!=None:
-                emp_info2[i].wed1=str(w1.job)+' \n'+str(w1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), w1.shift_start)+timedelta(hours=w1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].wed1=str(w1.job).translate({ord(k): None for k in digits})+' \n'+str(w1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), w1.shift_start)+timedelta(hours=w1.hr_per_shift)).strftime("%H:%M"))
                 wed1_t=w1.hr_per_shift
             if w1==None:
                 wed1_t=0
             if th1!=None:
-                emp_info2[i].thur1=str(th1.job)+' \n'+str(th1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), th1.shift_start)+timedelta(hours=th1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].thur1=str(th1.job).translate({ord(k): None for k in digits})+' \n'+str(th1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), th1.shift_start)+timedelta(hours=th1.hr_per_shift)).strftime("%H:%M"))
                 thur1_t=th1.hr_per_shift
             if th1==None:
                 thur1_t=0
             if f1!=None:
-                emp_info2[i].fri1=str(f1.job)+' \n'+str(f1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), f1.shift_start)+timedelta(hours=f1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].fri1=str(f1.job).translate({ord(k): None for k in digits})+' \n'+str(f1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), f1.shift_start)+timedelta(hours=f1.hr_per_shift)).strftime("%H:%M"))
                 fri1_t=f1.hr_per_shift
             if f1==None:
                 fri1_t=0
             if sa1!=None:
-                emp_info2[i].sat1=str(sa1.job)+' \n'+str(sa1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), sa1.shift_start)+timedelta(hours=sa1.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].sat1=str(sa1.job).translate({ord(k): None for k in digits})+' \n'+str(sa1.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), sa1.shift_start)+timedelta(hours=sa1.hr_per_shift)).strftime("%H:%M"))
                 sat1_t=sa1.hr_per_shift
             if sa1==None:
                 sat1_t=0
             if s2!=None:
-                emp_info2[i].sun2=str(s2.job)+' \n'+str(s2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), s2.shift_start)+timedelta(hours=s2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].sun2=str(s2.job).translate({ord(k): None for k in digits})+' \n'+str(s2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), s2.shift_start)+timedelta(hours=s2.hr_per_shift)).strftime("%H:%M"))
                 sun2_t=s2.hr_per_shift
             if s2==None:
                 sun2_t=0            
             if m2!=None:
-                emp_info2[i].mon2=str(m2.job)+' \n'+str(m2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), m2.shift_start)+timedelta(hours=m2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].mon2=str(m2.job).translate({ord(k): None for k in digits})+' \n'+str(m2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), m2.shift_start)+timedelta(hours=m2.hr_per_shift)).strftime("%H:%M"))
                 mon2_t=m2.hr_per_shift
             if m2==None:
                 mon2_t=0 
             if t2!=None:
-                emp_info2[i].tue2=str(t2.job)+' \n'+str(t2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), t2.shift_start)+timedelta(hours=t2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].tue2=str(t2.job).translate({ord(k): None for k in digits})+' \n'+str(t2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), t2.shift_start)+timedelta(hours=t2.hr_per_shift)).strftime("%H:%M"))
                 tue2_t=t2.hr_per_shift
             if t2==None:
                 tue2_t=0
             if w2!=None:
-                emp_info2[i].wed2=str(w2.job)+' \n'+str(w2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), w2.shift_start)+timedelta(hours=w2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].wed2=str(w2.job).translate({ord(k): None for k in digits})+' \n'+str(w2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), w2.shift_start)+timedelta(hours=w2.hr_per_shift)).strftime("%H:%M"))
                 wed2_t=w2.hr_per_shift
             if w2==None:
                 wed2_t=0 
             if th2!=None:
-                emp_info2[i].thur2=str(th2.job)+' \n'+str(th2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), th2.shift_start)+timedelta(hours=th2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].thur2=str(th2.job).translate({ord(k): None for k in digits})+' \n'+str(th2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), th2.shift_start)+timedelta(hours=th2.hr_per_shift)).strftime("%H:%M"))
                 thur2_t=th2.hr_per_shift
             if th2==None:
                 thur2_t=0
             if f2!=None:
-                emp_info2[i].fri2=str(f2.job)+' \n'+str(f2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), f2.shift_start)+timedelta(hours=f2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].fri2=str(f2.job).translate({ord(k): None for k in digits})+' \n'+str(f2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), f2.shift_start)+timedelta(hours=f2.hr_per_shift)).strftime("%H:%M"))
                 fri2_t=f2.hr_per_shift
             if f2==None:
                 fri2_t=0
             if sa2!=None:
-                emp_info2[i].sat2=str(sa2.job)+' \n'+str(sa2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), sa2.shift_start)+timedelta(hours=sa2.hr_per_shift)).strftime("%H:%M"))
+                emp_info2[i].sat2=str(sa2.job).translate({ord(k): None for k in digits})+' \n'+str(sa2.shift_start.strftime("%H:%M"))+'-'+str((datetime.combine(date(1, 1, 1), sa2.shift_start)+timedelta(hours=sa2.hr_per_shift)).strftime("%H:%M"))
                 sat2_t=sa2.hr_per_shift
             if sa2==None:
                 sat2_t=0
