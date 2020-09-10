@@ -5,38 +5,41 @@ Employee Search
 {% endblock %}
 
 {% block body %}
+<link rel="stylesheet" href={{ url_for('static',filename='table.css') }}>
 <div>
     <form action="{{ url_for('EmpSearch') }}" method="post">
-        Search the employee list by name / employee id: <input type="text" name="emp_dtl" placeholder="Emp Details">
-        <button id="Submit">Submit</button>
+        Search the employee list by Name/Employee ID: <input type="text" name="emp_dtl" placeholder="Emp Details">
+        <button id="Submit" class="btn btn-primary btn-sm">Search</button>
     </form>
 </div>
 <div>
     <h2>Employee List:</h2>
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Title</th>
-                <th>Shift</th>
-                <th>Days Off</th>
-                <th>FTE</th>
-            </tr>
-        </thead>
+    <div class="tableFixHead">
+        <table class="table  table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Title</th>
+                    <th>Shift</th>
+                    <th>Days Off</th>
+                    <th>FTE</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td><a href="{{url_for('employee_edit',uniq_id=item.uniq_id)}}">{{item.first_name}}</a></td>
-                <td>{{item.last_name}}</td>
-                <td>{{item.job.job_name}}</td>
-                <td>{{item.shift}}</td>
-                <td>{{item.days_off}}</td>
-                <td>{{item.fte}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td><a href="{{url_for('employee_edit',uniq_id=item.uniq_id)}}">{{item.first_name}}</a></td>
+                    <td>{{item.last_name}}</td>
+                    <td>{{item.job.job_name}}</td>
+                    <td>{{item.shift}}</td>
+                    <td>{{item.week_1_day_off}}; {{item.week_2_day_off}}</td>
+                    <td>{{item.fte}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

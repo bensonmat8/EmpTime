@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block heading %}
-Add/Edit Employee Details
+{% if dt %} Edit {% else %} Add {%endif%}Employee Details
 {% endblock %}
 
 {% block body %}
@@ -79,9 +79,11 @@ Add/Edit Employee Details
                     {%endfor%}
                 </select>
             </div>
+            {% if dt %}
             <div class="grid-item">
                 Deactivate user: <input type="checkbox" name="del_ind" {{del_ind}}>
             </div>
+            {% endif %}
             {% if dt.uniq_id is defined %}
             <input type="text" name="uniq_id" value="{{dt.uniq_id}}" hidden>
             <div class="grid-item">Unique ID: {{dt.uniq_id}}</div>
