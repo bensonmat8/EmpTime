@@ -164,3 +164,16 @@ class Day_check(db.Model):
     fri2 = db.Column(db.Integer, nullable=True)
     sat2 = db.Column(db.Integer, nullable=True)
     # employee = db.relationship('Employee', backref='day_check')
+
+# --------OccMed App----------------
+
+
+class OccMedCheckIn(db.Model):
+    __tablename__ = 'occ_med_checkin'
+    checkin_id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    campus = db.Column(db.String, nullable=False)
+    dept = db.Column(db.String, nullable=False)
+    reason = db.Column(db.String, nullable=False)
+    comments = db.Column(db.String, nullable=True)

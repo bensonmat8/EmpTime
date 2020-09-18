@@ -325,5 +325,27 @@ def test():
     return render_template('Test.html', emp=emp)
 
 
+@app.route('/OccMed/CheckIn', methods=['GET', 'POST'])
+def checkIn():
+    if request.method == 'POST':
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        campus = request.form.get('campus')
+        dept = request.form.get('dept')
+        reason = request.form.get('reason')
+        comments = request.form.get('comments')
+
+        occ = OccMedCheckIn(first_name=first_name,
+                            last_name=last_name,
+                            campus=campus,
+                            dept=dept,
+                            reason=reason,
+                            comments=comments)
+        db.session.add(occ)
+        db.session.commit()
+    checkInTable = OccMedCheckIn.query.all()
+    return render_template('OccMedCheckIn.html', checkInTable=checkInTable)
+
+
 if __name__ == "__main__":
     app.run()

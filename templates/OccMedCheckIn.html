@@ -1,7 +1,7 @@
-{% extends "layout.html"%}
+{% extends "layout_occ_med.html"%}
 
 {%block heading%}
-Schedule Settings
+Check In New Patient
 {%endblock%}
 
 {%block body%}
@@ -30,78 +30,78 @@ Schedule Settings
         }
     })
 </script>
-<br>
-<h3>Add Job</h3>
-<br>
-<form action="{{url_for('schedule_setting_submit')}}" method="post">
+
+<form action="{{url_for('checkIn')}}" method="post">
     <div class="form-grid">
         <div class="grid-item">
-            Job Name:
-            <select name="job">
-                {% for j in job %}
-                <option value={{ j.job_id }}>{{ j.job_name }}</option>
-                {%endfor%}
+            First Name: <input type="text" name="first_name">
+        </div>
+        <div class="grid-item">
+            Last Name: <input type="text" name="last_name">
+        </div>
+        <div class="grid-item">
+            Campus:
+            <select name="campus">
+                <option value="BGH">BGH</option>
+                <option value="WMH">WMH</option>
+                <option value="Ideal">Ideal</option>
+                <option value="Lewis Rd">Lewis Rd</option>
+                <option value="Vestal 3">Vestal 3</option>
+
             </select>
         </div>
         <div class="grid-item">
-            Shift Start Time: <input type="time" name="shift_start" value="06:30">
+            Department / Unit: <input type="text" name="dept" required>
         </div>
         <div class="grid-item">
-            Number of persons: <input id="persons" type="Number" name="no_of_emp" value=1>
+            Reason for visit:
+            <select name="reason">
+                <option value="Annual Assessment">Annual Assessment</option>
+                <option value="FIT">FIT</option>
+                <option value="Arm Read">Arm Read</option>
+                <option value="New Hire Physical">New Hire Physical</option>
+                <option value="PPD">PPD</option>
+                <option value="IMM">IMM</option>
+                <option value="Nurse Visit">Nurse Visit</option>
+                <option value="Drug Test">Drug Test</option>
+                <option value="BP/WT">BP/WT</option>
+                <option value="Records">Records</option>
+
+            </select>
         </div>
         <div class="grid-item">
-            Hours/Shift: <input type="Number" name="hr_per_shift" value=8 step="0.5">
+            Comments: <input type="text" name="comments">
         </div>
-        <div class="grid-item addnew" style="display:none">
-            Sun: <input id="sun" class="sub_item" type="Number" name="sun" value=1>
-        </div>
-        <div class="grid-item addnew" style="display:none">
-            Mon: <input type="Number" name="mon" class="sub_item" value=1>
-        </div>
-        <div class="grid-item addnew" style="display:none">
-            Tue: <input type="Number" name="tue" class="sub_item" value=1>
-        </div>
-        <div class="grid-item addnew" style="display:none">
-            Wed: <input type="Number" name="wed" class="sub_item" value=1>
-        </div>
-        <div class="grid-item addnew" style="display:none">
-            Thur: <input type="Number" name="thur" class="sub_item" value=1>
-        </div>
-        <div class="grid-item addnew" style="display:none">
-            Fri: <input type="Number" name="fri" class="sub_item" value=1>
-        </div>
-        <div class="grid-item addnew" style="display:none">
-            Sat: <input type="Number" name="sat" class="sub_item" value=1>
-        </div>
+
     </div>
 
     <br>
     <div>
         <input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
-        <button id="customize" type="button" class="btn btn-outline-secondary">Customize Days</button>
     </div>
 </form>
 <br>
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th></th>
-            <th>Job</th>
-            <th>Shift Start Time</th>
-            <th>No. of Employees</th>
-            <th>Hours/Shift</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Campus</th>
+            <th>Department</th>
+            <th>Reason for visit</th>
             <th>Comments</th>
         </tr>
     </thead>
     <tbody>
-        {%for item in sch_all %}
+        {%for item in checkInTable %}
         <tr>
-            <td><a href="{{url_for('schedule_setting_del',sch_id=item.sch_id)}}">Delete</a></td>
-            <td>{{item.job_name}}</td>
-            <td>{{item.shift_start.strftime('%H:%M')}}</td>
-            <td>{{item.no_of_emp}}</td>
-            <td>{{item.hr_per_shift}}</td>
-            <td>{{item.comment}}</td>
+            <!-- <td><a href="{{url_for('schedule_setting_del',sch_id=item.sch_id)}}">Delete</a></td> -->
+            <td>{{item.first_name}}</td>
+            <td>{{item.last_name}}</td>
+            <td>{{item.campus}}</td>
+            <td>{{item.dept}}</td>
+            <td>{{item.reason}}</td>
+            <td>{{item.comments}}</td>
         </tr>
         {%endfor%}
     </tbody>
