@@ -89,6 +89,7 @@ Check In New Patient
             <th>Campus</th>
             <th>Department</th>
             <th>Reason for visit</th>
+            <th>Check In Time</th>
             <th>Comments</th>
         </tr>
     </thead>
@@ -101,6 +102,7 @@ Check In New Patient
             <td>{{item.campus}}</td>
             <td>{{item.dept}}</td>
             <td>{{item.reason}}</td>
+            <td>{{item.checkin_time.strftime('%m/%d/%Y %H:%m')}}</td>
             <td>{{item.comments}}</td>
         </tr>
         {%endfor%}

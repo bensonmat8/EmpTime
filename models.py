@@ -166,6 +166,7 @@ class Day_check(db.Model):
     # employee = db.relationship('Employee', backref='day_check')
 
 # --------OccMed App----------------
+# Started 2020-09-18
 
 
 class OccMedCheckIn(db.Model):
@@ -177,3 +178,4 @@ class OccMedCheckIn(db.Model):
     dept = db.Column(db.String, nullable=False)
     reason = db.Column(db.String, nullable=False)
     comments = db.Column(db.String, nullable=True)
+    checkin_time = db.Column(db.DateTime, nullable=False)

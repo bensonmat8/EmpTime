@@ -44,6 +44,25 @@ Employee Schedule
         position: sticky;
         top: 0;
         left: 0;
+        z-index: 2;
+    }
+
+    td:first-child,
+    th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background-color: aliceblue;
+        position: sticky;
+        top: 0;
+    }
+
+    td:last-child,
+    th:last-child {
+        position: sticky;
+        right: 0;
+        z-index: 1;
+        background-color: aliceblue;
     }
 </style>
 <link rel="stylesheet" href={{ url_for('static', filename='popup.css') }}>
@@ -91,17 +110,16 @@ Employee Schedule
 
 </div>
 <h2>Schedule:</h2>
-<div class="tableFixHead">
+<div class="tableFixHead" style="min-width: 1220px;">
     <table class="table  table-bordered table-hover">
         <thead class="thead-dark">
-            <tr>
+            <!-- <tr>
                 <th colspan="2">2020-09-06</th>
                 <th colspan="7">Week 1</th>
                 <th colspan="7">Week 2</th>
-            </tr>
+            </tr> -->
             <tr>
                 <th>Job</th>
-                <th>Time</th>
                 <th>Sunday</th>
                 <th>Monday</th>
                 <th>Tuesday</th>
@@ -116,6 +134,7 @@ Employee Schedule
                 <th>Thursday</th>
                 <th>Friday</th>
                 <th>Saturday</th>
+                <th>Time</th>
             </tr>
         </thead>
 
@@ -123,7 +142,6 @@ Employee Schedule
             {% for item in items %}
             <tr>
                 <td>{{item.job}}</td>
-                <td>{{item.time.strftime('%H:%M')}}</td>
                 <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun1', '{{ item.sun1|replace(' ','-') }}')"
                         {% if 'Add_employee' in item.sun1 %} class="btn btn-outline-danger" {% else %}
                         class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
@@ -180,6 +198,7 @@ Employee Schedule
                         {% if 'Add_employee' in item.sat2 %} class="btn btn-outline-danger" {% else %}
                         class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
                         data-kitchen_id={{item.kitchen_id}} data-kitchen_col="sat2">{{item.sat2}}</button></td>
+                <td>{{item.time.strftime('%H:%M')}}</td>
             </tr>
             {% endfor %}
         </tbody>

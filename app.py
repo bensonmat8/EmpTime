@@ -316,13 +316,25 @@ def _schedule_gen() -> str:
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 
-    emp = Employee.query.all()
-    emp_id = request.form.get('emp_id')
-    kitchen_id = request.form.get('hidden-kitchen-id')
-    kitchen_col = request.form.get("hidden-kitchen-col")
-    print(
-        f"Emp ID: {emp_id}\nKitchen ID: {kitchen_id}\nKitchen col: {kitchen_col}")
-    return render_template('Test.html', emp=emp)
+    if request.method == 'POST':
+        import operation
+        operation.main()
+    emp_dtl = request.form.get('emp_dtl')
+    if emp_dtl != None:
+        #print('EmpSearch if stmt..')
+        emp_dtl_f = func.lower(f'%{emp_dtl}%')
+        emp_list = Kitchen_schedule.query.filter(or_(
+            func.lower(Kitchen_schedule.Job).like(emp_dtl_f),
+            func.lower(Kitchen_schedule.Sun1).like(emp_dtl_f),
+            func.lower(Kitchen_schedule.Mon1).like(emp_dtl_f))
+        ).order_by(Kitchen_schedule.kitchen_id)
+
+    else:
+        #print('EmpSearch else stmt..')
+        emp_list = Kitchen_schedule.query.order_by(
+            Kitchen_schedule.kitchen_id).all()
+    emp = Employee.query.order_by(Employee.uniq_id).all()
+    return render_template('test.html', items=emp_list, emp=emp)
 
 
 @app.route('/OccMed/CheckIn', methods=['GET', 'POST'])
@@ -335,12 +347,9 @@ def checkIn():
         reason = request.form.get('reason')
         comments = request.form.get('comments')
 
-        occ = OccMedCheckIn(first_name=first_name,
-                            last_name=last_name,
-                            campus=campus,
-                            dept=dept,
-                            reason=reason,
-                            comments=comments)
+        occ = OccMedCheckIn(first_name=first_name, last_name=last_name,
+                            campus=campus, dept=dept, reason=reason,
+                            comments=comments, checkin_time=datetime.now())
         db.session.add(occ)
         db.session.commit()
     checkInTable = OccMedCheckIn.query.all()
