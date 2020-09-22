@@ -3,11 +3,11 @@ Created on Sun Jun 21 20:22:05 2020
 
 @author: bensonshajimathew
 """
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from models import *
 from datetime import datetime
 import os
-import pandas
+import pandas as pd
 from sqlalchemy import or_, and_, func
 import re
 SQL_OPERATORS = re.compile('SELECT|UPDATE|INSERT|DELETE', re.IGNORECASE)
@@ -313,6 +313,28 @@ def _schedule_gen() -> str:
     return jsonify(result='Sucess')
 
 
+@app.route('/FnN/Downloads/<file>')
+def FnN_downloads(file):
+    if file == '1':
+        table = pd.read_sql_table('kitchen_schedule', db.engine)
+        table.drop(['kitchen_id', 'job_id', 'job_sub_id', 'time', 'job_group'], axis=1,
+                   inplace=True)
+        file_name = 'Schedule.csv'
+    elif file == '2':
+        table = pd.read_sql_table('emp_schedule', db.engine)
+        table.drop(['people_id', 'emp_id', 'job_group'], axis=1,
+                   inplace=True)
+        file_name = 'EmployeeSchedule.csv'
+    try:
+        csv = table.to_csv(index=False)
+    except:
+        file_name = 'Invalid.csv'
+        csv = "Error, contact admin"
+    return Response(csv, mimetype='text/csv',
+                    headers={"Content-disposition":
+                             f"attachment; filename={file_name}"})
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 
@@ -335,6 +357,8 @@ def test():
             Kitchen_schedule.kitchen_id).all()
     emp = Employee.query.order_by(Employee.uniq_id).all()
     return render_template('test.html', items=emp_list, emp=emp)
+
+# -------OccMed App Starts here--------------
 
 
 @app.route('/OccMed/CheckIn', methods=['GET', 'POST'])

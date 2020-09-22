@@ -43,7 +43,6 @@ Employee Schedule
     .tableFixHead thead th {
         position: sticky;
         top: 0;
-        left: 0;
         z-index: 2;
     }
 
@@ -53,8 +52,12 @@ Employee Schedule
         left: 0;
         z-index: 1;
         background-color: aliceblue;
-        position: sticky;
+    }
+
+    th:first-child {
+        position: static;
         top: 0;
+        z-index: 3;
     }
 
     td:last-child,
@@ -106,6 +109,7 @@ Employee Schedule
 <div>
     <ul>
         <li><a href="{{ url_for('emp_table') }}">Click Here</a> to see employee level schedule</li>
+        <li><a href="{{ url_for('FnN_downloads', file=1) }}">Download</a> Schedule</li>
     </ul>
 
 </div>
