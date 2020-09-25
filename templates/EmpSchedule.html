@@ -12,68 +12,93 @@ Employee Schedule
         height: 800px;
     }
 
+    th:first-child {
+        position: fixed;
+        left: 0;
+        z-index: 2;
+    }
+
     .tableFixHead thead th {
         position: sticky;
         top: 0;
+        z-index: 1;
+    }
+
+    td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 0;
+        background-color: aliceblue;
     }
 </style>
 
 <div>
     <ul>
         <li><a href="{{ url_for('schedule') }}">Click Here</a> for schedule settings</li>
-        <li><a href="{{ url_for('FnN_downloads', file=2) }}">Download</a> Employee Schedule</li>
+        <!-- <li>
+            <a href="{{ url_for('FnN_downloads', file=2) }}">
+                <img src="{{url_for('static',filename='excel-img.png')}}" alt="ex-icon" width="25px" height="25px">
+            </a> Download Employee Schedule</li> -->
     </ul>
 </div>
 <br>
-<div class="tableFixHead">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Sun1</th>
-                <th>Mon1</th>
-                <th>Tue1</th>
-                <th>Wed1</th>
-                <th>Thur1</th>
-                <th>Fri1</th>
-                <th>Sat1</th>
-                <th>Sched Hrs_w1</th>
-                <th>Sun2</th>
-                <th>Mon2</th>
-                <th>Tue2</th>
-                <th>Wed2</th>
-                <th>Thur2</th>
-                <th>Fri2</th>
-                <th>Sat2</th>
-                <th>Sched Hrs_w2</th>
-                <th>Total_Work Hrs</th>
-            </tr>
-        </thead>
+<div style="position: relative; min-width: 1220px;">
+    <a href="{{ url_for('FnN_downloads', file=2) }}">
+        <img src="{{url_for('static',filename='excel-img.png')}}" alt="ex-icon" width="" height=""
+            style="position: absolute; top: 0; right: 0;">
+    </a>
+    <br>
+    <br>
+    <div class="tableFixHead">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Sun1</th>
+                    <th>Mon1</th>
+                    <th>Tue1</th>
+                    <th>Wed1</th>
+                    <th>Thur1</th>
+                    <th>Fri1</th>
+                    <th>Sat1</th>
+                    <th>Sched Hrs_w1</th>
+                    <th>Sun2</th>
+                    <th>Mon2</th>
+                    <th>Tue2</th>
+                    <th>Wed2</th>
+                    <th>Thur2</th>
+                    <th>Fri2</th>
+                    <th>Sat2</th>
+                    <th>Sched Hrs_w2</th>
+                    <th>Total_Work Hrs</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{item.emp_name}}</td>
-                <td>{{item.sun1}}</td>
-                <td>{{item.mon1}}</td>
-                <td>{{item.tue1}}</td>
-                <td>{{item.wed1}}</td>
-                <td>{{item.thur1}}</td>
-                <td>{{item.fri1}}</td>
-                <td>{{item.sat1}}</td>
-                <td>{{item.used_fte}}</td>
-                <td>{{item.sun2}}</td>
-                <td>{{item.mon2}}</td>
-                <td>{{item.tue1}}</td>
-                <td>{{item.wed2}}</td>
-                <td>{{item.thur2}}</td>
-                <td>{{item.fri2}}</td>
-                <td>{{item.sat2}}</td>
-                <td>{{item.used_fte2}}</td>
-                <td>{{item.total_fte}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{item.emp_name}}</td>
+                    <td>{{item.sun1}}</td>
+                    <td>{{item.mon1}}</td>
+                    <td>{{item.tue1}}</td>
+                    <td>{{item.wed1}}</td>
+                    <td>{{item.thur1}}</td>
+                    <td>{{item.fri1}}</td>
+                    <td>{{item.sat1}}</td>
+                    <td>{{item.used_fte}}</td>
+                    <td>{{item.sun2}}</td>
+                    <td>{{item.mon2}}</td>
+                    <td>{{item.tue1}}</td>
+                    <td>{{item.wed2}}</td>
+                    <td>{{item.thur2}}</td>
+                    <td>{{item.fri2}}</td>
+                    <td>{{item.sat2}}</td>
+                    <td>{{item.used_fte2}}</td>
+                    <td>{{item.total_fte}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

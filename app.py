@@ -335,28 +335,22 @@ def FnN_downloads(file):
                              f"attachment; filename={file_name}"})
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
+locations = {'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
+                     'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU'],
+             'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU']}
 
-    if request.method == 'POST':
-        import operation
-        operation.main()
-    emp_dtl = request.form.get('emp_dtl')
-    if emp_dtl != None:
-        #print('EmpSearch if stmt..')
-        emp_dtl_f = func.lower(f'%{emp_dtl}%')
-        emp_list = Kitchen_schedule.query.filter(or_(
-            func.lower(Kitchen_schedule.Job).like(emp_dtl_f),
-            func.lower(Kitchen_schedule.Sun1).like(emp_dtl_f),
-            func.lower(Kitchen_schedule.Mon1).like(emp_dtl_f))
-        ).order_by(Kitchen_schedule.kitchen_id)
 
-    else:
-        #print('EmpSearch else stmt..')
-        emp_list = Kitchen_schedule.query.order_by(
-            Kitchen_schedule.kitchen_id).all()
-    emp = Employee.query.order_by(Employee.uniq_id).all()
-    return render_template('test.html', items=emp_list, emp=emp)
+def NHSN_Entry(location, entry_type):
+    units = locations[location]
+    return render_template('test.html', entry_type=entry_type, location=location, units=units)
+
+
+@app.route('/CentralLines/WMH', methods=['GET', 'POST'])
+def CentralLine_WMH():
+    units = locations['WMH']
+    return render_template('test.html', entry_type='Central Lines', location='WMH', units=units,
+                           url_fn='CentralLine_WMH')
+
 
 # -------OccMed App Starts here--------------
 

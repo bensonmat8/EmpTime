@@ -1,208 +1,38 @@
-{% extends "layout.html" %}
+{% extends "layout_NHSN.html" %}
 
 {% block heading %}
-Employee Schedule
+Data Entry {{ entry_type }} - {{location}}
 {% endblock %}
 
 {% block body %}
-<script>
-    function togglePopup(kitchen_id, kitchen_col, old_emp) {
-        document.getElementById("popup-1").classList.toggle("active");
-        var form = document.forms[0]
-        form.querySelector('input[name="hidden-kitchen-id"]').value = kitchen_id
-        form.querySelector('input[name="hidden-kitchen-col"]').value = kitchen_col
-        form.querySelector('input[name="hidden-old-emp-id"]').value = old_emp
-        $('#result').text('Current Employee: ' + old_emp.replace(/-/g, ' '));
-    }
-</script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-    $(function () {
-        $('a#process_input').bind('click', function () {
-            $.getJSON('/_schedule_gen', {
-                emp_id: $('select[name="emp_id"]').val(),
-                kitchen_id: $('input[name="hidden-kitchen-id"]').val(),
-                col: $('input[name="hidden-kitchen-col"]').val(),
-                old_emp_id: $('input[name="hidden-old-emp-id"]').val(),
-            }, function (data) {
-                $("#result").text(data.result);
-                //alert($('select[name="emp_id"]').val());
-                location.reload();
-            });
-            return false;
-        });
-    });
-</script>
-
-<style>
-    .tableFixHead {
-        overflow-y: auto;
-        height: 820px;
-    }
-
-    .tableFixHead thead th {
-        position: sticky;
-        top: 0;
-        left: 0;
-        z-index: 2;
-    }
-
-    td:first-child,
-    th:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 1;
-        background-color: aliceblue;
-    }
-
-    td:last-child,
-    th:last-child {
-        position: sticky;
-        right: 0;
-        z-index: 1;
-        background-color: aliceblue;
-    }
-</style>
-<link rel="stylesheet" href={{ url_for('static', filename='popup.css') }}>
-
-<div class="popup" id="popup-1">
-    <div class="overlay"></div>
-    <div class="content">
-        <div class="close-btn" onclick="togglePopup()">&times;</div>
-        <br>
-        <form action="{{url_for('test')}}" method="POST" id="">
-            Employee:
-            <select name="emp_id">
-                {% for e in emp %}
-                <option value={{ e.uniq_id|replace(' ','-') }} {% if e.emp_id==emp_id%} selected="selected" {%endif%}>
-                    {{e.uniq_id }}</option>
-                {%endfor%}
-            </select>
-            <br>
-            <input type="text" value=118 name="hidden-kitchen-id" hidden>
-            <br>
-            <input type="text" value="mon1" name="hidden-kitchen-col" hidden>
-            <br>
-            <input type="text" value="Test Test3" name="hidden-old-emp-id" hidden>
-            <br>
-            <div id="result"></div><br>
-            <a href="#" id="process_input"><input type="submit" name="" id="" class="btn btn-primary btn-sm"></a>
-        </form>
-
-    </div>
-</div>
-
-<!-- <button onclick="togglePopup('105', 'fri1')" class="btn btn-outline-primary btn-sm kit-table-data" data-kitchen_id="105"
-    data-kitchen_col="fri1">Show This</button> -->
-
-
-<div>
-    <form action="{{ url_for('schedule') }}" method="post">
-        <button id="Submit" class="btn btn-primary">Generate Schedule</button>
-    </form>
-</div>
-<div>
-    <ul>
-        <li><a href="{{ url_for('emp_table') }}">Click Here</a> to see employee level schedule</li>
-    </ul>
-
-</div>
-<h2>Schedule:</h2>
-<style>
-
-</style>
-<div class="tableFixHead" style="min-width: 1220px;">
-    <table class="table  table-bordered table-hover">
-        <thead class="thead-dark">
-            <!-- <tr>
-                <th colspan="2">2020-09-06</th>
-                <th colspan="7">Week 1</th>
-                <th colspan="7">Week 2</th>
-            </tr> -->
-            <tr>
-                <th>Job</th>
-                <th>Sunday</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thurday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Sunday</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{item.job}}</td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun1', '{{ item.sun1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.sun1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="sun1">{{item.sun1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon1', '{{ item.mon1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.mon1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="mon1">{{item.mon1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue1', '{{ item.tue1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.tue1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="tue1">{{item.tue1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed1', '{{ item.wed1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.wed1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="wed1">{{item.wed1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur1', '{{ item.thur1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.thur1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="thur1">{{item.thur1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri1', '{{ item.fri1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.fri1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="fri1">{{item.fri1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat1', '{{ item.sat1|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.sat1 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="sat1">{{item.sat1}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sun2', '{{ item.sun2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.sun2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="sun2">{{item.sun2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'mon2', '{{ item.mon2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.mon2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="mon2">{{item.mon2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'tue2', '{{ item.tue2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.tue2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="tue2">{{item.tue2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'wed2', '{{ item.wed2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.wed2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="wed2">{{item.wed2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'thur2', '{{ item.thur2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.thur2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="thur2">{{item.thur2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'fri2', '{{ item.fri2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.fri2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="fri2">{{item.fri2}}</button></td>
-                <td><button onclick="togglePopup('{{item.kitchen_id}}', 'sat2', '{{ item.sat2|replace(' ','-') }}')"
-                        {% if 'Add_employee' in item.sat2 %} class="btn btn-outline-danger" {% else %}
-                        class="btn btn-outline-primary btn-sm kit-table-data" {% endif %}
-                        data-kitchen_id={{item.kitchen_id}} data-kitchen_col="sat2">{{item.sat2}}</button></td>
-                <td>{{item.time.strftime('%H:%M')}}</td>
-            </tr>
+<form action="{{url_for('CentralLine_WMH')}}" method="post">
+    Campus: <select name="campus" id="campus">
+        <option value="BGH">BGH</option>
+        <option value="CMH">CMH</option>
+        <option value="DVH">DVH</option>
+        <option value="WMH">WMH</option>
+    </select>
+    <div id="table">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Unit</th>
+                    <th scope="col">EPIC Count</th>
+                    <th scope="col">Manual Count</th>
+                </tr>
+            </thead>
+            {% for unit in units %}
+            <tbody>
+                <tr>
+                    <td>{{unit}}</td>
+                    <td><input type="Number" name="{{unit}}_epic" class="sub_item"></td>
+                    <td><input type="Number" name="{{unit}}_manual" class="sub_item"></td>
+                </tr>
+            </tbody>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </table>
+    </div>
+    <input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+
+</form>
 {% endblock %}
