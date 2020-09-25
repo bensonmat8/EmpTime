@@ -337,7 +337,9 @@ def FnN_downloads(file):
 
 locations = {'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
                      'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU'],
-             'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU']}
+             'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU'],
+             'CMH': ['ED', '3 West', '3S', '2 North', '2 South', '2 West', 'SCU'],
+             'DVH': ['Addiction Rehab', 'Med Surg']}
 
 
 def NHSN_Entry(location, entry_type):
