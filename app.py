@@ -352,6 +352,30 @@ def CentralLine_WMH():
                            url_fn='CentralLine_WMH')
 
 
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+
+    if request.method == 'POST':
+        import operation
+        operation.main()
+    emp_dtl = request.form.get('emp_dtl')
+    if emp_dtl != None:
+        #print('EmpSearch if stmt..')
+        emp_dtl_f = func.lower(f'%{emp_dtl}%')
+        emp_list = Kitchen_schedule.query.filter(or_(
+            func.lower(Kitchen_schedule.Job).like(emp_dtl_f),
+            func.lower(Kitchen_schedule.Sun1).like(emp_dtl_f),
+            func.lower(Kitchen_schedule.Mon1).like(emp_dtl_f))
+        ).order_by(Kitchen_schedule.kitchen_id)
+
+    else:
+        #print('EmpSearch else stmt..')
+        emp_list = Kitchen_schedule.query.order_by(
+            Kitchen_schedule.kitchen_id).all()
+    emp = Employee.query.order_by(Employee.uniq_id).all()
+    return render_template('test.html', items=emp_list, emp=emp)
+
+
 # -------OccMed App Starts here--------------
 
 
