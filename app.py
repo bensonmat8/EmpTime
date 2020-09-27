@@ -3,6 +3,7 @@ Created on Sun Jun 21 20:22:05 2020
 
 @author: bensonshajimathew
 """
+import json
 from flask import Flask, render_template, request, jsonify, Response
 from models import *
 from datetime import datetime
@@ -335,23 +336,24 @@ def FnN_downloads(file):
                              f"attachment; filename={file_name}"})
 
 
-locations = {'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
-                     'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU'],
-             'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU'],
-             'CMH': ['ED', '3 West', '3S', '2 North', '2 South', '2 West', 'SCU'],
-             'DVH': ['Addiction Rehab', 'Med Surg']}
+locations = {'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU']
+             #  'CMH': ['ED', '3 West', '3S', '2 North', '2 South', '2 West', 'SCU'],
+             #  'DVH': ['Addiction Rehab', 'Med Surg'],
+             #  'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
+             #          'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU']
+             }
+jsn = []
+for loc in locations:
+    for u in locations[loc]:
+        jsn.append({'campus': loc, 'unit': u})
 
 
-def NHSN_Entry(location, entry_type):
-    units = locations[location]
-    return render_template('test.html', entry_type=entry_type, location=location, units=units)
+@app.route('/NHSN/DataEntry', methods=['GET', 'POST'])
+def NHSN_DataEntry():
 
-
-@app.route('/CentralLines/WMH', methods=['GET', 'POST'])
-def CentralLine_WMH():
-    units = locations['WMH']
-    return render_template('test.html', entry_type='Central Lines', location='WMH', units=units,
-                           url_fn='CentralLine_WMH')
+    units = locations['BGH']
+    return render_template('NHSNdataEntry.html', entry_type='Central Lines', locations=locations,
+                           units=units, url_fn='CentralLine_WMH', loc_jsn=jsn)
 
 
 @app.route('/test', methods=['GET', 'POST'])
