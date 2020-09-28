@@ -347,14 +347,25 @@ for loc in locations:
         jsn.append({'campus': loc, 'unit': u})
 
 
-@app.route('/NHSN/DataEntry', methods=['GET', 'POST'])
-@app.route('/NHSN/DataEntry/<campus>', methods=['GET', 'POST'])
-def NHSN_DataEntry(campus=None):
+@app.route('/NHSN/ManualDataEntry', methods=['GET', 'POST'])
+@app.route('/NHSN/ManualDataEntry/<campus>', methods=['GET', 'POST'])
+def NHSN_DataEntryManual(campus=None):
     try:
         location = locations[campus]
     except:
         location = None
-    return render_template('NHSNdataEntry.html', entry_type='Central Lines', locations=location,
+    return render_template('NHSNdataEntry.html', entry_type='Manual', locations=location,
+                           url_fn='CentralLine_WMH', campus=campus)
+
+
+@app.route('/NHSN/EPICDataEntry', methods=['GET', 'POST'])
+@app.route('/NHSN/EPICDataEntry/<campus>', methods=['GET', 'POST'])
+def NHSN_DataEntryEPIC(campus=None):
+    try:
+        location = locations[campus]
+    except:
+        location = None
+    return render_template('NHSNdataEntry.html', entry_type='EPIC', locations=location,
                            url_fn='CentralLine_WMH', campus=campus)
 
 

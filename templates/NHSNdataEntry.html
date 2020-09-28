@@ -1,16 +1,20 @@
 {% extends "layout_NHSN.html" %}
 
 {% block heading %}
-NHSN Manual Count
+NHSN {{entry_type}} Count
 {% endblock %}
 
 {% block body %}
 <script>
     //var locations = JSON.parse('{{ locations | safe }}')
-    function campus_change() {
+    function submit_data() {
         var campus = document.getElementById('campus').value
-        document.getElementsByClassName('show-location', function () {
-
+        document.getElementsByClassName('sub_item', function (elm) {
+            if (elm.value != "") {
+                var data = Object.assign({}, elm.dataset)
+                data['value'] = elm.value
+                data_json = JSON.stringify(data)
+            }
         })
     }
 </script>
@@ -20,13 +24,13 @@ NHSN Manual Count
 <h3>Select Campus:</h3>
 {%endif%}
 <a {% if campus=='BGH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
-    href="{{url_for('NHSN_DataEntry', campus='BGH')}}">BGH</a>
+    href="{{url_for('NHSN_DataEntry'+entry_type, campus='BGH')}}">BGH</a>
 <a {% if campus=='CMH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
-    href="{{url_for('NHSN_DataEntry', campus='CMH')}}">CMH</a>
+    href="{{url_for('NHSN_DataEntry'+entry_type, campus='CMH')}}">CMH</a>
 <a {% if campus=='DVH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
-    href="{{url_for('NHSN_DataEntry', campus='DVH')}}">DVH</a>
+    href="{{url_for('NHSN_DataEntry'+entry_type, campus='DVH')}}">DVH</a>
 <a {% if campus=='WMH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
-    href="{{url_for('NHSN_DataEntry', campus='WMH')}}">WMH</a>
+    href="{{url_for('NHSN_DataEntry'+entry_type, campus='WMH')}}">WMH</a>
 
 {% if locations is not none %}
 <div id="table-{{loc}}" class="show-location">
@@ -63,7 +67,7 @@ NHSN Manual Count
         </div>
     </table>
 </div>
-<input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+<input class="btn btn-primary" onclick="" type="submit" id="Submit" name="submit"></input>
 
 {%endif%}
 
