@@ -195,3 +195,7 @@ class NHSNdataEntry(db.Model):
     epic_count = db.Column(db.Integer, nullable=True)
     difference = db.Column(db.Integer, nullable=True)
     difference_percent = db.Column(db.Float, nullable=True)
+    create_timestamp = db.Column(db.DateTime, nullable=False)
+    create_by = db.Column(db.String, nullable=False)
+    modify_timestamp = db.Column(db.DateTime, nullable=False)
+    modified_by = db.Column(db.String, nullable=False)

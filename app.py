@@ -372,7 +372,7 @@ def NHSN_DataEntryEPIC(campus=None):
 @app.route('/NHSN/DataSubmit', methods=['GET', 'POST'])
 def NHSN_DataSubmit():
     data = request.get_json()
-    print(f'{type(data)}: {data}')
+    print(f'From IP::{request.remote_addr}: {data}')
     message = 'recieved'
     return message
 
