@@ -1,0 +1,70 @@
+{% extends "layout_NHSN.html" %}
+
+{% block heading %}
+NHSN Manual Count
+{% endblock %}
+
+{% block body %}
+<script>
+    //var locations = JSON.parse('{{ locations | safe }}')
+    function campus_change() {
+        var campus = document.getElementById('campus').value
+        document.getElementsByClassName('show-location', function () {
+
+        })
+    }
+</script>
+{%if campus%}
+<h3>Campus: {{campus}}</h3>
+{%else%}
+<h3>Select Campus:</h3>
+{%endif%}
+<a {% if campus=='BGH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
+    href="{{url_for('NHSN_DataEntry', campus='BGH')}}">BGH</a>
+<a {% if campus=='CMH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
+    href="{{url_for('NHSN_DataEntry', campus='CMH')}}">CMH</a>
+<a {% if campus=='DVH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
+    href="{{url_for('NHSN_DataEntry', campus='DVH')}}">DVH</a>
+<a {% if campus=='WMH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
+    href="{{url_for('NHSN_DataEntry', campus='WMH')}}">WMH</a>
+
+{% if locations is not none %}
+<div id="table-{{loc}}" class="show-location">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Unit</th>
+                <th scope="col">Central Line</th>
+                <th scope="col">Catheters</th>
+                <th scope="col">Vents</th>
+
+            </tr>
+        </thead>
+        <div id="table-body">
+            <tbody>
+                {% for unit in locations %}
+
+                <tr>
+                    <td>{{unit}}</td>
+                    <td><input type="Number" name="{{unit}}_central_line" class="sub_item" data-campus="{{campus}}"
+                            data-unit="{{unit}}" id="{{unit}}_central_line" data-entry_type="{{entry_type}}"
+                            data-measure="Central_Line"></td>
+                    <td><input type="Number" name="{{unit}}_catheters" class="sub_item" data-campus="{{campus}}"
+                            data-unit="{{unit}}" id="{{unit}}_catheters" data-entry_type="{{entry_type}}"
+                            data-measure="Catheters"></td>
+                    <td><input type="Number" name="{{unit}}_vents" class="sub_item" data-campus="{{campus}}"
+                            data-unit="{{unit}}" id="{{unit}}_vents" data-entry_type="{{entry_type}}"
+                            data-measure="Vents"></td>
+
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </div>
+    </table>
+</div>
+<input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
+
+{%endif%}
+
+{% endblock %}
