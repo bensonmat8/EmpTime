@@ -179,3 +179,19 @@ class OccMedCheckIn(db.Model):
     reason = db.Column(db.String, nullable=False)
     comments = db.Column(db.String, nullable=True)
     checkin_time = db.Column(db.DateTime, nullable=False)
+
+# ---------NHSN App----------------------
+# Started 2020-09-28
+
+
+class NHSNdataEntry(db.Model):
+    __tablename = 'NHSN_data_entry'
+    nhsn_item_id = db.Column(db.String, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
+    campus = db.Column(db.String, nullable=False)
+    unit = db.Column(db.String, nullable=False)
+    measure = db.Column(db.String, nullable=False)
+    manual_count = db.Column(db.Integer, nullable=True)
+    epic_count = db.Column(db.Integer, nullable=True)
+    difference = db.Column(db.Integer, nullable=True)
+    difference_percent = db.Column(db.Float, nullable=True)

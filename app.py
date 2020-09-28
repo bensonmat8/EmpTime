@@ -369,6 +369,14 @@ def NHSN_DataEntryEPIC(campus=None):
                            url_fn='CentralLine_WMH', campus=campus)
 
 
+@app.route('/NHSN/DataSubmit', methods=['GET', 'POST'])
+def NHSN_DataSubmit():
+    data = request.get_json()
+    print(f'{type(data)}: {data}')
+    message = 'recieved'
+    return message
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 
