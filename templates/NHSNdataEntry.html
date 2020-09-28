@@ -5,35 +5,7 @@ NHSN {{entry_type}} Count
 {% endblock %}
 
 {% block body %}
-<script>
-    //var locations = JSON.parse('{{ locations | safe }}')
-    function submit_data() {
-
-        var all = document.getElementsByClassName('sub_item')
-        for (var i = 0; i < all.length; i++) {
-            elm = all[i]
-            if (elm.value != "") {
-                var data = Object.assign({}, elm.dataset)
-                data['value'] = elm.value
-
-                fetch('/NHSN/DataSubmit', {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                }).then(function (response) {
-                    return response.text();
-                }).then(function (text) {
-                    console.log('POST response: ');
-                    console.log(text);
-                    //alert(text);
-                })
-            }
-        }
-
-    }
-</script>
+<script src="{{url_for('static', filename='SubmitData.js')}}"></script>
 {%if campus%}
 <h3>Campus: {{campus}}</h3>
 {%else%}
@@ -83,7 +55,8 @@ NHSN {{entry_type}} Count
         </div>
     </table>
 </div>
-<input class="btn btn-primary" onclick="submit_data()" type="submit" id="Submit" name="submit"></input>
+<input class="btn btn-primary" onclick="submit_data('/NHSN/DataSubmit')" type="submit" id="Submit"
+    name="submit"></input>
 
 {%endif%}
 
