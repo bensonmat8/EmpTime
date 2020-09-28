@@ -336,11 +336,10 @@ def FnN_downloads(file):
                              f"attachment; filename={file_name}"})
 
 
-locations = {'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU']
-             #  'CMH': ['ED', '3 West', '3S', '2 North', '2 South', '2 West', 'SCU'],
-             #  'DVH': ['Addiction Rehab', 'Med Surg'],
-             #  'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
-             #          'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU']
+locations = {'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 'TCU'], 'CMH': ['ED', '3 West', '3S', '2 North', '2 South', '2 West', 'SCU'],
+             'DVH': ['Addiction Rehab', 'Med Surg'],
+             'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
+                     'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU']
              }
 jsn = []
 for loc in locations:
@@ -349,11 +348,14 @@ for loc in locations:
 
 
 @app.route('/NHSN/DataEntry', methods=['GET', 'POST'])
-def NHSN_DataEntry():
-
-    units = locations['BGH']
-    return render_template('NHSNdataEntry.html', entry_type='Central Lines', locations=locations,
-                           units=units, url_fn='CentralLine_WMH', loc_jsn=jsn)
+@app.route('/NHSN/DataEntry/<campus>', methods=['GET', 'POST'])
+def NHSN_DataEntry(campus=None):
+    try:
+        location = locations[campus]
+    except:
+        location = None
+    return render_template('NHSNdataEntry.html', entry_type='Central Lines', locations=location,
+                           url_fn='CentralLine_WMH', campus=campus)
 
 
 @app.route('/test', methods=['GET', 'POST'])
