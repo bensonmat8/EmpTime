@@ -1,11 +1,11 @@
 {% extends "layout_NHSN.html" %}
 
 {% block heading %}
-NHSN {{entry_type}} Count
+NHSN <span id="entry_type">{{entry_type}}</span> Count
 {% endblock %}
 
 {% block body %}
-<script src="{{url_for('static', filename='SubmitData.js')}}"></script>
+<script src="{{url_for('static', filename='SubmitDataV1.1.js')}}"></script>
 {%if campus%}
 <h3>Campus: {{campus}}</h3>
 {%else%}

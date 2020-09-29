@@ -341,10 +341,6 @@ locations = {'BGH': ['ED', 'GICU', 'KM3', 'KM4', 'KM5', 'M3', 'M4', 'M5', 'M6', 
              'WMH': ['CVICU', 'ED WIL', 'EXU', 'ICU', 'NSS', 'NB1', 'NICU', 'NT2',
                      'NT3', 'NT4', 'NT5', 'NW3', 'NW4', 'ST3', 'ST4', 'ST5', 'SSU']
              }
-jsn = []
-for loc in locations:
-    for u in locations[loc]:
-        jsn.append({'campus': loc, 'unit': u})
 
 
 @app.route('/NHSN/ManualDataEntry', methods=['GET', 'POST'])
@@ -374,16 +370,46 @@ def NHSN_DataSubmit():
     data = request.get_json()
     print(f'From IP::{request.remote_addr}: {data}')
     date = datetime.now()
-    if 11 < date.hour < 18:
+    if 10 < date.hour < 18 and data['entry_type'] == 'Manual':
         message = {'status': 'Failed',
                    'message': 'Data Entry not between 6 pm and 11 am.'}
         return jsonify(message)
     elif date.hour < 11:
         date = date - timedelta(days=1)
-    message = {'status': 'recieved', 'alert': ''}
-    message = {'status': 'Failed',
-               'message': 'Data Entry not between 6 pm and 11 am.'}
-    return jsonify(message)
+    nhsn_item_id = str(date.date())+data['campus']+data['unit']+data['measure']
+    if data['entry_type'] == 'Manual':
+        try:
+            row = NHSNdataEntry(nhsn_item_id=nhsn_item_id, date=date.date(),
+                                campus=data['campus'], unit=data['unit'], measure=data['measure'],
+                                manual_count=int(data['value']), create_timestamp=datetime.now(),
+                                create_by=request.remote_addr, modify_timestamp=datetime.now(),
+                                modified_by=request.remote_addr)
+            db.session.add(row)
+        except:
+            row = NHSNdataEntry.query.get(nhsn_item_id)
+            row.manual_count = int(data['value'])
+            row.modify_timestamp = datetime.now()
+            row.modified_by = request.remote_addr
+    elif data['entry_type'] == 'EPIC':
+        try:
+            row = NHSNdataEntry(nhsn_item_id=nhsn_item_id, date=date.date(),
+                                campus=data['campus'], unit=data['unit'], measure=data['measure'],
+                                epic_count=int(data['value']), create_timestamp=datetime.now(),
+                                create_by=request.remote_addr, modify_timestamp=datetime.now(),
+                                modified_by=request.remote_addr)
+            db.session.add(row)
+        except:
+            row = NHSNdataEntry.query.get(nhsn_item_id)
+            row.epic_count = int(data['value'])
+            row.modify_timestamp = datetime.now()
+            row.modified_by = request.remote_addr
+    db.session.commit()
+    message = {'status': 'recieved', 'message': ''}
+    # message = {'status': 'Failed',
+    #            'message': 'Data Entry not between 6 pm and 11 am.'}
+    response = jsonify(message)
+    response.cache_control.max_age = 60*2  # clear the browser cache after 10hrs
+    return response
 
 
 @app.route('/test', methods=['GET', 'POST'])

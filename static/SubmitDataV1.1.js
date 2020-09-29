@@ -1,7 +1,8 @@
 function submit_data(_submit_link) {
     var t = new Date().getHours()
-    if (t > 10 && t < 6) {
-        alert('Enter data after 6pm.')
+    var entry_type = document.getElementById('entry_type').innerText
+    if ((t > 10 && t < 18) && entry_type == "Manual") {
+        alert('Data collection must be within 5 hrs from midnight.')
     } else {
         var all = document.getElementsByClassName('sub_item')
         for (var i = 0; i < all.length; i++) {
