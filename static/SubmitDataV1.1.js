@@ -2,7 +2,7 @@ function submit_data(_submit_link) {
     var t = new Date().getHours()
     var entry_type = document.getElementById('entry_type').innerText
     if ((t > 10 && t < 18) && entry_type == "Manual") {
-        alert('Data collection must be within 5 hrs from midnight.')
+        alert('Data collection must be within 5 hrs of midnight.')
     } else {
         var all = document.getElementsByClassName('sub_item')
         for (var i = 0; i < all.length; i++) {

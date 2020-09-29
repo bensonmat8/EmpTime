@@ -421,6 +421,18 @@ def NHSN_DataSubmit():
     return response
 
 
+@app.route('/NHSN/Audit', methods=['GET', 'POST'])
+@app.route('/NHSN/Audit/<campus>', methods=['GET', 'POST'])
+def NHSN_Audit(campus='All'):
+    if campus == 'All':
+        data = NHSNdataEntry.query.order_by(
+            NHSNdataEntry.campus, NHSNdataEntry.measure, NHSNdataEntry.unit).all()
+    else:
+        data = NHSNdataEntry.query.order_by(
+            NHSNdataEntry.campus, NHSNdataEntry.unit, NHSNdataEntry.measure).all()
+    return render_template('NHSN_Audit.html', data=data, campus=campus)
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 
