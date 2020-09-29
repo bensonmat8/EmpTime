@@ -6,7 +6,7 @@ Created on Sun Jun 21 20:22:05 2020
 import json
 from flask import Flask, render_template, request, jsonify, Response
 from models import *
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import pandas as pd
 from sqlalchemy import or_, and_, func
@@ -373,8 +373,17 @@ def NHSN_DataEntryEPIC(campus=None):
 def NHSN_DataSubmit():
     data = request.get_json()
     print(f'From IP::{request.remote_addr}: {data}')
-    message = 'recieved'
-    return message
+    date = datetime.now()
+    if 11 < date.hour < 18:
+        message = {'status': 'Failed',
+                   'message': 'Data Entry not between 6 pm and 11 am.'}
+        return jsonify(message)
+    elif date.hour < 11:
+        date = date - timedelta(days=1)
+    message = {'status': 'recieved', 'alert': ''}
+    message = {'status': 'Failed',
+               'message': 'Data Entry not between 6 pm and 11 am.'}
+    return jsonify(message)
 
 
 @app.route('/test', methods=['GET', 'POST'])
