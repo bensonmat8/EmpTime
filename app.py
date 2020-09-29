@@ -383,9 +383,16 @@ def NHSN_DataSubmit():
         try:
             row = NHSNdataEntry.query.get(nhsn_item_id)
             row.manual_count = int(data['value'])
-            row.difference = abs(row.manual_count - row.epic_count)
-            row.difference_percent = row.difference * 100 / row.manual_count
-            row.difference_percent = round(row.difference_percent, 2)
+            print(f'M Count: {row.manual_count}\nE count: {row.epic_count}')
+            if row.manual_count is not None and row.epic_count is not None:
+                row.difference = abs(row.manual_count - row.epic_count)
+                if row.manual_count == 0 and row.epic_count == 0:
+                    row.difference_percent = 0
+                elif row.manual_count == 0 or row.epic_count == 0:
+                    row.difference_percent = 100
+                else:
+                    row.difference_percent = row.difference * 100 / row.manual_count
+                    row.difference_percent = round(row.difference_percent, 2)
             row.modify_timestamp = datetime.now()
             row.modified_by = request.remote_addr
 
@@ -400,9 +407,15 @@ def NHSN_DataSubmit():
         try:
             row = NHSNdataEntry.query.get(nhsn_item_id)
             row.epic_count = int(data['value'])
-            row.difference = abs(row.manual_count - row.epic_count)
-            row.difference_percent = row.difference * 100 / row.manual_count
-            row.difference_percent = round(row.difference_percent, 2)
+            if row.manual_count is not None and row.epic_count is not None:
+                row.difference = abs(row.manual_count - row.epic_count)
+                if row.manual_count == 0 and row.epic_count == 0:
+                    row.difference_percent = 0
+                elif row.manual_count == 0 or row.epic_count == 0:
+                    row.difference_percent = 100
+                else:
+                    row.difference_percent = row.difference * 100 / row.manual_count
+                    row.difference_percent = round(row.difference_percent, 2)
             row.modify_timestamp = datetime.now()
             row.modified_by = request.remote_addr
 
