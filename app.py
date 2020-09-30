@@ -395,7 +395,7 @@ def NHSN_DataSubmit():
                     row.difference_percent = round(row.difference_percent, 2)
             row.modify_timestamp = datetime.now()
             row.modified_by = request.remote_addr
-
+            #print('update manual')
         except:
             row = NHSNdataEntry(nhsn_item_id=nhsn_item_id, date=date.date(),
                                 campus=data['campus'], unit=data['unit'], measure=data['measure'],
@@ -440,19 +440,24 @@ def NHSN_Audit(campus='All'):
     date = request.form.get('date')
     print(date)
     if campus == 'All':
-        data = NHSNdataEntry.query.order_by(
+        dates = [i[0] for i in NHSNdataEntry.query.with_entities(NHSNdataEntry.date.distinct()).order_by(
+            NHSNdataEntry.date.desc()).all()]
+        data = NHSNdataEntry.query.filter(NHSNdataEntry.date.in_([date]) if date is not None else
+                                          NHSNdataEntry.date.in_(dates)).order_by(
             NHSNdataEntry.date.desc(), NHSNdataEntry.campus,
             NHSNdataEntry.measure, NHSNdataEntry.unit).all()
-        dates = NHSNdataEntry.query.with_entities(NHSNdataEntry.date.distinct()).order_by(
-            NHSNdataEntry.date.desc()).all()
+
     else:
-        data = NHSNdataEntry.query.filter(NHSNdataEntry.campus == campus).order_by(
+        dates = [i[0] for i in NHSNdataEntry.query.filter(NHSNdataEntry.campus == campus).with_entities(
+            NHSNdataEntry.date.distinct()).order_by(NHSNdataEntry.date.desc()).all()]
+        data = NHSNdataEntry.query.filter(and_(
+            NHSNdataEntry.campus == campus, NHSNdataEntry.date.in_([date]) if date is not None else
+            NHSNdataEntry.date.in_(dates))).order_by(
             NHSNdataEntry.date.desc(), NHSNdataEntry.campus,
             NHSNdataEntry.measure, NHSNdataEntry.unit).all()
-        dates = NHSNdataEntry.query.filter(NHSNdataEntry.campus == campus).with_entities(
-            NHSNdataEntry.date.distinct()).order_by(NHSNdataEntry.date.desc()).all()
+
     # print(max(NHSNdataEntry.date))
-    return render_template('NHSN_Audit.html', data=data, campus=campus, dates=[i[0] for i in dates])
+    return render_template('NHSN_Audit.html', data=data, campus=campus, dates=dates)
 
 
 @app.route('/test', methods=['GET', 'POST'])
