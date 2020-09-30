@@ -376,7 +376,7 @@ def NHSN_DataSubmit():
         message = {'status': 'Failed',
                    'message': 'Data Entry not between 6 pm and 11 am.'}
         return jsonify(message)
-    elif date.hour < 11:
+    elif date.hour < 18:
         date = date - timedelta(days=1)
     nhsn_item_id = str(date.date())+data['campus']+data['unit']+data['measure']
     if data['entry_type'] == 'Manual':
@@ -437,13 +437,22 @@ def NHSN_DataSubmit():
 @app.route('/NHSN/Audit', methods=['GET', 'POST'])
 @app.route('/NHSN/Audit/<campus>', methods=['GET', 'POST'])
 def NHSN_Audit(campus='All'):
+    date = request.form.get('date')
+    print(date)
     if campus == 'All':
         data = NHSNdataEntry.query.order_by(
-            NHSNdataEntry.campus, NHSNdataEntry.measure, NHSNdataEntry.unit).all()
+            NHSNdataEntry.date.desc(), NHSNdataEntry.campus,
+            NHSNdataEntry.measure, NHSNdataEntry.unit).all()
+        dates = NHSNdataEntry.query.with_entities(NHSNdataEntry.date.distinct()).order_by(
+            NHSNdataEntry.date.desc()).all()
     else:
-        data = NHSNdataEntry.query.order_by(
-            NHSNdataEntry.campus, NHSNdataEntry.unit, NHSNdataEntry.measure).all()
-    return render_template('NHSN_Audit.html', data=data, campus=campus)
+        data = NHSNdataEntry.query.filter(NHSNdataEntry.campus == campus).order_by(
+            NHSNdataEntry.date.desc(), NHSNdataEntry.campus,
+            NHSNdataEntry.measure, NHSNdataEntry.unit).all()
+        dates = NHSNdataEntry.query.filter(NHSNdataEntry.campus == campus).with_entities(
+            NHSNdataEntry.date.distinct()).order_by(NHSNdataEntry.date.desc()).all()
+    # print(max(NHSNdataEntry.date))
+    return render_template('NHSN_Audit.html', data=data, campus=campus, dates=[i[0] for i in dates])
 
 
 @app.route('/test', methods=['GET', 'POST'])

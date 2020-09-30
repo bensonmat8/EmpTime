@@ -16,6 +16,18 @@ NHSN Audit
 <a {% if campus=='WMH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
     href="{{url_for('NHSN_Audit', campus='WMH')}}">WMH</a>
 <br>
+<br>
+<form action="{{url_for('NHSN_Audit', campus=campus)}}" method="POST">
+    <h4>Select Date:</h4> <select name="date" id="date">
+        {%for dt in dates%}
+        <option value="{{dt.strftime('%Y-%m-%d')}}">{{dt.strftime('%Y-%m-%d')}}</option>
+        {%endfor%}
+    </select>
+    <button class="btn btn-primary btn-sm">Submit</button>
+</form>
+<br>
+<br>
+
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
