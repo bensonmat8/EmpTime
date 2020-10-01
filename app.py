@@ -438,7 +438,7 @@ def NHSN_DataSubmit():
 @app.route('/NHSN/Audit/<campus>', methods=['GET', 'POST'])
 def NHSN_Audit(campus='All'):
     date = request.form.get('date')
-    print(date)
+    # print(date)
     if campus == 'All':
         dates = [i[0] for i in NHSNdataEntry.query.with_entities(NHSNdataEntry.date.distinct()).order_by(
             NHSNdataEntry.date.desc()).all()]

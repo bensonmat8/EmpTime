@@ -27,34 +27,40 @@ NHSN Audit
 </form>
 <br>
 <br>
-
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Campus</th>
-            <th scope="col">Unit</th>
-            <th scope="col">Measure</th>
-            <th scope="col">Manual Count</th>
-            <th scope="col">EPIC Count</th>
-            <th scope="col">Difference</th>
-            <th scope="col">Percentage</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in data %}
-        <tr {% if row.difference_percent|float > 5 %} class="table-danger" {% endif %}>
-            <td>{{row.date.strftime('%Y-%m-%d')}}</td>
-            <td>{{row.campus}}</td>
-            <td>{{row.unit}}</td>
-            <td>{{row.measure}}</td>
-            <td style="text-align: center;">{{row.manual_count}}</td>
-            <td style="text-align: center;">{%if row.epic_count  is not none  %}{{row.epic_count}}{%endif%}</td>
-            <td style="text-align: center;">{%if row.difference  is not none  %}{{row.difference}}{%endif%}</td>
-            <td style="text-align: center;">
-                {%if row.difference_percent  is not none  %}{{row.difference_percent}}%{%endif%}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<link rel="stylesheet" href="{{url_for('static', filename='table.css')}}">
+<div class="tableFixHead">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Campus</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Measure</th>
+                <th scope="col">Manual Count</th>
+                <th scope="col">EPIC Count</th>
+                <th scope="col">Difference</th>
+                <th scope="col">Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr {% if row.difference_percent|float > 5 %} class="table-danger" {% endif %}>
+                <td>{{row.date.strftime('%Y-%m-%d')}}</td>
+                <td>{{row.campus}}</td>
+                <td>{{row.unit}}</td>
+                <td>{{row.measure}}</td>
+                <td style="text-align: center;">{%if row.manual_count  is not none  %}{{row.manual_count}}{%endif%}</td>
+                <td style="text-align: center;">{%if row.epic_count  is not none  %}{{row.epic_count}}{%endif%}</td>
+                <td style="text-align: center;">{%if row.difference  is not none  %}{{row.difference}}{%endif%}</td>
+                <td style="text-align: center;">
+                    {%if row.difference_percent  is not none  %}{{row.difference_percent}}%{%endif%}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<br>
 {%endblock%}
