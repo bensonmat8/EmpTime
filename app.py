@@ -460,6 +460,49 @@ def NHSN_Audit(campus='All'):
     return render_template('NHSN_Audit.html', data=data, campus=campus, dates=dates)
 
 
+@app.route('/NHSN/Audit/UpdateData', methods=['GET', 'POST'])
+def NHSN_DataUpdate():
+    data = request.get_json()
+    print(data)
+    nhsn_item_id = data['nhsn_item_id']
+    if data['entry_type'] == 'Manual':
+        row = NHSNdataEntry.query.get(nhsn_item_id)
+        row.manual_count = int(data['value'])
+        if row.manual_count is not None and row.epic_count is not None:
+            row.difference = abs(row.manual_count - row.epic_count)
+            if row.manual_count == 0 and row.epic_count == 0:
+                row.difference_percent = 0
+            elif row.manual_count == 0 or row.epic_count == 0:
+                row.difference_percent = 100
+            else:
+                row.difference_percent = row.difference * 100 / row.manual_count
+                row.difference_percent = round(row.difference_percent, 2)
+        row.modify_timestamp = datetime.now()
+        row.modified_by = request.remote_addr
+        row.reason_for_change = data['reason_for_change']
+    else:
+        row = NHSNdataEntry.query.get(nhsn_item_id)
+        row.epic_count = int(data['value'])
+        if row.manual_count is not None and row.epic_count is not None:
+            row.difference = abs(row.manual_count - row.epic_count)
+            if row.manual_count == 0 and row.epic_count == 0:
+                row.difference_percent = 0
+            elif row.manual_count == 0 or row.epic_count == 0:
+                row.difference_percent = 100
+            else:
+                row.difference_percent = row.difference * 100 / row.manual_count
+                row.difference_percent = round(row.difference_percent, 2)
+        row.modify_timestamp = datetime.now()
+        row.modified_by = request.remote_addr
+        row.reason_for_change = data['reason_for_change']
+    db.session.commit()
+    message = {'status': 'updated', 'message': f'{datetime.now()}'}
+    # message = {'status': 'Failed',
+    #            'message': 'Data Entry not between 6 pm and 11 am.'}
+    response = jsonify(message)
+    return response
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 
