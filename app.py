@@ -416,8 +416,8 @@ def NHSN_DataSubmit():
                 else:
                     row.difference_percent = row.difference * 100 / row.manual_count
                     row.difference_percent = round(row.difference_percent, 2)
-            row.modify_timestamp = datetime.now()
-            row.modified_by = request.remote_addr
+            # row.modify_timestamp = datetime.now()
+            # row.modifieds_by = request.remote_addr
 
         except:
             row = NHSNdataEntry(nhsn_item_id=nhsn_item_id, date=date.date(),
@@ -467,6 +467,8 @@ def NHSN_DataUpdate():
     nhsn_item_id = data['nhsn_item_id']
     if data['entry_type'] == 'Manual':
         row = NHSNdataEntry.query.get(nhsn_item_id)
+        row.audit = f"{datetime.now()} Manual Changed from {row.manual_count} to {data['value']}. {data['reason_for_change']}" if row.audit is None else row.audit + \
+            f"\n{datetime.now()} Manual Changed from {row.manual_count} to {data['value']}. {data['reason_for_change']}"
         row.manual_count = int(data['value'])
         if row.manual_count is not None and row.epic_count is not None:
             row.difference = abs(row.manual_count - row.epic_count)
@@ -480,8 +482,11 @@ def NHSN_DataUpdate():
         row.modify_timestamp = datetime.now()
         row.modified_by = request.remote_addr
         row.reason_for_change = data['reason_for_change']
+
     else:
         row = NHSNdataEntry.query.get(nhsn_item_id)
+        row.audit = f"{datetime.now()} EPIC Changed from {row.epic_count} to {data['value']}. {data['reason_for_change']}" if row.audit is None else row.audit + \
+            f"{datetime.now()} EPIC Changed from {row.epic_count} to {data['value']}. {data['reason_for_change']}"
         row.epic_count = int(data['value'])
         if row.manual_count is not None and row.epic_count is not None:
             row.difference = abs(row.manual_count - row.epic_count)

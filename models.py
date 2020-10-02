@@ -200,3 +200,4 @@ class NHSNdataEntry(db.Model):
     modify_timestamp = db.Column(db.DateTime, nullable=False)
     modified_by = db.Column(db.String, nullable=False)
     reason_for_change = db.Column(db.String, nullable=True)
+    audit = db.Column(db.String, nullable=True)
