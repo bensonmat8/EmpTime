@@ -5,7 +5,7 @@ NHSN <span id="entry_type">{{entry_type}}</span> Count
 {% endblock %}
 
 {% block body %}
-<script src="{{url_for('static', filename='SubmitDataV1.2.js')}}"></script>
+<script src="{{url_for('static', filename='SubmitDataV1.3.js')}}"></script>
 {%if campus%}
 <h3>Campus: {{campus}}</h3>
 {%else%}
@@ -19,7 +19,15 @@ NHSN <span id="entry_type">{{entry_type}}</span> Count
     href="{{url_for('NHSN_DataEntry'+entry_type, campus='DVH')}}">DVH</a>
 <a {% if campus=='WMH'%} class="btn btn-primary" {%else%}class="btn btn-outline-primary" {%endif%}
     href="{{url_for('NHSN_DataEntry'+entry_type, campus='WMH')}}">WMH</a>
-
+{%if entry_type == 'EPIC' %}
+<br> <br> Select date for data entry:
+<select name="date" id="date">
+    {% for row in dates %}
+    <option value="{{row.strftime('%Y-%m-%d')}}">{{row.strftime('%Y-%m-%d')}}</option>
+    {%endfor%}
+</select>
+{%endif%}
+<br><br>
 {% if locations is not none %}
 <div id="table-{{loc}}" class="show-location">
     <table class="table table-bordered">

@@ -363,21 +363,26 @@ def NHSN_DataEntryEPIC(campus=None):
         location = locations[campus]
     except:
         location = None
+    dates = [i[0] for i in NHSNdataEntry.query.with_entities(NHSNdataEntry.date.distinct()).order_by(
+        NHSNdataEntry.date.desc()).all()]
     return render_template('NHSNdataEntry.html', entry_type='EPIC', locations=location,
-                           url_fn='CentralLine_WMH', campus=campus)
+                           url_fn='CentralLine_WMH', campus=campus, dates=dates)
 
 
 @app.route('/NHSN/DataSubmit', methods=['GET', 'POST'])
 def NHSN_DataSubmit():
     data = request.get_json()
     print(f'From IP::{request.remote_addr}: {data}')
-    date = datetime.now()
-    if 17 < date.hour < 18 and data['entry_type'] == 'Manual':
-        message = {'status': 'Failed',
-                   'message': 'Data Entry not between 6 pm and 11 am.'}
-        return jsonify(message)
-    elif date.hour < 18:
-        date = date - timedelta(days=1)
+    try:
+        date = pd.to_datetime(date['date'])
+    except:
+        date = datetime.now()
+        if 17 < date.hour < 18 and data['entry_type'] == 'Manual':
+            message = {'status': 'Failed',
+                       'message': 'Data Entry not between 6 pm and 11 am.'}
+            return jsonify(message)
+        elif date.hour < 18:
+            date = date - timedelta(days=1)
     nhsn_item_id = str(date.date())+data['campus']+data['unit']+data['measure']
     if data['entry_type'] == 'Manual':
         try:
