@@ -374,7 +374,11 @@ def NHSN_DataSubmit():
     data = request.get_json()
     print(f'From IP::{request.remote_addr}: {data}')
     try:
-        date = pd.to_datetime(date['date'])
+        # if date is not present, then it program needs to goto except
+        if pd.isna(pd.to_datetime(data['date'])):
+            pd.NaT*timedelta(days=1)
+        date = pd.to_datetime(data['date'])
+        print(f'Try: {data["date"]}')
     except:
         date = datetime.now()
         if 17 < date.hour < 18 and data['entry_type'] == 'Manual':

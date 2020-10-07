@@ -21,11 +21,18 @@ NHSN <span id="entry_type">{{entry_type}}</span> Count
     href="{{url_for('NHSN_DataEntry'+entry_type, campus='WMH')}}">WMH</a>
 {%if entry_type == 'EPIC' %}
 <br> <br> Select date for data entry:
-<select name="date" id="date">
-    {% for row in dates %}
-    <option value="{{row.strftime('%Y-%m-%d')}}">{{row.strftime('%Y-%m-%d')}}</option>
-    {%endfor%}
-</select>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        var d = new Date()
+        d.setDate(d.getDate() - 1);
+        $('#date').datepicker({
+            defaultDate: d
+        })
+    })
+</script>
+<input type="date" name="date" id="date">
+
 {%endif%}
 <br><br>
 {% if locations is not none %}
