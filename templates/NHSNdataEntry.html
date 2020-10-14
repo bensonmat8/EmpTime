@@ -5,7 +5,7 @@ NHSN <span id="entry_type">{{entry_type}}</span> Count
 {% endblock %}
 
 {% block body %}
-<script src="{{url_for('static', filename='SubmitDataV1.3.js')}}"></script>
+<script src="{{url_for('static', filename='SubmitDataV2.0.js')}}"></script>
 {%if campus%}
 <h3>Campus: {{campus}}</h3>
 {%else%}
@@ -61,6 +61,12 @@ NHSN <span id="entry_type">{{entry_type}}</span> Count
             </tbody>
         </div>
     </table>
+    {%if 'EPIC' in entry_type %}
+    <select name="entry_type_select" id="entry_type_select">
+        <option value="EPIC">EPIC</option>
+        <option value="Manual">Manual</option>
+    </select>
+    {% endif %}
 </div>
 <input class="btn btn-primary" onclick="submit_data('/NHSN/DataSubmit')" type="submit" id="Submit"
     name="submit"></input>
