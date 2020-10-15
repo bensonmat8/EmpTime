@@ -8,6 +8,8 @@ from flask import Flask, render_template, request, jsonify, Response
 from models import *
 from datetime import datetime, timedelta
 import os
+import threading
+import time
 import pandas as pd
 from sqlalchemy import or_, and_, func
 import re
@@ -19,6 +21,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.from_pyfile('config.py')
 db.init_app(app)
 
+
+def dataDump(backupKill):
+    backupKill = 'True'
+    ticker = threading.Event()
+    while True:
+        with open('backupKill.txt', 'r') as f:
+            backupKill = f.read()
+        table = pd.read_sql_table('nhs_ndata_entry', db.engine)
+    time.sleep()
 # with app.app_context():
 #     dept = {i.dept_name: i.dept_id for i in Department.query.all()}
 
