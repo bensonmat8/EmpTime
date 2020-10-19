@@ -15,21 +15,33 @@ from sqlalchemy import or_, and_, func
 import re
 SQL_OPERATORS = re.compile('SELECT|UPDATE|INSERT|DELETE', re.IGNORECASE)
 
-app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config.from_pyfile('config.py')
-db.init_app(app)
+
+def create_app():
+    app = Flask(__name__)
+    # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_pyfile('config.py')
+    db.init_app(app)
+
+    def dataDump(backupKill):
+        backupKill = 'True'
+        ticker = threading.Event()
+        while not ticker.wait(10) and bool(backupKill):
+            with open('TimeTest.txt', 'a+') as f:
+                f.write(f'\nRun start {time.ctime()}')
+            with open('./switches/backupKill.txt', 'r') as f:
+                backupKill = f.read()
+            table = pd.read_sql_table('nhs_ndata_entry', db.engine)
+
+    def startThread():
+        th = threading.Thread(target=dataDump, daemon=True, args=('True',))
+        th.start()
+
+    # startThread()
+    return app
 
 
-def dataDump(backupKill):
-    backupKill = 'True'
-    ticker = threading.Event()
-    while True:
-        with open('backupKill.txt', 'r') as f:
-            backupKill = f.read()
-        table = pd.read_sql_table('nhs_ndata_entry', db.engine)
-    time.sleep()
+app = create_app()
 # with app.app_context():
 #     dept = {i.dept_name: i.dept_id for i in Department.query.all()}
 
