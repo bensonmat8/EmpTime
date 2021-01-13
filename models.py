@@ -221,3 +221,7 @@ class VaccPatReminder(db.Model):
     reminder4 = db.Column(db.Boolean, nullable=True)
     reminder5 = db.Column(db.Boolean, nullable=True)
     reminder6 = db.Column(db.Boolean, nullable=True)
+    create_timestamp = db.Column(db.DateTime, nullable=False)
+    create_by = db.Column(db.String, nullable=False)
+    modify_timestamp = db.Column(db.DateTime, nullable=False)
+    modified_by = db.Column(db.String, nullable=False)
