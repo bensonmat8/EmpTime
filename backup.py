@@ -11,6 +11,6 @@ df = pd.read_sql(sql, engine)
 # print(datetime.now - start)
 folder = r'\\bghdataserver\prismdata\Hospital & Enterprise PI\NHSN'
 try:
-    df.to_excel(folder+'\Daily Data Dump\DataDump500.xlsx', index=False)
+    df.to_excel(folder+'\Daily Data Dump\DataDump500_test.xlsx', index=False)
 except:
-    df.to_excel(folder+'\Daily Data Dump\DataDump500_.xlsx', index=False)
+    df.to_excel(folder+'\Daily Data Dump\DataDump500_test_.xlsx', index=False)

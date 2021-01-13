@@ -201,3 +201,23 @@ class NHSNdataEntry(db.Model):
     modified_by = db.Column(db.String, nullable=False)
     reason_for_change = db.Column(db.String, nullable=True)
     audit = db.Column(db.String, nullable=True)
+
+# ---------COVID Reminder App----------------------
+# Started 2021-01-13
+
+
+class VaccPatReminder(db.Model):
+    __tablename__ = 'VaccPatReminder'
+    vacc_pat_id = db.Column(db.String, primary_key=True)
+    name = db.Column(db.String, nullable=True)
+    code = db.Column(db.String, nullable=True)
+    vacc_1_date = db.Column(db.DateTime, nullable=False)
+    vacc_2_date = db.Column(db.DateTime, nullable=True)
+    cell_phone = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=True)
+    reminder1 = db.Column(db.Boolean, nullable=True)
+    reminder2 = db.Column(db.Boolean, nullable=True)
+    reminder3 = db.Column(db.Boolean, nullable=True)
+    reminder4 = db.Column(db.Boolean, nullable=True)
+    reminder5 = db.Column(db.Boolean, nullable=True)
+    reminder6 = db.Column(db.Boolean, nullable=True)

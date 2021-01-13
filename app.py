@@ -4,7 +4,7 @@ Created on Sun Jun 21 20:22:05 2020
 @author: bensonshajimathew
 """
 import json
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify, Response, flash
 from models import *
 from datetime import datetime, timedelta
 import os
@@ -13,6 +13,8 @@ import time
 import pandas as pd
 from sqlalchemy import or_, and_, func
 import re
+from werkzeug.security import generate_password_hash
+
 SQL_OPERATORS = re.compile('SELECT|UPDATE|INSERT|DELETE', re.IGNORECASE)
 
 
@@ -395,7 +397,7 @@ def NHSN_DataEntryEPIC(campus=None):
 @app.route('/NHSN/DataSubmit', methods=['GET', 'POST'])
 def NHSN_DataSubmit():
     data = request.get_json()
-    print(f'From IP::{request.remote_addr}: {data}')
+    #print(f'From IP::{request.remote_addr}: {data}')
     try:
         # if date is not present, then it program needs to goto except
         if pd.isna(pd.to_datetime(data['date'])):
@@ -404,9 +406,10 @@ def NHSN_DataSubmit():
         print(f'Try: {data["date"]}')
     except:
         date = datetime.now()
-        if 17 < date.hour < 18 and data['entry_type'] == 'Manual':
+        if 12 < date.hour < 18 and data['entry_type'] == 'Manual':
             message = {'status': 'Failed',
                        'message': 'Data Entry not between 6 pm and 11 am.'}
+            print(message)
             return jsonify(message)
         elif date.hour < 18:
             date = date - timedelta(days=1)
@@ -415,7 +418,7 @@ def NHSN_DataSubmit():
         try:
             row = NHSNdataEntry.query.get(nhsn_item_id)
             row.manual_count = int(data['value'])
-            print(f'M Count: {row.manual_count}\nE count: {row.epic_count}')
+            #print(f'M Count: {row.manual_count}\nE count: {row.epic_count}')
             if row.manual_count is not None and row.epic_count is not None:
                 row.difference = abs(row.manual_count - row.epic_count)
                 if row.manual_count == 0 and row.epic_count == 0:
@@ -427,7 +430,7 @@ def NHSN_DataSubmit():
                     row.difference_percent = round(row.difference_percent, 2)
             row.modify_timestamp = datetime.now()
             row.modified_by = request.remote_addr
-            #print('update manual')
+            flash('Entry Updated')
         except:
             row = NHSNdataEntry(nhsn_item_id=nhsn_item_id, date=date.date(),
                                 campus=data['campus'], unit=data['unit'], measure=data['measure'],
@@ -435,6 +438,7 @@ def NHSN_DataSubmit():
                                 create_by=request.remote_addr, modify_timestamp=datetime.now(),
                                 modified_by=request.remote_addr)
             db.session.add(row)
+            flash('Entry Added')
     elif data['entry_type'] == 'EPIC':
         try:
             row = NHSNdataEntry.query.get(nhsn_item_id)
@@ -449,6 +453,7 @@ def NHSN_DataSubmit():
                     row.difference_percent = row.difference * 100 / row.manual_count
                     row.difference_percent = round(row.difference_percent, 2)
             # row.modify_timestamp = datetime.now()
+            flash('Entry Updated')
             # row.modifieds_by = request.remote_addr
 
         except:
@@ -458,8 +463,9 @@ def NHSN_DataSubmit():
                                 create_by=request.remote_addr, modify_timestamp=datetime.now(),
                                 modified_by=request.remote_addr)
             db.session.add(row)
+            flash('Entry Added')
     db.session.commit()
-    message = {'status': 'recieved', 'message': f'{datetime.now()}'}
+    message = {'status': 'failed', 'message': f'{datetime.now()}'}
     # message = {'status': 'Failed',
     #            'message': 'Data Entry not between 6 pm and 11 am.'}
     response = jsonify(message)
