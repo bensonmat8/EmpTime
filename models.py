@@ -210,7 +210,7 @@ class VaccPatReminder(db.Model):
     __tablename__ = 'VaccPatReminder'
     vacc_pat_id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String, nullable=True)
-    code = db.Column(db.String, nullable=True)
+    EmpID = db.Column(db.String, nullable=True)
     vacc_1_date = db.Column(db.DateTime, nullable=False)
     vacc_2_date = db.Column(db.DateTime, nullable=True)
     cell_phone = db.Column(db.String, nullable=False)
@@ -221,7 +221,9 @@ class VaccPatReminder(db.Model):
     reminder4 = db.Column(db.Boolean, nullable=True)
     reminder5 = db.Column(db.Boolean, nullable=True)
     reminder6 = db.Column(db.Boolean, nullable=True)
+    opt_in = db.Column(db.Boolean, nullable=True)
     create_timestamp = db.Column(db.DateTime, nullable=False)
     create_by = db.Column(db.String, nullable=False)
     modify_timestamp = db.Column(db.DateTime, nullable=False)
     modified_by = db.Column(db.String, nullable=False)
+    lot = db.Column(db.String, nullable=True)
