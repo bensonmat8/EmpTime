@@ -1,4 +1,7 @@
+from enum import unique
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 
@@ -230,3 +233,37 @@ class VaccPatReminder(db.Model):
     ReminderDt2 = db.Column(db.DateTime, nullable=True)
     ReminderDt3 = db.Column(db.DateTime, nullable=True)
     ReminderDt4 = db.Column(db.DateTime, nullable=True)
+
+# ---------PHC Data Entry----------------------
+# Started 2021-02-01
+
+
+class PHCdataEntry(db.Model):
+    __tablename__ = 'PHCdataEntry'
+    id = db.Column(db.Integer, primary_key=True)
+    empid = db.Column(db.String(256),
+                      #                         db.ForeignKey('flaskloginusers.empid'),
+                      nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    data_type = db.Column(db.String, nullable=False)
+    value = db.Column(db.Integer, nullable=False)
+
+# ---------User Accounts----------------------
+# Started 2021-01-27
+
+
+# class User(UserMixin, db.Model):
+#     __tablename__ = 'flaskloginusers'
+#     empid = db.Column(db.String(15), primary_key=True)
+#     name = db.Column(db.String(50), nullable=False, unique=False)
+#     email = db.Column(db.String(60), nullable=True, unique=True)
+#     password = db.Column(db.String(200), nullable=False)
+#     created_on = db.Column(db.DateTime, nullable=False)
+#     created_by = db.relationship('User', backref='flaskloginusers')
+
+# class UserAppAccess(db.Model):
+#     __tablename__ = 'user_app_access'
+#     userappid = db.Column( db.Integer, primary_key=True)
+#     empid = db.Column(db.String(256),
+#                         db.ForeignKey('flaskloginusers.empid'),
+#                         nullable=False)

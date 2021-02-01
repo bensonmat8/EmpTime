@@ -476,6 +476,8 @@ def NHSN_DataSubmit():
 @app.route('/NHSN/Audit/<campus>', methods=['GET', 'POST'])
 def NHSN_Audit(campus='All'):
     date = request.form.get('date')
+    user = request.headers.get('User-Agent')
+    print(user)
     # print(date)
     if campus == 'All':
         dates = [i[0] for i in NHSNdataEntry.query.with_entities(NHSNdataEntry.date.distinct()).order_by(
@@ -590,6 +592,11 @@ def checkIn():
         db.session.commit()
     checkInTable = OccMedCheckIn.query.all()
     return render_template('OccMedCheckIn.html', checkInTable=checkInTable)
+
+
+@app.route('/PEI/PHC/DataEntry', methods=['GET', 'POST'])
+def PHCdataEntry():
+    return render_template('PHC_app.html')
 
 
 if __name__ == "__main__":
