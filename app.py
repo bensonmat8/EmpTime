@@ -596,7 +596,10 @@ def checkIn():
 
 @app.route('/PEI/PHC/DataEntry', methods=['GET', 'POST'])
 def PHCdataEntry():
-    return render_template('PHC_app.html')
+    if request.method == 'POST':
+        flash('Successfully logged your data')
+    date = [datetime.today().date() - timedelta(x) for x in range(7)]
+    return render_template('PHC_app.html', date=date)
 
 
 if __name__ == "__main__":

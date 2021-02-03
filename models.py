@@ -242,7 +242,7 @@ class PHCdataEntry(db.Model):
     __tablename__ = 'PHCdataEntry'
     id = db.Column(db.Integer, primary_key=True)
     empid = db.Column(db.String(256),
-                      #                         db.ForeignKey('flaskloginusers.empid'),
+                      # db.ForeignKey('flaskloginusers.empid'),
                       nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     data_type = db.Column(db.String, nullable=False)

@@ -1,7 +1,7 @@
 {% extends "layout_PI.html" %}
 
 {% block heading %}
-Equipment Cleaning Log
+Daily Log / Equipment Cleaning
 {% endblock %}
 
 {% block body %}
@@ -9,13 +9,66 @@ Equipment Cleaning Log
 
 
 <br> <br> Select date for data entry:
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<select name="date" id="date">
+    {%for dt in date%}
+    <option value={{dt}}>{{dt}}</option>
+    {%endfor%}
+</select>
 
-<input type="date" name="dat" id="date">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 
+Employee: <select name="user" id="user">
+    <option value="Emp1">Employee 1</option>
+    <option value="Emp2">Employee 2</option>
+    <option value="Emp3">Employee 3</option>
+</select>
 
 <br><br>
-{% if locations is not none %}
+
+<div id="table-{{loc}}" class="show-location">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Travel History / Other</th>
+                <th scope="col">Totals</th>
+
+            </tr>
+        </thead>
+        <div id="table-body">
+            <tbody>
+                <td>Miles Driven</td>
+                <td><input type="Number" name="MilesDriven" class="sub_item"></td>
+                </tr>
+                <td># Of Deliveries</td>
+                <td><input type="Number" name="NoOfDeliveries" class="sub_item"></td>
+                </tr>
+                <td>Time Cleaning</td>
+                <td><input type="Number" name="TimeCleaning" class="sub_item"></td>
+                </tr>
+                <td>Time Delivering</td>
+                <td><input type="Number" name="TimeDelivering" class="sub_item"></td>
+                </tr>
+                <td>Late Day Delivery</td>
+                <td><input type="Number" name="LateDayDelivery" class="sub_item"></td>
+                </tr>
+                <td>On Call Delivery</td>
+                <td><input type="Number" name="OnCallDelivery" class="sub_item"></td>
+                </tr>
+                <td>Overtime Hours</td>
+                <td><input type="Number" name="OverTime" class="sub_item"></td>
+                </tr>
+            </tbody>
+        </div>
+    </table>
+</div>
 <div id="table-{{loc}}" class="show-location">
     <table class="table table-bordered">
         <thead>
@@ -27,125 +80,82 @@ Equipment Cleaning Log
         </thead>
         <div id="table-body">
             <tbody>
-                    <td>IV Poles/E Cart</td>
-                    <td><input type="Number" name="IV_Poles" class="sub_item"></td>
+                <td>IV Poles/E Cart</td>
+                <td><input type="Number" name="IV_Poles" class="sub_item"></td>
                 </tr>
-                    <td>Suct Unit,  LComp</td>
-                    <td><input type="Number" name="LComp" class="sub_item"></td>
+                <td>Suct Unit, LComp</td>
+                <td><input type="Number" name="LComp" class="sub_item"></td>
                 </tr>
-                    <td>Oximeter</td>
-                    <td><input type="Number" name="Oximeter" class="sub_item"></td>
+                <td>Oximeter</td>
+                <td><input type="Number" name="Oximeter" class="sub_item"></td>
                 </tr>
-                    <td>IV Poles/E Cart</td>
-                    <td><input type="Number" name="IV_Poles" class="sub_item"></td>
+                <td>Pro Hear/ Cardio</td>
+                <td><input type="Number" name="Cardio" class="sub_item"></td>
                 </tr>
-                    <td>Pro Hear/ Cardio</td>
-                    <td><input type="Number" name="Cardio" class="sub_item"></td>
+                <td>Whl chr/Enteral</td>
+                <td><input type="Number" name="Enteral" class="sub_item"></td>
                 </tr>
-                    <td>Whl chr/Enteral</td>
-                    <td><input type="Number" name="Enteral" class="sub_item"></td>
+                <td>Mini/oxy Go</td>
+                <td><input type="Number" name="Mini" class="sub_item"></td>
                 </tr>
-                    <td>Mini/oxy Go</td>
-                    <td><input type="Number" name="Mini" class="sub_item"></td>
+                <td>walk/can/ ETC</td>
+                <td><input type="Number" name="ETC" class="sub_item"></td>
                 </tr>
-                    <td>walk/can/ ETC</td>
-                    <td><input type="Number" name="ETC" class="sub_item"></td>
+                <td>Bed</td>
+                <td><input type="Number" name="Bed" class="sub_item"></td>
                 </tr>
-                    <td>Bed</td>
-                    <td><input type="Number" name="Bed" class="sub_item"></td>
+                <td>Ultra Fill/ CPM</td>
+                <td><input type="Number" name="IV_Poles" class="sub_item"></td>
                 </tr>
-                    <td>Ultra Fill/ CPM</td>
-                    <td><input type="Number" name="IV_Poles" class="sub_item"></td>
+                <td>ELR'S Tanks</td>
+                <td><input type="Number" name="ELR" class="sub_item"></td>
                 </tr>
-                    <td>IV Poles/E Cart</td>
-                    <td><input type="Number" name="CPM" class="sub_item"></td>
+                <td>Regulator</td>
+                <td><input type="Number" name="Regulator" class="sub_item"></td>
                 </tr>
-                    <td>ELR'S Tanks</td>
-                    <td><input type="Number" name="ELR" class="sub_item"></td>
+                <td>Nebulizer</td>
+                <td><input type="Number" name="Nebulizer" class="sub_item"></td>
                 </tr>
-                    <td>Regulator</td>
-                    <td><input type="Number" name="Regulator" class="sub_item"></td>
+                <td>Photo Therapy </td>
+                <td><input type="Number" name="Photo" class="sub_item"></td>
                 </tr>
-                    <td>Nebulizer</td>
-                    <td><input type="Number" name="Nebulizer" class="sub_item"></td>
+                <td>Simply Go/Sequal</td>
+                <td><input type="Number" name="Simply" class="sub_item"></td>
                 </tr>
-                    <td>Photo Therapy </td>
-                    <td><input type="Number" name="Photo" class="sub_item"></td>
+                <td>Cpap/BiPap</td>
+                <td><input type="Number" name="Cpap" class="sub_item"></td>
                 </tr>
-                    <td>Simply Go/Sequal</td>
-                    <td><input type="Number" name="Simply" class="sub_item"></td>
+                <td>Knee Wlk/Tran Cr</td>
+                <td><input type="Number" name="Knee" class="sub_item"></td>
                 </tr>
-                    <td>Cpap/BiPap</td>
-                    <td><input type="Number" name="Cpap" class="sub_item"></td>
+                <td>Oxygen Su/ Port</td>
+                <td><input type="Number" name="Oxygen" class="sub_item"></td>
                 </tr>
-                    <td>Knee Wlk/Tran Cr</td>
-                    <td><input type="Number" name="Knee" class="sub_item"></td>
+                <td>Low air/gel/app</td>
+                <td><input type="Number" name="gel" class="sub_item"></td>
                 </tr>
-                    <td>Oxygen Su/ Port</td>
-                    <td><input type="Number" name="Oxygen" class="sub_item"></td>
+                <td>Deroyal</td>
+                <td><input type="Number" name="Deroyal" class="sub_item"></td>
                 </tr>
-                    <td>Low air/gel/app</td>
-                    <td><input type="Number" name="gel" class="sub_item"></td>
+                <td>Pt Lift/Trapeze </td>
+                <td><input type="Number" name="Lift" class="sub_item"></td>
                 </tr>
-                   <td>Deroyal</td>
-                   <td><input type="Number" name="Deroyal" class="sub_item"></td>
+                <td>O2/Neb/pap Supp</td>
+                <td><input type="Number" name="Supp" class="sub_item"></td>
                 </tr>
-                   <td>Pt Lift/Trapeze </td>
-                   <td><input type="Number" name="Lift" class="sub_item"></td>
+                <td>Conc Check</td>
+                <td><input type="Number" name="Conc" class="sub_item"></td>
                 </tr>
-                    <td>O2/Neb/pap Supp</td>
-                    <td><input type="Number" name="Supp" class="sub_item"></td>
-                </tr>
-                    <td>Conc Check</td>
-                    <td><input type="Number" name="Conc" class="sub_item"></td>
-                </tr>
-                    <td>DME Assembled</td>
-                    <td><input type="Number" name="Assembled" class="sub_item"></td>
+                <td>DME Assembled</td>
+                <td><input type="Number" name="Assembled" class="sub_item"></td>
                 </tr>
 
-        </tbody>
-        </div>
-    </table>
-<div id="table-{{loc}}" class="show-location">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">Travel History / Other</th>
-                <th scope="col">Number Cleaned </th>
-
-            </tr>
-        </thead>
-        <div id="table-body">
-            <tbody>
-                    <td>Miles Driven</td>
-                    <td><input type="Number" name="IV Poles/E Cart_number_cleaned" class="sub_item"></td>
-                </tr>
-                    <td># Of Deliveries</td>
-                    <td><input type="Number" name="IV Poles/E Cart_number_cleaned" class="sub_item"></td>
-                </tr>
-                    <td>Time Cleaning</td>
-                    <td><input type="Number" name="IV Poles/E Cart_number_cleaned" class="sub_item"></td>
-                </tr>
-                    <td>Time Delivering</td>
-                    <td><input type="Number" name="Deroyal" class="sub_item"></td>
-                </tr>
-                    <td>Late Day Delivery</td>
-                    <td><input type="Number" name="Deroyal" class="sub_item"></td>
-                </tr>
-                    <td>On Call Delivery</td>
-                    <td><input type="Number" name="Deroyal" class="sub_item"></td>
-                </tr>
-                   <td>Overtime Hours</td>
-                   <td><input type="Number" name="Deroyal" class="sub_item"></td>
-                </tr>
             </tbody>
         </div>
     </table>
-</div>
-<br>
-<input class="btn btn-primary" onclick="submit_data('/NHSN/DataSubmit')" type="submit" id="Submit"
-    name="submit"></input>
 
-{%endif%}
+    <br>
+    <input class="btn btn-primary" onclick="submit_data('/PEI/PHC/DataEntry')" type="submit" id="Submit"
+        name="submit"></input>
 
-{% endblock %}
+    {% endblock %}
