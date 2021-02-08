@@ -7,155 +7,90 @@ Daily Log / Equipment Cleaning
 {% block body %}
 <script src="{{url_for('static', filename='SubmitDataV2.0.js')}}"></script>
 
-
-<br> <br> Select date for data entry:
-<select name="date" id="date">
-    {%for dt in date%}
-    <option value={{dt}}>{{dt}}</option>
-    {%endfor%}
-</select>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<ul class=flashes>
-    {% for category, message in messages %}
-    <li class="{{ category }}">{{ message }}</li>
+<script>
+    function messageHide(msg_id) {
+        var elm = document.getElementById(msg_id);
+        elm.style.display = 'none';
+    }
+</script>
+<div class="container" style="min-height:100% width:80%">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible" role="alert" id="{{message}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+            onclick="messageHide('{{message}}')"><span aria-hidden="true">×</span></button>
+        {{message}}
+    </div>
     {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-
-Employee: <select name="user" id="user">
-    <option value="Emp1">Employee 1</option>
-    <option value="Emp2">Employee 2</option>
-    <option value="Emp3">Employee 3</option>
-</select>
-
-<br><br>
-
-<div id="table-{{loc}}" class="show-location">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">Travel History / Other</th>
-                <th scope="col">Totals</th>
-
-            </tr>
-        </thead>
-        <div id="table-body">
-            <tbody>
-                <td>Miles Driven</td>
-                <td><input type="Number" name="MilesDriven" class="sub_item"></td>
-                </tr>
-                <td># Of Deliveries</td>
-                <td><input type="Number" name="NoOfDeliveries" class="sub_item"></td>
-                </tr>
-                <td>Time Cleaning</td>
-                <td><input type="Number" name="TimeCleaning" class="sub_item"></td>
-                </tr>
-                <td>Time Delivering</td>
-                <td><input type="Number" name="TimeDelivering" class="sub_item"></td>
-                </tr>
-                <td>Late Day Delivery</td>
-                <td><input type="Number" name="LateDayDelivery" class="sub_item"></td>
-                </tr>
-                <td>On Call Delivery</td>
-                <td><input type="Number" name="OnCallDelivery" class="sub_item"></td>
-                </tr>
-                <td>Overtime Hours</td>
-                <td><input type="Number" name="OverTime" class="sub_item"></td>
-                </tr>
-            </tbody>
-        </div>
-    </table>
+    {% endif %}
+    {% endwith %}
 </div>
-<div id="table-{{loc}}" class="show-location">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">Equipment Type</th>
-                <th scope="col">Number Cleaned </th>
 
-            </tr>
-        </thead>
-        <div id="table-body">
-            <tbody>
-                <td>IV Poles/E Cart</td>
-                <td><input type="Number" name="IV_Poles" class="sub_item"></td>
-                </tr>
-                <td>Suct Unit, LComp</td>
-                <td><input type="Number" name="LComp" class="sub_item"></td>
-                </tr>
-                <td>Oximeter</td>
-                <td><input type="Number" name="Oximeter" class="sub_item"></td>
-                </tr>
-                <td>Pro Hear/ Cardio</td>
-                <td><input type="Number" name="Cardio" class="sub_item"></td>
-                </tr>
-                <td>Whl chr/Enteral</td>
-                <td><input type="Number" name="Enteral" class="sub_item"></td>
-                </tr>
-                <td>Mini/oxy Go</td>
-                <td><input type="Number" name="Mini" class="sub_item"></td>
-                </tr>
-                <td>walk/can/ ETC</td>
-                <td><input type="Number" name="ETC" class="sub_item"></td>
-                </tr>
-                <td>Bed</td>
-                <td><input type="Number" name="Bed" class="sub_item"></td>
-                </tr>
-                <td>Ultra Fill/ CPM</td>
-                <td><input type="Number" name="IV_Poles" class="sub_item"></td>
-                </tr>
-                <td>ELR'S Tanks</td>
-                <td><input type="Number" name="ELR" class="sub_item"></td>
-                </tr>
-                <td>Regulator</td>
-                <td><input type="Number" name="Regulator" class="sub_item"></td>
-                </tr>
-                <td>Nebulizer</td>
-                <td><input type="Number" name="Nebulizer" class="sub_item"></td>
-                </tr>
-                <td>Photo Therapy </td>
-                <td><input type="Number" name="Photo" class="sub_item"></td>
-                </tr>
-                <td>Simply Go/Sequal</td>
-                <td><input type="Number" name="Simply" class="sub_item"></td>
-                </tr>
-                <td>Cpap/BiPap</td>
-                <td><input type="Number" name="Cpap" class="sub_item"></td>
-                </tr>
-                <td>Knee Wlk/Tran Cr</td>
-                <td><input type="Number" name="Knee" class="sub_item"></td>
-                </tr>
-                <td>Oxygen Su/ Port</td>
-                <td><input type="Number" name="Oxygen" class="sub_item"></td>
-                </tr>
-                <td>Low air/gel/app</td>
-                <td><input type="Number" name="gel" class="sub_item"></td>
-                </tr>
-                <td>Deroyal</td>
-                <td><input type="Number" name="Deroyal" class="sub_item"></td>
-                </tr>
-                <td>Pt Lift/Trapeze </td>
-                <td><input type="Number" name="Lift" class="sub_item"></td>
-                </tr>
-                <td>O2/Neb/pap Supp</td>
-                <td><input type="Number" name="Supp" class="sub_item"></td>
-                </tr>
-                <td>Conc Check</td>
-                <td><input type="Number" name="Conc" class="sub_item"></td>
-                </tr>
-                <td>DME Assembled</td>
-                <td><input type="Number" name="Assembled" class="sub_item"></td>
-                </tr>
+<form action="{{url_for('PHCdataEntry')}}" , method="POST">
+    <br> <br> Select date for data entry:
+    <select name="date" id="date">
+        {%for dt in date%}
+        <option value={{dt}}>{{dt}}</option>
+        {%endfor%}
+    </select>
 
-            </tbody>
-        </div>
-    </table>
 
-    <br>
-    <input class="btn btn-primary" onclick="submit_data('/PEI/PHC/DataEntry')" type="submit" id="Submit"
-        name="submit"></input>
+    Employee: <select name="user" id="user">
+        <option value="Emp1">Employee 1</option>
+        <option value="Emp2">Employee 2</option>
+        <option value="Emp3">Employee 3</option>
+    </select>
 
-    {% endblock %}
+    <br><br>
+
+    <div id="table-{{loc}}" class="show-location">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Travel History / Other</th>
+                    <th scope="col">Totals</th>
+
+                </tr>
+            </thead>
+            <div id="table-body">
+                <tbody>
+                    {%for trItem in travel%}
+                    <tr>
+                        <td>{{trItem}}</td>
+                        <td><input type="Number" name="{{trItem}}" class="sub_item"></td>
+                    </tr>
+
+                    {%endfor%}
+                </tbody>
+            </div>
+        </table>
+    </div>
+    <div id="table-{{loc}}" class="show-location">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Equipment Type</th>
+                    <th scope="col">Number Cleaned </th>
+
+                </tr>
+            </thead>
+            <div id="table-body">
+                <tbody>
+                    {%for eqItem in equipment%}
+                    <tr>
+                        <td>{{eqItem}}</td>
+                        <td><input type="Number" name="{{eqItem}}" class="sub_item"></td>
+                    </tr>
+
+                    {%endfor%}
+                </tbody>
+            </div>
+        </table>
+
+        <br>
+        <input class="btn btn-primary" onclick="submit_data('/PEI/PHC/DataEntry')" type="submit" id="Submit"
+            name="submit"></input>
+</form>
+
+{% endblock %}

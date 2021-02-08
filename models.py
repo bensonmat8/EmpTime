@@ -240,30 +240,45 @@ class VaccPatReminder(db.Model):
 
 class PHCdataEntry(db.Model):
     __tablename__ = 'PHCdataEntry'
-    id = db.Column(db.Integer, primary_key=True)
-    empid = db.Column(db.String(256),
+    PHC_id = db.Column(db.String(75), primary_key=True)
+    empid = db.Column(db.String(15),
                       # db.ForeignKey('flaskloginusers.empid'),
                       nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    data_type = db.Column(db.String, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    data_type = db.Column(db.String(50), nullable=False)
     value = db.Column(db.Integer, nullable=False)
+    create_date = db.Column(db.DateTime, nullable=False)
+
 
 # ---------User Accounts----------------------
 # Started 2021-01-27
 
 
-# class User(UserMixin, db.Model):
-#     __tablename__ = 'flaskloginusers'
-#     empid = db.Column(db.String(15), primary_key=True)
-#     name = db.Column(db.String(50), nullable=False, unique=False)
-#     email = db.Column(db.String(60), nullable=True, unique=True)
-#     password = db.Column(db.String(200), nullable=False)
-#     created_on = db.Column(db.DateTime, nullable=False)
-#     created_by = db.relationship('User', backref='flaskloginusers')
+class User(UserMixin, db.Model):
+    __tablename__ = 'flaskloginusers'
+    empid = db.Column(db.String(15), primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=False)
+    email = db.Column(db.String(60), nullable=True, unique=True)
+    password = db.Column(db.String(200), nullable=False)
+    created_on = db.Column(db.DateTime, nullable=False)
+    created_by = db.Column(db.String(15), nullable=False)
+    app = db.relationship('UserAppAccess', backref='flaskloginusers')
 
-# class UserAppAccess(db.Model):
-#     __tablename__ = 'user_app_access'
-#     userappid = db.Column( db.Integer, primary_key=True)
-#     empid = db.Column(db.String(256),
-#                         db.ForeignKey('flaskloginusers.empid'),
-#                         nullable=False)
+
+class UserAppAccess(db.Model):
+    __tablename__ = 'user_app_access'
+    userappid = db.Column(db.Integer, primary_key=True)
+    empid = db.Column(db.String(256),
+                      db.ForeignKey('flaskloginusers.empid'),
+                      nullable=False)
+    appid = db.Column(db.Integer, db.ForeignKey('app_table.appid'),
+                      nullable=False)
+    created_on = db.Column(db.DateTime, nullable=False)
+    created_by = db.Column(db.String(15), nullable=False)
+
+
+class AppTable(db.Model):
+    __tablename__ = 'app_table'
+    appid = db.Column(db.Integer, primary_key=True)
+    appName = db.Column(db.String(50), nullable=False, unique=True)
+    appRoute = db.Column(db.String(150), nullable=False, unique=True)

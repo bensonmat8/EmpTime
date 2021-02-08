@@ -3,6 +3,7 @@ Created on Sun Jun 21 20:22:05 2020
 
 @author: bensonshajimathew
 """
+from enum import auto
 import json
 from flask import Flask, render_template, request, jsonify, Response, flash
 from models import *
@@ -11,7 +12,7 @@ import os
 import threading
 import time
 import pandas as pd
-from sqlalchemy import or_, and_, func
+from sqlalchemy import or_, and_, func, insert, delete, update, MetaData, Table
 import re
 from werkzeug.security import generate_password_hash
 
@@ -594,12 +595,98 @@ def checkIn():
     return render_template('OccMedCheckIn.html', checkInTable=checkInTable)
 
 
+def addData(tableName, tableId: dict, **kwargs):
+    mytable = Table(tableName, db.metadata, autoload=True)
+    dataDict = {}
+    Sessions = db.sessionmaker()
+    session = Sessions()
+    for idName in tableId:
+        idValue = tableId[idName]
+        dataDict[idName] = idValue
+    for col in kwargs:
+        dataDict[col] = kwargs[col]
+    d = delete(mytable)
+    d = d.where(mytable.c[idName] == idValue)
+    try:
+        session.execute(d)
+    except:
+        pass
+    i = insert(mytable)
+    i = i.values(dataDict)
+    try:
+        session.execute(i)
+        session.commit()
+        return True
+    except:
+        return False
+
+
 @app.route('/PEI/PHC/DataEntry', methods=['GET', 'POST'])
 def PHCdataEntry():
+    travel = {'Miles Driven': None,
+              '# Of Deliveries': None,
+              'Time Cleaning': None,
+              'Time Delivering': None,
+              'Late Day Delivery': None,
+              'On Call Delivery': None,
+              'Overtime Hours': None}
+    equipment = {'IV Poles/E Car': None,
+                 'Suct Unit, LComp': None,
+                 'Oximeter': None,
+                 'Pro Hear/ Cardio': None,
+                 'Whl chr/Enteral': None,
+                 'Mini/oxy Go': None,
+                 'walk/can/ ETC': None,
+                 'Bed': None,
+                 'Ultra Fill/ CPM': None,
+                 "ELR'S Tanks": None,
+                 'Regulator': None,
+                 'Nebulizer': None,
+                 'Photo Therap': None,
+                 'Simply Go/Sequal': None,
+                 'Cpap/BiPap': None,
+                 'Knee Wlk/Tran Cr': None,
+                 'Oxygen Su/ Port': None,
+                 'Low air/gel/app': None,
+                 'Deroyal': None,
+                 'Pt Lift/Trapeze': None,
+                 'O2/Neb/pap Supp': None,
+                 'Conc Check': None,
+                 'DME Assembled': None}
     if request.method == 'POST':
-        flash('Successfully logged your data')
+        date = request.form.get('date')
+        empid = request.form.get('user')
+        for item in travel:
+            travel[item] = request.form.get(item)
+        print(date)
+        travelAdd = 0
+        for data_type in travel:
+            val = request.form.get(data_type)
+            if val == '':
+                continue
+            print(f'val is :|{val}|')
+            PHC_id = f"{empid}-{date}-{data_type}"
+            add = PHCdataEntry(PHC_id=PHC_id, data_type=data_type,
+                               value=val,
+                               empid=empid, date=date,
+                               create_date=pd.to_datetime('today'))
+            try:
+                db.session.add(add)
+                db.session.commit()
+            except:
+                del_ = PHCdataEntry.query.get(PHC_id)
+                db.session.delete(del_)
+                db.session.add(add)
+                db.session.commit()
+            travelAdd += 1 #addData('PHCdataEntry', {'PHC_id': PHC_id}, data_type=data_type,
+                                #  value=val,
+                                #  empid=empid, date=date,
+                                #  create_date=pd.to_datetime('today'))
+        flash(f'Successfully logged {travelAdd} travel date')
+    #flash('Testing flash')
     date = [datetime.today().date() - timedelta(x) for x in range(7)]
-    return render_template('PHC_app.html', date=date)
+    return render_template('PHC_app.html', date=date,
+                           travel=travel, equipment=equipment)
 
 
 if __name__ == "__main__":
