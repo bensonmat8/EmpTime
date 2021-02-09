@@ -11,6 +11,7 @@
             height: 100%;
             margin: 0;
             font-family: Baskerville;
+            padding-bottom: 50px;
         }
 
         .header_ {
@@ -57,7 +58,7 @@
     </div>
     <div style="position: absolute; top:10px; left: 10px;"><img src="{{url_for('static', filename='UHSLogo.png')}}"
             height="50" width="70"></div>
-    <div class="container">
+    <div class="container" style="padding-bottom: 35px;">
 
         <h1>{% block heading %}{% endblock %}</h1>
 

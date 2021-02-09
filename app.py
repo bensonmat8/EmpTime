@@ -623,70 +623,67 @@ def addData(tableName, tableId: dict, **kwargs):
 
 @app.route('/PEI/PHC/DataEntry', methods=['GET', 'POST'])
 def PHCdataEntry():
-    travel = {'Miles Driven': None,
-              '# Of Deliveries': None,
-              'Time Cleaning': None,
-              'Time Delivering': None,
-              'Late Day Delivery': None,
-              'On Call Delivery': None,
-              'Overtime Hours': None}
-    equipment = {'IV Poles/E Car': None,
-                 'Suct Unit, LComp': None,
-                 'Oximeter': None,
-                 'Pro Hear/ Cardio': None,
-                 'Whl chr/Enteral': None,
-                 'Mini/oxy Go': None,
-                 'walk/can/ ETC': None,
-                 'Bed': None,
-                 'Ultra Fill/ CPM': None,
-                 "ELR'S Tanks": None,
-                 'Regulator': None,
-                 'Nebulizer': None,
-                 'Photo Therap': None,
-                 'Simply Go/Sequal': None,
-                 'Cpap/BiPap': None,
-                 'Knee Wlk/Tran Cr': None,
-                 'Oxygen Su/ Port': None,
-                 'Low air/gel/app': None,
-                 'Deroyal': None,
-                 'Pt Lift/Trapeze': None,
-                 'O2/Neb/pap Supp': None,
-                 'Conc Check': None,
-                 'DME Assembled': None}
+    from phc_resource import employees, equipment, travel
+    dates = {datetime.today().date() - timedelta(x): None for x in range(7)}
     if request.method == 'POST':
         date = request.form.get('date')
+        dates[pd.to_datetime(date).date()] = 'selected'
         empid = request.form.get('user')
-        for item in travel:
-            travel[item] = request.form.get(item)
+        employees[empid][1] = 'selected'
         print(date)
         travelAdd = 0
         for data_type in travel:
             val = request.form.get(data_type)
-            if val == '':
+            if val == '' or val == None:
                 continue
             print(f'val is :|{val}|')
-            PHC_id = f"{empid}-{date}-{data_type}"
-            add = PHCdataEntry(PHC_id=PHC_id, data_type=data_type,
-                               value=val,
-                               empid=empid, date=date,
-                               create_date=pd.to_datetime('today'))
+            travel[data_type] = val
+            add = PHCdataEntrys(empid=empid, date=date, data_type=data_type,
+                                value=val,
+                                create_date=pd.to_datetime('today'))
             try:
                 db.session.add(add)
                 db.session.commit()
             except:
-                del_ = PHCdataEntry.query.get(PHC_id)
+                db.session.rollback()
+                del_ = PHCdataEntrys.query.get((empid, date, data_type))
                 db.session.delete(del_)
+                db.session.commit()
                 db.session.add(add)
                 db.session.commit()
-            travelAdd += 1 #addData('PHCdataEntry', {'PHC_id': PHC_id}, data_type=data_type,
-                                #  value=val,
-                                #  empid=empid, date=date,
-                                #  create_date=pd.to_datetime('today'))
-        flash(f'Successfully logged {travelAdd} travel date')
-    #flash('Testing flash')
-    date = [datetime.today().date() - timedelta(x) for x in range(7)]
-    return render_template('PHC_app.html', date=date,
-                           travel=travel, equipment=equipment)
+            # addData('PHCdataEntry', {'PHC_id': PHC_id}, data_type=data_type,
+            travelAdd += 1
+            #  value=val,
+            #  empid=empid, date=date,
+            #  create_date=pd.to_datetime('today'))
+        if travelAdd > 0:
+            flash(f'Successfully logged {travelAdd} travel data')
+        eqAdd = 0
+        for data_type in equipment:
+            val = request.form.get(data_type)
+            if val == '' or val == None:
+                continue
+            #print(f'val is :|{val}|')
+            equipment[data_type] = val
+            add = PHCdataEntrys(empid=empid, date=date, data_type=data_type,
+                                value=val,
+                                create_date=pd.to_datetime('today'))
+            try:
+                db.session.add(add)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                del_ = PHCdataEntrys.query.get((empid, date, data_type))
+                db.session.delete(del_)
+                db.session.commit()
+                db.session.add(add)
+                db.session.commit()
+            eqAdd += 1
+        if eqAdd > 0:
+            flash(f'Successfully logged {eqAdd} Equipment data')
+
+    return render_template('PHC_app.html', dates=dates,
+                           travel=travel, equipment=equipment, employees=employees)
 
 
 if __name__ == "__main__":

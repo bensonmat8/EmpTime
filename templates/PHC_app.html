@@ -5,7 +5,6 @@ Daily Log / Equipment Cleaning
 {% endblock %}
 
 {% block body %}
-<script src="{{url_for('static', filename='SubmitDataV2.0.js')}}"></script>
 
 <script>
     function messageHide(msg_id) {
@@ -28,24 +27,30 @@ Daily Log / Equipment Cleaning
 </div>
 
 <form action="{{url_for('PHCdataEntry')}}" , method="POST">
-    <br> <br> Select date for data entry:
+    <br> <br>
+    Select date for data entry:
     <select name="date" id="date">
-        {%for dt in date%}
-        <option value={{dt}}>{{dt}}</option>
+        {%for dt in dates%}
+        <option value={{dt}} {{dates[dt]}}>{{dt}}</option>
         {%endfor%}
     </select>
 
 
-    Employee: <select name="user" id="user">
-        <option value="Emp1">Employee 1</option>
-        <option value="Emp2">Employee 2</option>
-        <option value="Emp3">Employee 3</option>
+    Employee:
+    <select name="user" id="user">
+        {% for emp in employees %}
+        <option value="{{emp}}" {{employees[emp][1]}}>{{employees[emp][0]}}</option>
+        {%endfor%}
     </select>
 
     <br><br>
 
-    <div id="table-{{loc}}" class="show-location">
+    <div class="show-location">
         <table class="table table-bordered">
+            <colgroup>
+                <col style="width: 60%;">
+                <col style="width: 40%;">
+            </colgroup>
             <thead>
                 <tr>
                     <th scope="col">Travel History / Other</th>
@@ -58,7 +63,7 @@ Daily Log / Equipment Cleaning
                     {%for trItem in travel%}
                     <tr>
                         <td>{{trItem}}</td>
-                        <td><input type="Number" name="{{trItem}}" class="sub_item"></td>
+                        <td><input type="Number" name="{{trItem}}" class="sub_item" value={{travel[trItem]}}></td>
                     </tr>
 
                     {%endfor%}
@@ -66,8 +71,12 @@ Daily Log / Equipment Cleaning
             </div>
         </table>
     </div>
-    <div id="table-{{loc}}" class="show-location">
+    <div class="show-location">
         <table class="table table-bordered">
+            <colgroup>
+                <col style="width: 60%;">
+                <col style="width: 40%;">
+            </colgroup>
             <thead>
                 <tr>
                     <th scope="col">Equipment Type</th>
@@ -80,7 +89,7 @@ Daily Log / Equipment Cleaning
                     {%for eqItem in equipment%}
                     <tr>
                         <td>{{eqItem}}</td>
-                        <td><input type="Number" name="{{eqItem}}" class="sub_item"></td>
+                        <td><input type="Number" name="{{eqItem}}" class="sub_item" value={{equipment[eqItem]}}></td>
                     </tr>
 
                     {%endfor%}
@@ -92,5 +101,5 @@ Daily Log / Equipment Cleaning
         <input class="btn btn-primary" onclick="submit_data('/PEI/PHC/DataEntry')" type="submit" id="Submit"
             name="submit"></input>
 </form>
-
+<br><br>
 {% endblock %}

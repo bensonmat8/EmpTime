@@ -236,19 +236,19 @@ class VaccPatReminder(db.Model):
 
 # ---------PHC Data Entry----------------------
 # Started 2021-02-01
+# Last change 2021-02-09
 
 
-class PHCdataEntry(db.Model):
-    __tablename__ = 'PHCdataEntry'
-    PHC_id = db.Column(db.String(75), primary_key=True)
+class PHCdataEntrys(db.Model):
+    __tablename__ = 'PHCdataEntrys'
+    #PHC_id = db.Column(db.String(75), primary_key=True)
     empid = db.Column(db.String(15),
                       # db.ForeignKey('flaskloginusers.empid'),
-                      nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    data_type = db.Column(db.String(50), nullable=False)
+                      nullable=False, primary_key=True)
+    date = db.Column(db.Date, nullable=False, primary_key=True)
+    data_type = db.Column(db.String(50), nullable=False, primary_key=True)
     value = db.Column(db.Integer, nullable=False)
     create_date = db.Column(db.DateTime, nullable=False)
-
 
 # ---------User Accounts----------------------
 # Started 2021-01-27
