@@ -262,7 +262,17 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(200), nullable=False)
     created_on = db.Column(db.DateTime, nullable=False)
     created_by = db.Column(db.String(15), nullable=False)
+    last_login = db.Column(db.DateTime, nullable=False)
     app = db.relationship('UserAppAccess', backref='flaskloginusers')
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password, method='sha256')
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def __repr__(self) -> str:
+        return f'<User {self.username}>'
 
 
 class UserAppAccess(db.Model):
@@ -273,6 +283,7 @@ class UserAppAccess(db.Model):
                       nullable=False)
     appid = db.Column(db.Integer, db.ForeignKey('app_table.appid'),
                       nullable=False)
+    role = db.Column(db.String(15), nullable=False)
     created_on = db.Column(db.DateTime, nullable=False)
     created_by = db.Column(db.String(15), nullable=False)
 

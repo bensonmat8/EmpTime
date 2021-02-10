@@ -29,10 +29,11 @@ equipment = {'IV Poles / E Car': None,
              'Concentrator Check': None,
              'DME Assembled': None}
 employees = {
-    "F162": ['Steve Reppard', None],
-    "16504": ['Christopher Preston', None],
-    "16731": ['Chelsea Short', None],
-    "3681": ['Lance Trotter', None],
     "26286": ['Aaron Williams', None],
-    "23160": ['Brian Engel', None]
+    "23160": ['Brian Engel', None],
+    "16731": ['Chelsea Short', None],
+    "16504": ['Christopher Preston', None],
+    "3681": ['Lance Trotter', None],
+    "F162": ['Steve Reppard', None],
+
 }
