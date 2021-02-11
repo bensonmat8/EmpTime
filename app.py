@@ -3,6 +3,7 @@ Created on Sun Jun 21 20:22:05 2020
 
 @author: bensonshajimathew
 """
+from auth import auth_bp
 from enum import auto
 import json
 from flask import Flask, render_template, request, jsonify, Response, flash
@@ -24,6 +25,7 @@ def create_app():
     # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config.from_pyfile('config.py')
+    app.register_blueprint(auth_bp, url_prefix='/PEI')
     db.init_app(app)
 
     def dataDump(backupKill):
@@ -625,6 +627,15 @@ def addData(tableName, tableId: dict, **kwargs):
 def PHCdataEntry():
     from phc_resource import employees, equipment, travel
     dates = {datetime.today().date() - timedelta(x): None for x in range(7)}
+    # Setting the default values as None as residues from from prev session
+    # were being pushed to new sessions
+    if request.method == 'GET':
+        for i in employees:
+            employees[i][1] = None
+        travel = dict.fromkeys(travel, None)
+        equipment = dict.fromkeys(equipment, None)
+        return render_template('PHC_app.html', dates=dates, travel=travel,
+                               equipment=equipment, employees=employees)
     if request.method == 'POST':
         date = request.form.get('date')
         dates[pd.to_datetime(date).date()] = 'selected'
@@ -636,7 +647,7 @@ def PHCdataEntry():
             val = request.form.get(data_type)
             if val == '' or val == None:
                 continue
-            print(f'val is :|{val}|')
+            #print(f'val is :|{val}|')
             travel[data_type] = val
             add = PHCdataEntrys(empid=empid, date=date, data_type=data_type,
                                 value=val,

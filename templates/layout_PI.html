@@ -34,23 +34,18 @@
         }
 
         .form-grid {
-            background-color: grey;
+            border: 1px solid rgba(0, 0, 0, 0.8);
             display: grid;
-            padding: 1px;
-            grid-column-gap: 1px;
-            grid-row-gap: 1px;
             grid-template-columns: auto auto;
         }
 
         .grid-item {
-            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.8);
             padding: 7px;
+            padding-right: 0px;
             text-align: left;
         }
     </style>
-</head>
-
-<body>
     <div class="header_">
         <div class="header-text">
             <h1>PE&I Apps</h1>
@@ -62,8 +57,18 @@
 
         <h1>{% block heading %}{% endblock %}</h1>
 
-        {% block body %}
-        {% endblock %}
+</head>
+
+<body>
+    <script>
+        function messageHide(msg_id) {
+            var elm = document.getElementById(msg_id);
+            elm.style.display = 'none';
+        }
+    </script>
+
+    {% block body %}
+    {% endblock %}
     </div>
 </body>
 <!-- Footer -->

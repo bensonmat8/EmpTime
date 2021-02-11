@@ -6,12 +6,6 @@ Daily Log / Equipment Cleaning
 
 {% block body %}
 
-<script>
-    function messageHide(msg_id) {
-        var elm = document.getElementById(msg_id);
-        elm.style.display = 'none';
-    }
-</script>
 <div class="container" style="min-height:100% width:80%">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
