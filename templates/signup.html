@@ -12,7 +12,7 @@
     }
 
     input {
-        width: 100%;
+        width: 95%;
     }
 </style>
 <div class="container" style="min-height: 100%; width: 80%">
@@ -20,16 +20,19 @@
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-warning alert-dismissible" role="alert" id="{{message}}">
-        <button type="button" class="close" onclick="messageHide({{message}})">
-            x
-        </button>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+            onclick="messageHide('{{message}}')"><span aria-hidden="true">×</span></button>
+        {{message}}
     </div>
     {% endfor %}
     {% endif %}
     {% endwith %}
 </div>
+
+
 <h1>Sign Up Form</h1>
 <form action="{{url_for('auth_bp.signup')}}" method="POST">
+    {{ form.csrf_token }}
     <div class="form-grid">
         <div class=" grid-item">
             <fieldset class="empid">
@@ -69,6 +72,8 @@
     </div>
     <br>
     <button class="btn btn-outline-primary">Register</button>
-
+    <!-- <div class="submit-button">
+        {{ form.submit()}}
+    </div> -->
 </form>
 {% endblock %}

@@ -1,6 +1,7 @@
 from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from sqlalchemy.orm import backref
 from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
@@ -262,7 +263,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(200), nullable=False)
     created_on = db.Column(db.DateTime, nullable=False)
     created_by = db.Column(db.String(15), nullable=False)
-    last_login = db.Column(db.DateTime, nullable=False)
+    last_login = db.Column(db.DateTime, nullable=True)
     app = db.relationship('UserAppAccess', backref='flaskloginusers')
 
     def set_password(self, password):
@@ -277,15 +278,15 @@ class User(UserMixin, db.Model):
 
 class UserAppAccess(db.Model):
     __tablename__ = 'user_app_access'
-    userappid = db.Column(db.Integer, primary_key=True)
     empid = db.Column(db.String(256),
                       db.ForeignKey('flaskloginusers.empid'),
-                      nullable=False)
+                      nullable=False, primary_key=True)
     appid = db.Column(db.Integer, db.ForeignKey('app_table.appid'),
-                      nullable=False)
-    role = db.Column(db.String(15), nullable=False)
+                      nullable=False, primary_key=True)
+    role = db.Column(db.String(15), nullable=False, primary_key=True)
     created_on = db.Column(db.DateTime, nullable=False)
     created_by = db.Column(db.String(15), nullable=False)
+    apps = db.relationship('app_table', backref='user_app_access')
 
 
 class AppTable(db.Model):
