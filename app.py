@@ -6,7 +6,8 @@ Created on Sun Jun 21 20:22:05 2020
 from auth import auth_bp
 from enum import auto
 import json
-from flask import Flask, render_template, request, jsonify, Response, flash
+from flask import Flask, render_template, request, jsonify, Response, flash, redirect, url_for
+from flask_login import LoginManager
 from models import *
 from datetime import datetime, timedelta
 import os
@@ -19,6 +20,9 @@ from werkzeug.security import generate_password_hash
 
 SQL_OPERATORS = re.compile('SELECT|UPDATE|INSERT|DELETE', re.IGNORECASE)
 
+login_manager = LoginManager()
+#login_manager.login_view = 'auth_bp.login'
+
 
 def create_app():
     app = Flask(__name__)
@@ -27,6 +31,7 @@ def create_app():
     app.config.from_pyfile('config.py')
     app.register_blueprint(auth_bp, url_prefix='/PEI')
     db.init_app(app)
+    login_manager.init_app(app)
 
     def dataDump(backupKill):
         backupKill = 'True'
@@ -51,9 +56,32 @@ app = create_app()
 #     dept = {i.dept_name: i.dept_id for i in Department.query.all()}
 
 
+@login_manager.user_loader
+def load_user(empid):
+    if empid is not None:
+        return User.query.get(empid)
+    return None
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash('You must be logged in to view that page')
+    return redirect(url_for('auth_bp.login'))
+
+
 # @app.route("/")
 # def hello():
 #     return "Testing ..."
+
+
+def app_reg(appid, appName, appRoute):
+    app_exsist = AppTable.query.get(appid)
+    if app_exsist is None:
+        app_exsist = AppTable(appid=appid,
+                              appName=appName,
+                              appRoute=appRoute)
+        db.session.add(app_exsist)
+        db.session.commit()
 
 
 @app.route('/Home')
@@ -621,6 +649,11 @@ def addData(tableName, tableId: dict, **kwargs):
         return True
     except:
         return False
+
+
+with app.app_context():
+    app_reg(1, 'PHC_DataEntry', '/PEI/PHC/DataEntry')
+    app_reg(0, 'Signup', '/PEI/signup')
 
 
 @app.route('/PEI/PHC/DataEntry', methods=['GET', 'POST'])

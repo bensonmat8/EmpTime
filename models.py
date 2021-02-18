@@ -4,6 +4,10 @@ from flask_login import UserMixin
 from sqlalchemy.orm import backref
 from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
+'''
+To understand how one to many relationship works: https://www.youtube.com/watch?v=juPQ04_twtA
+To understand how many to many relationship works: https://www.youtube.com/watch?v=OvhoYbjtiKc
+'''
 
 
 class Department(db.Model):
@@ -248,11 +252,12 @@ class PHCdataEntrys(db.Model):
                       nullable=False, primary_key=True)
     date = db.Column(db.Date, nullable=False, primary_key=True)
     data_type = db.Column(db.String(50), nullable=False, primary_key=True)
-    value = db.Column(db.Integer, nullable=False)
+    value = db.Column(db.Float, nullable=False)
     create_date = db.Column(db.DateTime, nullable=False)
 
 # ---------User Accounts----------------------
 # Started 2021-01-27
+# Updated 2021-02-18
 
 
 class User(UserMixin, db.Model):
@@ -264,7 +269,6 @@ class User(UserMixin, db.Model):
     created_on = db.Column(db.DateTime, nullable=False)
     created_by = db.Column(db.String(15), nullable=False)
     last_login = db.Column(db.DateTime, nullable=True)
-    app = db.relationship('UserAppAccess', backref='flaskloginusers')
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -283,10 +287,12 @@ class UserAppAccess(db.Model):
                       nullable=False, primary_key=True)
     appid = db.Column(db.Integer, db.ForeignKey('app_table.appid'),
                       nullable=False, primary_key=True)
-    role = db.Column(db.String(15), nullable=False, primary_key=True)
-    created_on = db.Column(db.DateTime, nullable=False)
-    created_by = db.Column(db.String(15), nullable=False)
-    apps = db.relationship('app_table', backref='user_app_access')
+    role = db.Column(db.String(15), nullable=True, primary_key=True)
+    created_on = db.Column(db.DateTime, nullable=True)
+    created_by = db.Column(db.String(15), nullable=True)
+    apps = db.relationship(
+        'AppTable', backref=db.backref('user', lazy='dynamic'))
+    user_dtl = db.relationship('User', backref='app')
 
 
 class AppTable(db.Model):

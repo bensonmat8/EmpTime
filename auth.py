@@ -1,7 +1,7 @@
 from datetime import datetime
-from flask import Blueprint, render_template, flash, request, session, url_for
+from flask import Blueprint, render_template, flash, request, session, url_for, redirect
 from flask_login import login_required, logout_user, current_user, login_user
-from forms import SignupForm
+from forms import LoginForm, SignupForm
 from models import AppTable, db, User, UserAppAccess
 
 auth_bp = Blueprint('auth_bp', __name__, static_folder='static',
@@ -10,7 +10,22 @@ auth_bp = Blueprint('auth_bp', __name__, static_folder='static',
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    return 'Under Construction'
+    form = LoginForm()
+    if current_user.is_authenticated:
+        return redirect(url_for('auth_bp.landing'))
+    if form.validate_on_submit():
+        user = User.query.get(form.empid.data)
+        if user and user.check_password(password=form.password.data):
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('auth_bp.landing'))
+        flash('Invalid username/password')
+    return render_template('login.html', form=form)
+
+
+@auth_bp.route('/landing', methods=['GET'])
+def landing():
+    return '<h1>Landing Under Construction<h1>'
 
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])
@@ -20,17 +35,10 @@ def signup():
     GET request serve sign-up page
     POST request validates form and creates user
     """
-    app_exsist = AppTable.query.get(0)
-    if app_exsist is None:
-        app_exsist = AppTable(appid=0,
-                              appName='Signup',
-                              appRoute='PEI/signup')
-        db.session.add(app_exsist)
-        db.session.commit()
     form = SignupForm(request.form)
     one = [['Icecream', 'Chocolate', 'Coffee', 'Lemonade', 'Water'],
            ['Is', 'Has', 'Was', 'UsedToBe', '']]
-    print(form.validate_on_submit())
+    # print(form.validate_on_submit())
     if form.validate_on_submit():
         existing_user = User.query.get(form.empid.data)
         if existing_user is None:
@@ -42,16 +50,19 @@ def signup():
                         last_login=datetime.now())
             user.set_password(form.password.data)
             db.session.add(user)
-            db.session.commit()
-
-            userApp = UserAppAccess(empid=form.empid.data, appid=0, role='admin',
+            # db.session.commit()
+            app = AppTable.query.get(0)
+            userApp = UserAppAccess(role='admin',
                                     created_on=datetime.now(), created_by='Admin')
-            db.session.add(userApp)
+            userApp.apps = app
+            userApp.user_dtl = user
+            # db.session.add(user)
             db.session.commit()
-            flash(f'User {form.name.data} created')
+            flash(f"{form.name.data}'s account created")
         else:
             flash(f'User {form.name.data} already in the system')
     elif request.method != 'GET':
-        flash('Contact Admin')
-        flash(form.errors)
+        #flash('Contact Admin')
+        for err in form.errors:
+            flash(form.errors[err][0])
     return render_template('signup.html', title='Create an Account', form=form)

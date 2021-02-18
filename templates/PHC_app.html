@@ -57,7 +57,8 @@ Daily Log / Equipment Cleaning
                     {%for trItem in travel%}
                     <tr>
                         <td>{{trItem}}</td>
-                        <td><input type="Number" name="{{trItem}}" class="sub_item" value={{travel[trItem]}}></td>
+                        <td><input type="Number" step="0.01" name="{{trItem}}" class="sub_item"
+                                value={{travel[trItem]}}></td>
                     </tr>
 
                     {%endfor%}
