@@ -270,6 +270,13 @@ class User(UserMixin, db.Model):
     created_by = db.Column(db.String(15), nullable=False)
     last_login = db.Column(db.DateTime, nullable=True)
 
+    def get_id(self):
+        super(UserMixin).__init__()
+        try:
+            return str(self.empid)
+        except AttributeError:
+            raise NotImplementedError('No `id` attribute - override `get_id`')
+
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
 

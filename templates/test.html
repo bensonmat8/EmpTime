@@ -1,38 +1,12 @@
-{% extends "layout_NHSN.html" %}
+{% extends "layout_PI.html" %}
 
 {% block heading %}
-Data Entry {{ entry_type }} - {{location}}
+<h1>Landing Under Construction</h1>
 {% endblock %}
 
 {% block body %}
-<form action="{{url_for('CentralLine_WMH')}}" method="post">
-    Campus: <select name="campus" id="campus">
-        <option value="BGH">BGH</option>
-        <option value="CMH">CMH</option>
-        <option value="DVH">DVH</option>
-        <option value="WMH">WMH</option>
-    </select>
-    <div id="table">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Unit</th>
-                    <th scope="col">EPIC Count</th>
-                    <th scope="col">Manual Count</th>
-                </tr>
-            </thead>
-            {% for unit in units %}
-            <tbody>
-                <tr>
-                    <td>{{unit}}</td>
-                    <td><input type="Number" name="{{unit}}_epic" class="sub_item"></td>
-                    <td><input type="Number" name="{{unit}}_manual" class="sub_item"></td>
-                </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-    </div>
-    <input class="btn btn-primary" type="submit" id="Submit" name="submit"></input>
 
+<form action="{{url_for('auth_bp.logout')}}">
+    <button class="btn btn-primary submit-btn btn-block">Login</button>
 </form>
 {% endblock %}

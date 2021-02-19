@@ -24,8 +24,17 @@ def login():
 
 
 @auth_bp.route('/landing', methods=['GET'])
+@login_required
 def landing():
-    return '<h1>Landing Under Construction<h1>'
+
+    return render_template('landing_PEI.html', user=current_user)
+
+
+@auth_bp.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth_bp.login'))
 
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PHC Electronic Log App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style type="text/css">
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: Baskerville;
+            padding-bottom: 50px;
+        }
+
+        .header_ {
+            background-image: linear-gradient(90deg, #00d2ff 0%, #3aa4d5 100%);
+            height: 10%;
+            background-size: cover;
+            position: relative;
+            background-position: center;
+            position: relative;
+            background-repeat: no-repeat;
+        }
+
+        .header-text {
+            top: 50%;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white
+        }
+
+        .form-grid {
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+
+        .grid-item {
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 7px;
+            padding-right: 0px;
+            text-align: left;
+        }
+    </style>
+    <div class="header_">
+        <div class="header-text">
+            <h1>PE&I Apps</h1>
+        </div>
+    </div>
+    <div style="position: absolute; top:10px; left: 10px;"><img src="{{url_for('static', filename='UHSLogo.png')}}"
+            height="50" width="70"></div>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
+
+
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('auth_bp.landing')}}">
+                        <button type="button" class="btn btn-outline-primary">Home </button>
+                        <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <button type="button" class="btn btn-outline-secondary">Setting</button>
+                    </a>
+                </li>
+            </ul>
+            <a class="nav-link" href="{{url_for('auth_bp.logout')}}"><span class="nav-link">
+                    <button type="button" class="btn btn-outline-danger">Logout</button>
+                </span></a>
+        </div>
+    </nav>
+</head>
+
+<script>
+    function messageHide(msg_id) {
+        var elm = document.getElementById(msg_id);
+        elm.style.display = 'none';
+    }
+</script>
+
+<body>
+    <div class="container" style="padding-bottom: 35px;">
+
+        {% block heading %}
+        {% endblock %}
+
+
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
