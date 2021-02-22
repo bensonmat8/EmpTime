@@ -298,7 +298,7 @@ class UserAppAccess(db.Model):
     created_on = db.Column(db.DateTime, nullable=True)
     created_by = db.Column(db.String(15), nullable=True)
     apps = db.relationship(
-        'AppTable', backref=db.backref('user', lazy='dynamic'))
+        'AppTable', backref=db.backref('users', lazy='dynamic'))
     user_dtl = db.relationship('User', backref='app')
 
 
@@ -307,3 +307,4 @@ class AppTable(db.Model):
     appid = db.Column(db.Integer, primary_key=True)
     appName = db.Column(db.String(50), nullable=False, unique=True)
     appRoute = db.Column(db.String(150), nullable=False, unique=True)
+    appType = db.Column(db.String(15), nullable=True)

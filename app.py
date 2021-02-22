@@ -75,12 +75,13 @@ def unauthorized():
 #     return "Testing ..."
 
 
-def app_reg(appid, appName, appRoute):
+def app_reg(appid, appName, appRoute, appType):
     app_exsist = AppTable.query.get(appid)
     if app_exsist is None:
         app_exsist = AppTable(appid=appid,
                               appName=appName,
-                              appRoute=appRoute)
+                              appRoute=appRoute,
+                              appType=appType)
         db.session.add(app_exsist)
         db.session.commit()
 
@@ -629,8 +630,8 @@ def addData(tableName, tableId: dict, **kwargs):
 
 
 with app.app_context():
-    app_reg(1, 'PHC_DataEntry', '/PEI/PHC/DataEntry')
-    app_reg(0, 'Signup', '/PEI/signup')
+    app_reg(1, 'PHC Data Entry', '/PEI/PHC/DataEntry', 'Entry')
+    app_reg(0, 'Signup', '/PEI/signup', 'Setting')
 
 
 @app.route('/PEI/PHC/DataEntry', methods=['GET', 'POST'])

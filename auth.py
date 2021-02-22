@@ -30,6 +30,13 @@ def landing():
     return render_template('landing_PEI.html', user=current_user)
 
 
+@auth_bp.route('/setting', methods=['GET'])
+@login_required
+def setting():
+
+    return render_template('setting_PEI.html', user=current_user)
+
+
 @auth_bp.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
@@ -38,6 +45,7 @@ def logout():
 
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])
+@login_required
 def signup():
     """
     User Sign-up page
@@ -60,13 +68,15 @@ def signup():
             user.set_password(form.password.data)
             db.session.add(user)
             # db.session.commit()
-            app = AppTable.query.get(0)
-            userApp = UserAppAccess(role='admin',
-                                    created_on=datetime.now(), created_by='Admin')
-            userApp.apps = app
-            userApp.user_dtl = user
-            # db.session.add(user)
-            db.session.commit()
+            for appid in [0, 1]:
+                app = AppTable.query.get(appid)
+                userApp = UserAppAccess(role='admin',
+                                        created_on=datetime.now(), created_by='Admin')
+                userApp.apps = app
+                userApp.user_dtl = user
+                # db.session.add(user)
+                db.session.commit()
+                del userApp, app
             flash(f"{form.name.data}'s account created")
         else:
             flash(f'User {form.name.data} already in the system')

@@ -1,10 +1,18 @@
 {% extends "layout_PIV2.html"%}
 {%block body %}
+
 <h1>Hi {{user.name}},</h1>
-<h3>Select from the following app:</h3>
+<h3>Select from the following settings:</h3>
+
 {%for app in user.app %}
-{% if app.apps.appType != 'Setting' %}
+{% if app.apps.appType == 'Setting' %}
+{% set ct = true %}
+
 <li><a href="{{app.apps.appRoute}}">{{app.apps.appName}}</a></li>
+
 {% endif %}
 {%endfor%}
+{% if ct %}
+<h3>{{ct}} No items to be showed</h3>
+{%endif%}
 {%endblock%}
