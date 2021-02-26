@@ -703,7 +703,8 @@ def PHCdataEntry():
             eqAdd += 1
         if eqAdd > 0:
             flash(f'Successfully logged {eqAdd} Equipment data')
-
+    travel = dict.fromkeys(travel, None)
+    equipment = dict.fromkeys(equipment, None)
     return render_template('PHC_app.html', dates=dates,
                            travel=travel, equipment=equipment, employees=employees)
 
